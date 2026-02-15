@@ -20,8 +20,8 @@ const Header = () => {
                     <Link to="/" className="hover:text-primary transition">
                         Home
                     </Link>
-                    <Link to="/caravans" className="hover:text-primary transition">
-                        Caravans
+                    <Link to="/vehicles" className="hover:text-primary transition">
+                        Fleet
                     </Link>
                     {user ? (
                         <>

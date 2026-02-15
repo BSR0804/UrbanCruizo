@@ -4,23 +4,31 @@ import toast from 'react-hot-toast';
 
 const AdminPage = () => {
     const [bookings, setBookings] = useState([]);
-    const [caravans, setCaravans] = useState([]);
+    const [vehicles, setVehicles] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
+        description: 'Standard vehicle description',
         pricePerDay: '',
-        amenities: '',
-        images: '', // Comma separated for simplicity, or ideally separate inputs
+        type: 'car',
+        category: 'normal',
+        brand: '',
+        model: '',
+        year: '',
+        transmission: 'Automatic',
+        fuelType: 'Petrol',
+        seats: '',
+        images: '',
         location: '',
+        amenities: '', // Keeping for backward compat or if we add it back to schema optionally
     });
 
     const fetchData = async () => {
         try {
             const bookingsRes = await axios.get('/bookings');
-            const caravansRes = await axios.get('/caravans');
+            const vehiclesRes = await axios.get('/vehicles?limit=1000'); // Get all for admin
             setBookings(bookingsRes.data);
-            setCaravans(caravansRes.data.caravans);
+            setVehicles(vehiclesRes.data.vehicles);
         } catch (error) {
             console.error(error);
             toast.error('Failed to fetch data');
@@ -31,14 +39,14 @@ const AdminPage = () => {
         fetchData();
     }, []);
 
-    const handleDeleteCaravan = async (id) => {
-        if (window.confirm('Are you sure you want to delete this caravan?')) {
+    const handleDeleteVehicle = async (id) => {
+        if (window.confirm('Are you sure you want to delete this vehicle?')) {
             try {
-                await axios.delete(`/caravans/${id}`);
-                toast.success('Caravan deleted successfully');
+                await axios.delete(`/vehicles/${id}`);
+                toast.success('Vehicle deleted successfully');
                 fetchData();
             } catch (error) {
-                toast.error('Failed to delete caravan');
+                toast.error('Failed to delete vehicle');
             }
         }
     };
@@ -46,29 +54,40 @@ const AdminPage = () => {
     const handleAddSubmit = async (e) => {
         e.preventDefault();
         try {
-            const amenitiesArray = formData.amenities.split(',').map((item) => item.trim());
             const imagesArray = formData.images.split(',').map((item) => item.trim());
 
-            await axios.post('/caravans', {
+            await axios.post('/vehicles', {
                 ...formData,
-                amenities: amenitiesArray,
                 images: imagesArray,
             });
 
-            toast.success('Caravan added successfully');
+            toast.success('Vehicle added successfully');
             setShowAddModal(false);
+            // Reset Form
             setFormData({
                 title: '',
-                description: '',
+                description: 'Standard vehicle description',
                 pricePerDay: '',
-                amenities: '',
+                type: 'car',
+                category: 'normal',
+                brand: '',
+                model: '',
+                year: '',
+                transmission: 'Automatic',
+                fuelType: 'Petrol',
+                seats: '',
                 images: '',
                 location: '',
+                amenities: ''
             });
             fetchData();
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to add caravan');
+            toast.error(error.response?.data?.message || 'Failed to add vehicle');
         }
+    };
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     return (
@@ -91,7 +110,7 @@ const AdminPage = () => {
                                     className="bg-background p-4 rounded border border-gray-800"
                                 >
                                     <div className="font-bold text-primary">
-                                        {booking.caravan?.title || 'Unknown Caravan'}
+                                        {booking.vehicle?.title || 'Unknown Vehicle'}
                                     </div>
                                     <div className="text-sm text-textSecondary">
                                         User: {booking.user?.name || 'Unknown User'}
@@ -109,34 +128,34 @@ const AdminPage = () => {
                     </div>
                 </div>
 
-                {/* Caravans Section */}
+                {/* Vehicles Section */}
                 <div className="bg-surface rounded-lg shadow p-6">
                     <h2 className="text-xl font-bold text-textPrimary mb-4 border-b border-gray-700 pb-2">
-                        Manage Caravans
+                        Manage Fleet
                     </h2>
                     <button
                         onClick={() => setShowAddModal(true)}
                         className="btn-primary w-full mb-4 py-2 text-sm"
                     >
-                        Add New Caravan
+                        Add New Vehicle
                     </button>
                     <div className="space-y-4 max-h-96 overflow-y-auto">
-                        {caravans.map((caravan) => (
+                        {vehicles.map((vehicle) => (
                             <div
-                                key={caravan._id}
+                                key={vehicle._id}
                                 className="flex justify-between items-center bg-background p-4 rounded border border-gray-800"
                             >
                                 <div>
                                     <div className="font-bold text-textPrimary">
-                                        {caravan.title}
+                                        {vehicle.title}
                                     </div>
                                     <div className="text-sm text-primary">
-                                        ${caravan.pricePerDay}/day
+                                        ${vehicle.pricePerDay}/day
                                     </div>
                                 </div>
                                 <div className="space-x-2">
                                     <button
-                                        onClick={() => handleDeleteCaravan(caravan._id)}
+                                        onClick={() => handleDeleteVehicle(vehicle._id)}
                                         className="text-red-500 hover:text-red-400"
                                     >
                                         Delete
@@ -151,81 +170,54 @@ const AdminPage = () => {
             {/* Add Modal */}
             {showAddModal && (
                 <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-                    <div className="bg-surface p-8 rounded-lg w-full max-w-lg border border-secondary/20 max-h-[90vh] overflow-y-auto">
+                    <div className="bg-surface p-8 rounded-lg w-full max-w-2xl border border-secondary/20 max-h-[90vh] overflow-y-auto">
                         <h2 className="text-2xl font-serif text-primary mb-6">
-                            Add New Caravan
+                            Add New Vehicle
                         </h2>
                         <form onSubmit={handleAddSubmit} className="space-y-4">
-                            <input
-                                type="text"
-                                placeholder="Title"
-                                className="input-field"
-                                value={formData.title}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, title: e.target.value })
-                                }
-                                required
-                            />
-                            <textarea
-                                placeholder="Description"
-                                className="input-field h-24"
-                                value={formData.description}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, description: e.target.value })
-                                }
-                                required
-                            />
                             <div className="grid grid-cols-2 gap-4">
-                                <input
-                                    type="number"
-                                    placeholder="Price Per Day"
-                                    className="input-field"
-                                    value={formData.pricePerDay}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, pricePerDay: e.target.value })
-                                    }
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Location"
-                                    className="input-field"
-                                    value={formData.location}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, location: e.target.value })
-                                    }
-                                    required
-                                />
+                                <input type="text" name="title" placeholder="Title" className="input-field" value={formData.title} onChange={handleChange} required />
+                                <input type="text" name="brand" placeholder="Brand" className="input-field" value={formData.brand} onChange={handleChange} required />
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Amenities (comma separated)"
-                                className="input-field"
-                                value={formData.amenities}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, amenities: e.target.value })
-                                }
-                            />
-                            <input
-                                type="text"
-                                placeholder="Image URLs (comma separated)"
-                                className="input-field"
-                                value={formData.images}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, images: e.target.value })
-                                }
-                            />
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <input type="text" name="model" placeholder="Model" className="input-field" value={formData.model} onChange={handleChange} required />
+                                <input type="number" name="year" placeholder="Year" className="input-field" value={formData.year} onChange={handleChange} required />
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-4">
+                                <select name="type" className="input-field" value={formData.type} onChange={handleChange}>
+                                    <option value="car">Car</option>
+                                    <option value="bike">Bike</option>
+                                    <option value="caravan">Caravan</option>
+                                </select>
+                                <select name="category" className="input-field" value={formData.category} onChange={handleChange}>
+                                    <option value="normal">Normal</option>
+                                    <option value="luxury">Luxury</option>
+                                </select>
+                                <input type="number" name="pricePerDay" placeholder="Price/Day" className="input-field" value={formData.pricePerDay} onChange={handleChange} required />
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-4">
+                                <select name="transmission" className="input-field" value={formData.transmission} onChange={handleChange}>
+                                    <option value="Automatic">Automatic</option>
+                                    <option value="Manual">Manual</option>
+                                </select>
+                                <select name="fuelType" className="input-field" value={formData.fuelType} onChange={handleChange}>
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Electric">Electric</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                </select>
+                                <input type="number" name="seats" placeholder="Seats" className="input-field" value={formData.seats} onChange={handleChange} required />
+                            </div>
+
+                            <input type="text" name="location" placeholder="Location" className="input-field" value={formData.location} onChange={handleChange} required />
+                            <input type="text" name="images" placeholder="Image URLs (comma separated)" className="input-field" value={formData.images} onChange={handleChange} />
+
                             <div className="flex gap-4 mt-6">
-                                <button type="submit" className="btn-primary w-full">
-                                    Save Caravan
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowAddModal(false)}
-                                    className="btn-outline w-full"
-                                >
-                                    Cancel
-                                </button>
+                                <button type="submit" className="btn-primary w-full">Save Vehicle</button>
+                                <button type="button" onClick={() => setShowAddModal(false)} className="btn-outline w-full">Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -236,4 +228,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-

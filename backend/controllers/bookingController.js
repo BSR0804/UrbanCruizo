@@ -1,74 +1,82 @@
 const Booking = require('../models/Booking');
-const Caravan = require('../models/Caravan');
+const Vehicle = require('../models/Vehicle');
 
-// @desc    Create new booking
+// @desc    Create new booking (With GST and Deposit Logic)
 // @route   POST /api/bookings
-// @access  Private
 const createBooking = async (req, res) => {
-    const { caravanId, startDate, endDate } = req.body;
+    const { vehicleId, startDate, endDate, rentalType } = req.body; // rentalType: 'Hourly' | 'Daily'
+    const vehicle = await Vehicle.findById(vehicleId);
 
-    const caravan = await Caravan.findById(caravanId);
-
-    if (!caravan) {
+    if (!vehicle) {
         res.status(404);
-        throw new Error('Caravan not found');
+        throw new Error('Vehicle Not Found');
     }
 
-    // Check for overlapping bookings
-    const overlappingBooking = await Booking.findOne({
-        caravan: caravanId,
-        status: 'confirmed',
+    // Overlap check
+    const overlapping = await Booking.findOne({
+        vehicle: vehicleId,
+        status: { $in: ['confirmed', 'ongoing'] },
         $or: [
-            {
-                startDate: { $lt: new Date(endDate) },
-                endDate: { $gt: new Date(startDate) },
-            },
-        ],
+            { startDate: { $lt: new Date(endDate) }, endDate: { $gt: new Date(startDate) } }
+        ]
     });
 
-    if (overlappingBooking) {
+    if (overlapping) {
         res.status(400);
-        throw new Error('Caravan is already booked for these dates');
+        throw new Error('Selected dates are not available.');
     }
 
-    // Calculate total price
+    // Pricing Logic
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const totalPrice = diffDays * caravan.pricePerDay;
+    const diffMs = Math.abs(end - start);
+    let baseFare = 0;
+
+    if (rentalType === 'Hourly') {
+        const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+        baseFare = hours * vehicle.pricePerHour;
+    } else {
+        const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+        baseFare = days * vehicle.pricePerDay;
+    }
+
+    const gstAmount = baseFare * 0.18; // 18% GST standard in India
+    const deposit = vehicle.securityDeposit || 0;
+    const finalAmount = baseFare + gstAmount + deposit;
 
     const booking = new Booking({
         user: req.user._id,
-        caravan: caravanId,
+        vehicle: vehicleId,
+        city: vehicle.city,
         startDate,
         endDate,
-        totalPrice,
-        status: 'confirmed',
+        rentalType,
+        totalPrice: baseFare, // Store base separately for invoice
+        gstAmount,
+        securityDeposit: deposit,
+        finalAmount, // Pay this amount
+        status: 'confirmed', // Auto-confirm for MVP (Usually 'pending' payment)
+        paymentStatus: 'pending' // Integrate payment gateway here
     });
 
     const createdBooking = await booking.save();
     res.status(201).json(createdBooking);
 };
 
-// @desc    Get logged in user bookings
-// @route   GET /api/bookings/mybookings
-// @access  Private
+// @desc    Get My Bookings
 const getMyBookings = async (req, res) => {
-    const bookings = await Booking.find({ user: req.user._id }).populate('caravan');
+    const bookings = await Booking.find({ user: req.user._id }).populate('vehicle').sort({ createdAt: -1 });
     res.json(bookings);
 };
 
-// @desc    Get all bookings
-// @route   GET /api/bookings
-// @access  Private/Admin
+// @desc    Get All Bookings (Admin)
 const getBookings = async (req, res) => {
-    const bookings = await Booking.find({}).populate('user', 'id name').populate('caravan');
+    const bookings = await Booking.find({}).populate('user', 'name email licenseNumber').populate('vehicle');
     res.json(bookings);
 };
 
 module.exports = {
     createBooking,
     getMyBookings,
-    getBookings,
+    getBookings
 };

@@ -4,8 +4,13 @@ const bcrypt = require('bcryptjs');
 const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    phone: { type: String }, // For India +91
     password: { type: String, required: true },
-    role: { type: String, enum: ['tourist', 'admin'], default: 'tourist' },
+    role: { type: String, default: 'user', enum: ['user', 'admin'] },
+    licenseNumber: { type: String },
+    aadhaarNumber: { type: String },
+    licenseImage: { type: String },
+    verified: { type: Boolean, default: false }, // KYC Status
 }, { timestamps: true });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

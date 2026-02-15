@@ -1,117 +1,164 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const User = require('./models/User');
-const Caravan = require('./models/Caravan');
+const Vehicle = require('./models/Vehicle');
 const Booking = require('./models/Booking');
 const connectDB = require('./config/db');
 
 dotenv.config();
-
 connectDB();
 
-const importData = async () => {
+const seedData = async () => {
     try {
         await Booking.deleteMany();
-        await Caravan.deleteMany();
+        await Vehicle.deleteMany();
         await User.deleteMany();
 
-        const createdUsers = await User.insertMany([
-            {
-                name: 'Admin User',
-                email: 'admin@example.com',
-                password: 'password123',
-                role: 'admin',
-            },
-            {
-                name: 'John Doe',
-                email: 'john@example.com',
-                password: 'password123',
-                role: 'tourist',
-            },
-            {
-                name: 'Jane Smith',
-                email: 'jane@example.com',
-                password: 'password123',
-                role: 'tourist',
-            },
-        ]);
+        const admin = await User.create({
+            name: 'Admin User',
+            email: 'admin@carawinn.in',
+            password: 'adminpassword',
+            role: 'admin',
+            verified: true
+        });
 
-        const adminUser = createdUsers[0]._id;
+        const standardUser = await User.create({
+            name: 'Ravi Kumar',
+            email: 'ravi@example.com',
+            password: 'password123',
+            role: 'user',
+            verified: true,
+            licenseNumber: 'DL-12-2023-1234567'
+        });
 
-        const sampleCaravans = [
+        const vehicles = [
+            // Delhi Fleet
             {
-                title: 'The Golden Voyager',
-                description: 'Experience the pinnacle of luxury travel. This 40ft caravan features a king-size master suite, full gourmet kitchen with marble countertops, and a spacious lounge with a 4K home theater system. Perfect for coast-to-coast adventures in style.',
-                pricePerDay: 450,
-                amenities: ['King Bed', 'Gourmet Kitchen', '4K TV', 'WiFi', 'Washer/Dryer'],
-                images: ['https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80', 'https://images.unsplash.com/photo-1512918760532-3ad860030eb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80'],
-                location: 'Los Angeles, CA',
-                availability: true,
+                title: 'Maruti Suzuki Swift',
+                type: 'car',
+                category: 'hatchback',
+                brand: 'Maruti Suzuki',
+                model: 'Swift ZXI+',
+                year: 2023,
+                transmission: 'Manual',
+                fuelType: 'Petrol',
+                seats: 5,
+                pricePerHour: 150,
+                pricePerDay: 1800,
+                securityDeposit: 3000,
+                city: 'Delhi',
+                images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/48542/swift-exterior-right-front-three-quarter-3.jpeg?q=75'],
+                location: 'Connaught Place, Delhi',
+                kmsLimitPerDay: 240,
+                extraKmCharge: 12
             },
             {
-                title: 'Nomad’s Retreat',
-                description: 'A cozy yet modern caravan designed for couples. Includes a queen bed, solar power capabilities for off-grid living, and a panoramic sunroof for stargazing.',
-                pricePerDay: 200,
-                amenities: ['Queen Bed', 'Solar Power', 'Sunroof', 'Kitchenette'],
-                images: ['https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=1721&q=80'],
-                location: 'Denver, CO',
-                availability: true,
+                title: 'Mahindra Thar 4x4',
+                type: 'car',
+                category: 'suv',
+                brand: 'Mahindra',
+                model: 'Thar LX Hard Top',
+                year: 2024,
+                transmission: 'Automatic',
+                fuelType: 'Diesel',
+                seats: 4,
+                pricePerHour: 400,
+                pricePerDay: 4500,
+                securityDeposit: 5000,
+                city: 'Delhi',
+                images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/40087/thar-exterior-right-front-three-quarter-11.jpeg?q=75'],
+                location: 'Aerocity, Delhi',
+                kmsLimitPerDay: 200,
+                extraKmCharge: 18
+            },
+            // Mumbai Fleet
+            {
+                title: 'Tata Nexon EV',
+                type: 'car',
+                category: 'suv',
+                brand: 'Tata',
+                model: 'Nexon EV Max',
+                year: 2023,
+                transmission: 'Automatic',
+                fuelType: 'Electric',
+                seats: 5,
+                pricePerHour: 250,
+                pricePerDay: 3000,
+                securityDeposit: 4000,
+                city: 'Mumbai',
+                images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121479/nexon-ev-max-exterior-right-front-three-quarter-3.jpeg?q=75'],
+                location: 'Juhu Beach, Mumbai',
+                kmsLimitPerDay: 200,
+                extraKmCharge: 15
             },
             {
-                title: 'Family Adventure Hub',
-                description: 'Spacious 6-berth caravan perfect for family getaways. Features bunk beds, a large dining area, and plenty of storage for bikes and gear.',
-                pricePerDay: 300,
-                amenities: ['6 Bunks', 'Dining Area', 'Bike Rack', 'Large Fridge'],
-                images: ['https://images.unsplash.com/photo-1533282960533-51328aa49826?ixlib=rb-4.0.3&auto=format&fit=crop&w=1742&q=80'],
-                location: 'Miami, FL',
-                availability: true,
+                title: 'Royal Enfield Classic 350',
+                type: 'bike',
+                category: 'royal-enfield',
+                brand: 'Royal Enfield',
+                model: 'Classic 350',
+                year: 2023,
+                transmission: 'Manual',
+                fuelType: 'Petrol',
+                seats: 2,
+                pricePerHour: 80,
+                pricePerDay: 1200,
+                securityDeposit: 2000,
+                city: 'Mumbai',
+                images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/101487/classic-350-Right-Front-Three-Quarter.jpeg?q=75'],
+                location: 'Colaba, Mumbai',
+                kmsLimitPerDay: 150,
+                extraKmCharge: 5
             },
+            // Bangalore Fleet
             {
-                title: 'Eco-Stream Deluxe',
-                description: 'Sustainable luxury. This eco-friendly caravan runs on 100% renewable energy while providing all modern comforts including AC and a smart home system.',
-                pricePerDay: 250,
-                amenities: ['Solar Panels', 'Smart Home', 'Eco Materials', 'AC'],
-                images: ['https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80'],
-                location: 'Seattle, WA',
-                availability: true,
+                title: 'Hyundai Creta',
+                type: 'car',
+                category: 'suv',
+                brand: 'Hyundai',
+                model: 'Creta SX(O)',
+                year: 2023,
+                transmission: 'Automatic',
+                fuelType: 'Diesel',
+                seats: 5,
+                pricePerHour: 300,
+                pricePerDay: 3500,
+                securityDeposit: 5000,
+                city: 'Bangalore',
+                images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/141115/creta-exterior-right-front-three-quarter-2.jpeg?q=75'],
+                location: 'Indiranagar, Bangalore',
+                kmsLimitPerDay: 240,
+                extraKmCharge: 14
             },
+            // Caravans (Pan-India available mostly)
             {
-                title: 'Desert Drifter',
-                description: 'Rugged exterior, luxurious interior. Built for the desert but styled for a king. Features enhanced AC, dust-proof sealing, and a premium sound system.',
-                pricePerDay: 350,
-                amenities: ['Enhanced AC', 'Premium Sound', 'Outdoor Awning', 'BBQ Grill'],
-                images: ['https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80'],
-                location: 'Phoenix, AZ',
-                availability: true,
-            },
+                title: 'Force Traveler Caravan',
+                type: 'caravan',
+                category: 'standard',
+                brand: 'Force Motors',
+                model: 'Traveler Modified',
+                year: 2022,
+                transmission: 'Manual',
+                fuelType: 'Diesel',
+                seats: 6,
+                pricePerHour: 500,
+                pricePerDay: 6000,
+                securityDeposit: 10000,
+                city: 'Bangalore', // Base location
+                images: ['https://trucks.cardekho.com/trucks/force/traveller-3350/force-traveller-3350.jpg'],
+                location: 'Whitefield, Bangalore',
+                kmsLimitPerDay: 300,
+                extraKmCharge: 20
+            }
         ];
 
-        await Caravan.insertMany(sampleCaravans);
-
-        console.log('Data Imported!');
+        await Vehicle.insertMany(vehicles);
+        console.log('Indian Data Imported!');
         process.exit();
     } catch (error) {
-        console.error(`${error}`);
+        console.error(error);
         process.exit(1);
     }
 };
 
-const destroyData = async () => {
-    try {
-        await Booking.deleteMany();
-        await Caravan.deleteMany();
-        await User.deleteMany();
-
-        console.log('Data Destroyed!');
-        process.exit();
-    } catch (error) {
-        console.error(`${error}`);
-        process.exit(1);
-    }
-};
-
-if (process.argv[2] === '-d') {
-    destroyData();
-} else {
-    importData();
-}
+seedData();

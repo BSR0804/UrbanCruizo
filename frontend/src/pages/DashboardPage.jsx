@@ -37,7 +37,7 @@ const DashboardPage = () => {
                         {bookings.map((booking) => (
                             <div key={booking._id} className="p-6 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition">
                                 <div>
-                                    <h3 className="text-lg font-bold text-primary mb-1">{booking.caravan?.title || 'Caravan Removed'}</h3>
+                                    <h3 className="text-lg font-bold text-primary mb-1">{booking.vehicle?.title || 'Vehicle Removed'}</h3>
                                     <p className="text-sm text-textSecondary">
                                         {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
                                     </p>

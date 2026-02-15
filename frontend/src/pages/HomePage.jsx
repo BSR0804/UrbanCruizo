@@ -1,36 +1,51 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { CityContext } from '../context/CityContext';
 
 const HomePage = () => {
+    const { setCity } = useContext(CityContext);
+    const navigate = useNavigate();
+
+    const cities = [
+        { name: 'Delhi', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Mumbai', image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Hyderabad', image: 'https://images.unsplash.com/photo-1574116992627-c1a17e08960e?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Chennai', image: 'https://images.unsplash.com/photo-1616843413587-9e3a37f7bbd8?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Pune', image: 'https://images.unsplash.com/photo-1600112356915-089abb8fc71a?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Kolkata', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Howrah_Bridge_at_Night.jpg/1280px-Howrah_Bridge_at_Night.jpg' },
+        { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
+    ];
+
+    const handleCitySelect = (city) => {
+        setCity(city);
+        navigate('/vehicles');
+    };
+
     return (
         <div className="min-h-screen bg-background">
-            {/* Hero Section */}
-            <section className="relative h-[80vh] flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517724393608-256799052d96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80')" }}>
-                <div className="absolute inset-0 bg-black/50 z-10" />
-                <div className="relative z-20 text-center text-white px-4">
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">Luxury on Wheels</h1>
-                    <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Discover the ultimate freedom with our premium caravan rentals. Where comfort meets adventure.</p>
-                    <Link to="/caravans" className="btn-primary text-lg px-8 py-3">
-                        Explore Fleet
-                    </Link>
-                </div>
-            </section>
+            <section className="py-20 px-4 container mx-auto text-center">
+                <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8">Where do you want to drive?</h1>
+                <p className="text-xl text-textSecondary mb-12">Select your city to see available rides</p>
 
-            {/* Featured Section */}
-            <section className="py-20 px-4 container mx-auto">
-                <h2 className="text-4xl font-serif text-center mb-12 text-primary">Experience the Extraordinary</h2>
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="bg-surface p-6 rounded-lg shadow-lg hover:shadow-primary/20 transition duration-300">
-                        <h3 className="text-2xl font-serif mb-4 text-textPrimary">Premium Amenities</h3>
-                        <p className="text-textSecondary">Fully equipped kitchens, luxury bedding, and modern entertainment systems in every unit.</p>
-                    </div>
-                    <div className="bg-surface p-6 rounded-lg shadow-lg hover:shadow-primary/20 transition duration-300">
-                        <h3 className="text-2xl font-serif mb-4 text-textPrimary">Concierge Service</h3>
-                        <p className="text-textSecondary">24/7 support and personalized itinerary planning to ensure a seamless journey.</p>
-                    </div>
-                    <div className="bg-surface p-6 rounded-lg shadow-lg hover:shadow-primary/20 transition duration-300">
-                        <h3 className="text-2xl font-serif mb-4 text-textPrimary">Unlimited Mileage</h3>
-                        <p className="text-textSecondary">explore without limits. Our transparent pricing means no hidden fees for distance.</p>
-                    </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {cities.map((city) => (
+                        <div
+                            key={city.name}
+                            onClick={() => handleCitySelect(city.name)}
+                            className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg border border-gray-800 hover:border-primary transition duration-300"
+                        >
+                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition z-10" />
+                            <img
+                                src={city.image}
+                                alt={city.name}
+                                className="w-full h-40 object-cover group-hover:scale-110 transition duration-500"
+                            />
+                            <div className="absolute inset-x-0 bottom-0 p-4 z-20 bg-gradient-to-t from-black/90 to-transparent">
+                                <h3 className="text-xl font-bold text-white text-center">{city.name}</h3>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>
