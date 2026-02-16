@@ -4,3 +4,10 @@ dist/
 .DS_Store
 coverage/
 .vscode/
+github-recovery-codes.txt
+*.txt
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
