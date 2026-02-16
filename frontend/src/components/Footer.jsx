@@ -1,13 +1,73 @@
+import { Link } from 'react-router-dom';
+import { Instagram, Twitter, Facebook, Mail, Phone } from 'lucide-react';
+
 const Footer = () => {
     return (
-        <footer className="bg-surface py-8 mt-12 border-t border-secondary/20">
-            <div className="container mx-auto px-4 text-center">
-                <p className="text-textSecondary mb-4">
-                    Experience luxury on wheels. Book your dream caravan today.
-                </p>
-                <p className="text-sm text-gray-600">
-                    &copy; {new Date().getFullYear()} CarawINN. All rights reserved.
-                </p>
+        <footer className="bg-surface pt-20 pb-10 border-t border-gray-800">
+            <div className="container mx-auto px-6">
+                <div className="grid md:grid-cols-4 gap-12 mb-16">
+                    <div className="col-span-1 md:col-span-1">
+                        <Link to="/" className="text-3xl font-serif font-bold text-primary mb-6 block">
+                            CarawINN
+                        </Link>
+                        <p className="text-textSecondary leading-relaxed">
+                            Crafting unforgettable journeys with premium caravans across India's most breathtaking landscapes.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 className="text-white font-bold mb-6 italic">Quick Links</h4>
+                        <ul className="space-y-4 text-textSecondary">
+                            <li><Link to="/home" className="hover:text-primary transition">Destinations</Link></li>
+                            <li><Link to="/vehicles" className="hover:text-primary transition">Our Fleet</Link></li>
+                            <li><Link to="/login" className="hover:text-primary transition">Member Login</Link></li>
+                            <li><Link to="/register" className="hover:text-primary transition">Join Club</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="text-white font-bold mb-6 italic">Support</h4>
+                        <ul className="space-y-4 text-textSecondary">
+                            <li><a href="#" className="hover:text-primary transition">Help Center</a></li>
+                            <li><a href="#" className="hover:text-primary transition">Rental Policy</a></li>
+                            <li><a href="#" className="hover:text-primary transition">Privacy Policy</a></li>
+                            <li><a href="#" className="hover:text-primary transition">Terms of Service</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="text-white font-bold mb-6 italic">Connect</h4>
+                        <div className="flex gap-4 mb-6">
+                            <a href="#" className="p-2 rounded-full bg-background border border-gray-800 text-primary hover:bg-primary hover:text-background transition duration-300">
+                                <Instagram className="w-5 h-5" />
+                            </a>
+                            <a href="#" className="p-2 rounded-full bg-background border border-gray-800 text-primary hover:bg-primary hover:text-background transition duration-300">
+                                <Twitter className="w-5 h-5" />
+                            </a>
+                            <a href="#" className="p-2 rounded-full bg-background border border-gray-800 text-primary hover:bg-primary hover:text-background transition duration-300">
+                                <Facebook className="w-5 h-5" />
+                            </a>
+                        </div>
+                        <div className="space-y-3 text-textSecondary text-sm">
+                            <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-primary" /> concierge@carawinn.com
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Phone className="w-4 h-4 text-primary" /> +91 (800) LUX-RIDE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-sm text-gray-500">
+                        &copy; {new Date().getFullYear()} CarawINN. Designed for the adventurous elite.
+                    </p>
+                    <div className="flex gap-6 text-xs text-gray-600 uppercase tracking-widest">
+                        <span>Made in India</span>
+                        <span>Luxury Standard</span>
+                    </div>
+                </div>
             </div>
         </footer>
     );

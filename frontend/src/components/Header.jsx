@@ -16,12 +16,15 @@ const Header = () => {
                 <Link to="/" className="text-3xl font-serif font-bold text-primary">
                     CarawINN
                 </Link>
-                <nav className="hidden md:flex space-x-8 items-center">
-                    <Link to="/" className="hover:text-primary transition">
+                <nav className="hidden md:flex space-x-10 items-center">
+                    <Link to="/" className="hover:text-primary transition font-medium">
                         Home
                     </Link>
-                    <Link to="/vehicles" className="hover:text-primary transition">
-                        Fleet
+                    <Link to="/home" className="hover:text-primary transition font-medium">
+                        Destinations
+                    </Link>
+                    <Link to="/vehicles" className="hover:text-primary transition font-medium">
+                        Luxury Fleet
                     </Link>
                     {user ? (
                         <>

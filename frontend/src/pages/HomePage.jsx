@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
+import { motion } from 'framer-motion';
 import { CityContext } from '../context/CityContext';
 
 const HomePage = () => {
@@ -10,10 +11,10 @@ const HomePage = () => {
         { name: 'Delhi', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Mumbai', image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?q=80&w=1600&auto=format&fit=crop' },
-        { name: 'Hyderabad', image: '/images/hyderabad.jpg' },
+        { name: 'Hyderabad', image: 'https://images.unsplash.com/photo-1572445271230-a78b5944a659?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Chennai', image: 'https://images.unsplash.com/photo-1616843413587-9e3a37f7bbd8?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Pune', image: 'https://images.unsplash.com/photo-1600112356915-089abb8fc71a?q=80&w=1600&auto=format&fit=crop' },
-        { name: 'Kolkata', image: '/images/kolkata.jpg' },
+        { name: 'Kolkata', image: 'https://images.unsplash.com/photo-1558431382-7f97576572e9?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
     ];
 
@@ -23,30 +24,47 @@ const HomePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background pt-12">
             <section className="py-20 px-4 container mx-auto text-center">
-                <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8">Where do you want to drive?</h1>
-                <p className="text-xl text-textSecondary mb-12">Select your city to see available rides</p>
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8 italic">Choose Your Destination</h1>
+                    <p className="text-xl text-textSecondary mb-12 max-w-2xl mx-auto">
+                        Pick the city where your luxury road adventure begins. We'll handle the rest.
+                    </p>
+                </motion.div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {cities.map((city) => (
-                        <div
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 1 }}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-6"
+                >
+                    {cities.map((city, idx) => (
+                        <motion.div
                             key={city.name}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.1 * idx }}
+                            whileHover={{ scale: 1.05 }}
                             onClick={() => handleCitySelect(city.name)}
-                            className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg border border-gray-800 hover:border-primary transition duration-300"
+                            className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg border border-gray-800 hover:border-primary transition duration-300 aspect-[4/5]"
                         >
-                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition z-10" />
+                            <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition z-10" />
                             <img
                                 src={city.image}
                                 alt={city.name}
-                                className="w-full h-40 object-cover group-hover:scale-110 transition duration-500"
+                                className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                             />
-                            <div className="absolute inset-x-0 bottom-0 p-4 z-20 bg-gradient-to-t from-black/90 to-transparent">
-                                <h3 className="text-xl font-bold text-white text-center">{city.name}</h3>
+                            <div className="absolute inset-x-0 bottom-0 p-6 z-20 bg-gradient-to-t from-black to-transparent">
+                                <h3 className="text-2xl font-bold text-white text-center font-serif tracking-wide">{city.name}</h3>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </section>
         </div>
     );

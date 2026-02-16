@@ -5,6 +5,7 @@ import { CityProvider } from './context/CityContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -23,7 +24,8 @@ function App() {
             <Header />
             <main className="flex-grow">
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/home" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/vehicles" element={<VehicleListingPage />} />
