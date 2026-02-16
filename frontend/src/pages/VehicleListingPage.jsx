@@ -1,170 +1,227 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    MapPin,
+    Phone,
+    Car,
+    ArrowRight,
+    Navigation,
+    Search,
+    Map
+} from 'lucide-react';
 import axios from '../utils/api';
 import { useCity } from '../context/CityContext';
 
+const CITY_COORDINATES = {
+    'Delhi': { lat: 28.6139, lng: 77.2090 },
+    'Mumbai': { lat: 19.0760, lng: 72.8777 },
+    'Bangalore': { lat: 12.9716, lng: 77.5946 },
+    'Hyderabad': { lat: 17.3850, lng: 78.4867 },
+    'Chennai': { lat: 13.0827, lng: 80.2707 },
+    'Pune': { lat: 18.5204, lng: 73.8567 },
+    'Kolkata': { lat: 22.5726, lng: 88.3639 },
+    'Jaipur': { lat: 26.9124, lng: 75.7873 }
+};
+
 const VehicleListingPage = () => {
-    const { city } = useCity();
-    const [vehicles, setVehicles] = useState([]);
+    const { city, setCity } = useCity();
+    const [dealers, setDealers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [keyword, setKeyword] = useState('');
-    const [type, setType] = useState('');
-    const [category, setCategory] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
+    const [locating, setLocating] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
+    const fetchDealers = async () => {
+        setLoading(true);
+        try {
+            const { data } = await axios.get(`/dealers${city ? `?city=${city}` : ''}`);
+            setDealers(data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Failed to fetch dealers:', error);
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        if (!city) {
-            // Optional: Redirect to home if no city selected, or just show all (but backend filters by city usually)
-            // For now, let's allow "All" if empty, but UI suggests city specific.
+        fetchDealers();
+    }, [city]);
+
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
+
+    const handleFindNearest = () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
         }
 
-        const fetchVehicles = async () => {
-            try {
-                const params = new URLSearchParams();
-                if (city) params.append('city', city);
-                if (keyword) params.append('keyword', keyword);
-                if (type && type !== 'all') params.append('type', type);
-                if (category && category !== 'all') params.append('category', category);
-                if (minPrice) params.append('minPrice', minPrice);
-                if (maxPrice) params.append('maxPrice', maxPrice);
+        setLocating(true);
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                let closestCity = '';
+                let minDistance = Infinity;
 
-                const { data } = await axios.get(`/vehicles?${params.toString()}`);
-                setVehicles(data.vehicles);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
+                Object.entries(CITY_COORDINATES).forEach(([cityName, coords]) => {
+                    const dist = calculateDistance(latitude, longitude, coords.lat, coords.lng);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        closestCity = cityName;
+                    }
+                });
+
+                if (closestCity) {
+                    setCity(closestCity);
+                }
+                setLocating(false);
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                setLocating(false);
+                alert("Could not access location. Please check browser permissions.");
             }
-        };
+        );
+    };
 
-        // Debounce search
-        const timeoutId = setTimeout(() => {
-            fetchVehicles();
-        }, 500);
-
-        return () => clearTimeout(timeoutId);
-    }, [city, keyword, type, category, minPrice, maxPrice]);
-
-    if (loading) return <div className="text-center py-20 text-primary">Loading Fleet in {city}...</div>;
+    const filteredDealers = dealers.filter(dealer =>
+        dealer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        dealer.city?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
-        <div className="container mx-auto px-4 py-12">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-4xl font-serif text-primary">
-                    Available in <span className="text-white">{city || 'All Cities'}</span>
-                </h1>
-                <Link to="/" className="text-sm text-textSecondary hover:text-primary">Change City</Link>
-            </div>
+        <div className="min-h-screen bg-background text-textPrimary py-12">
+            <div className="container mx-auto px-6">
 
-            {/* Filters */}
-            <div className="bg-surface p-6 rounded-lg shadow mb-12 border border-gray-800">
-                <div className="grid md:grid-cols-4 gap-4">
-                    <input
-                        type="text"
-                        placeholder="Search brand, model..."
-                        className="input-field"
-                        value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
-                    />
-                    <select
-                        className="input-field"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
                     >
-                        <option value="all">All Vehicle Types</option>
-                        <option value="car">Cars</option>
-                        <option value="bike">Bikes</option>
-                        <option value="caravan">Caravans</option>
-                    </select>
-                    <select
-                        className="input-field"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-2">
+                            {city ? `Dealers in ${city}` : 'Authorized Dealers'}
+                        </h1>
+                        <p className="text-textSecondary">Select a dealer to browse their luxury fleet</p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex flex-col sm:flex-row gap-4 w-full md:w-auto"
                     >
-                        <option value="all">All Categories</option>
-                        <option value="hatchback">Hatchback</option>
-                        <option value="sedan">Sedan</option>
-                        <option value="suv">SUV</option>
-                        <option value="luxury">Luxury</option>
-                        <option value="commuter">Commuter Bike</option>
-                        <option value="royal-enfield">Royal Enfield</option>
-                    </select>
-                    <div className="flex gap-2">
-                        <input
-                            type="number"
-                            placeholder="Min $"
-                            className="input-field"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                        />
-                        <input
-                            type="number"
-                            placeholder="Max $"
-                            className="input-field"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            {vehicles.length === 0 ? (
-                <div className="text-center text-textSecondary text-xl py-20">
-                    <p>No vehicles found in {city}.</p>
-                    <Link to="/" className="text-primary hover:underline mt-4 inline-block">Try another city</Link>
-                </div>
-            ) : (
-                <div className="grid md:grid-cols-3 gap-8">
-                    {vehicles.map((vehicle) => (
-                        <div
-                            key={vehicle._id}
-                            className="bg-surface rounded-lg overflow-hidden shadow-lg hover:shadow-primary/20 transition duration-300 flex flex-col group"
-                        >
-                            <div className="relative h-48 overflow-hidden">
-                                <img
-                                    src={vehicle.images?.[0] || 'https://via.placeholder.com/400x300?text=Vehicle'}
-                                    alt={vehicle.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                                />
-                                <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-white uppercase font-bold">
-                                    {vehicle.category}
-                                </div>
-                            </div>
-
-                            <div className="p-6 flex-1 flex flex-col">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-bold font-serif text-textPrimary">
-                                        {vehicle.title}
-                                    </h3>
-                                    <div className="text-right">
-                                        <div className="text-primary font-bold text-lg">₹{vehicle.pricePerDay}<span className="text-xs text-gray-400">/day</span></div>
-                                        <div className="text-secondary font-bold text-sm">₹{vehicle.pricePerHour}<span className="text-xs text-gray-400">/hr</span></div>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-4 text-xs text-textSecondary mb-4">
-                                    <span>⚙️ {vehicle.transmission}</span>
-                                    <span>⛽ {vehicle.fuelType}</span>
-                                    <span>💺 {vehicle.seats} Seats</span>
-                                </div>
-
-                                <div className="text-sm text-textSecondary mb-4">
-                                    📍 {vehicle.location}
-                                </div>
-
-                                <Link
-                                    to={`/vehicles/${vehicle._id}`}
-                                    className="btn-outline text-center block w-full mt-auto"
-                                >
-                                    Book Now
-                                </Link>
-                            </div>
+                        <div className="relative flex-1 sm:w-64">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <input
+                                type="text"
+                                placeholder="Search by name..."
+                                className="input-field pl-10 h-12"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
-                    ))}
+
+                        <button
+                            onClick={handleFindNearest}
+                            disabled={locating}
+                            className="bg-primary/10 border border-primary/30 text-primary px-6 py-2 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary hover:text-background transition-all duration-300 disabled:opacity-50"
+                        >
+                            <Navigation className={`w-4 h-4 ${locating ? 'animate-spin' : ''}`} />
+                            {locating ? 'Locating...' : 'Near Me'}
+                        </button>
+                    </motion.div>
                 </div>
-            )}
+
+                {/* Main Content */}
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center py-24">
+                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+                        <p className="text-primary font-serif italic text-xl">Connecting to our premium network...</p>
+                    </div>
+                ) : (
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={city + searchQuery}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        >
+                            {filteredDealers.map((dealer, idx) => (
+                                <motion.div
+                                    key={dealer._id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="bg-surface rounded-2xl border border-gray-800 p-6 hover:border-primary/50 transition-all group flex flex-col"
+                                >
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="p-4 rounded-xl bg-primary/10 text-primary">
+                                            <MapPin className="w-6 h-6" />
+                                        </div>
+                                        <div className="bg-background border border-gray-800 px-3 py-1 rounded-full text-xs text-textSecondary flex items-center gap-2">
+                                            <Car className="w-3 h-3 text-primary" />
+                                            {dealer.vehicleCount} Vehicles
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-2xl font-serif font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                                        {dealer.name}
+                                    </h3>
+
+                                    <div className="space-y-3 mb-8 flex-grow">
+                                        <div className="flex items-center gap-3 text-textSecondary text-sm">
+                                            <Map className="w-4 h-4 text-primary/60" />
+                                            {dealer.city || 'Location not specified'}
+                                        </div>
+                                        <div className="flex items-center gap-3 text-textSecondary text-sm">
+                                            <Phone className="w-4 h-4 text-primary/60" />
+                                            {dealer.phone || '+91 XXXX XXX XXX'}
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => navigate(`/dealers/${dealer._id}/vehicles`)}
+                                        className="w-full btn-primary py-4 flex items-center justify-center gap-2 group/btn"
+                                    >
+                                        View Collection
+                                        <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                                    </button>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {filteredDealers.length === 0 && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center py-24"
+                            >
+                                <div className="inline-block p-6 rounded-full bg-surface border border-gray-800 mb-6 font-serif italic text-primary">
+                                    No dealers found in this region
+                                </div>
+                                <p className="text-textSecondary">Try search for a different city or broaden your criteria.</p>
+                                <button
+                                    onClick={() => setCity('')}
+                                    className="text-primary font-bold mt-4 hover:underline"
+                                >
+                                    Show all locations
+                                </button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                )}
+            </div>
         </div>
     );
 };

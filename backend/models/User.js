@@ -6,7 +6,8 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     phone: { type: String }, // For India +91
     password: { type: String }, // Optional for Google Auth users
-    role: { type: String, default: 'user', enum: ['user', 'admin'] },
+    role: { type: String, default: 'user', enum: ['user', 'admin', 'dealer'] },
+    city: { type: String }, // For dealers/users location
     licenseNumber: { type: String },
     aadhaarNumber: { type: String },
     licenseImage: { type: String },

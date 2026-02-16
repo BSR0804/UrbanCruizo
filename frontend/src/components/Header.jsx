@@ -20,11 +20,14 @@ const Header = () => {
                     <Link to="/" className="hover:text-primary transition font-medium">
                         Home
                     </Link>
-                    <Link to="/home" className="hover:text-primary transition font-medium">
+                    <Link to="/home" className="hover:text-primary transition font-medium text-sm">
                         Destinations
                     </Link>
-                    <Link to="/vehicles" className="hover:text-primary transition font-medium">
+                    <Link to="/caravans" className="hover:text-primary transition font-medium text-sm">
                         Luxury Fleet
+                    </Link>
+                    <Link to="/vehicles" className="hover:text-primary transition font-medium text-sm text-primary">
+                        Find Dealers
                     </Link>
                     {user ? (
                         <>

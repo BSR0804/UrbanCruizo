@@ -23,6 +23,7 @@ const getVehicles = async (req, res) => {
     // Build Filter
     const filter = { ...keyword };
     if (city) filter.city = city;
+    if (req.query.owner) filter.owner = req.query.owner;
     if (req.query.type) filter.type = req.query.type;
     if (req.query.category) filter.category = req.query.category;
     if (req.query.fuelType) filter.fuelType = req.query.fuelType;

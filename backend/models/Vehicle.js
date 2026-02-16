@@ -19,6 +19,11 @@ const vehicleSchema = mongoose.Schema({
     extraKmCharge: { type: Number, default: 0 },
     availability: { type: Boolean, default: true, required: true },
     rating: { type: Number, default: 0 },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

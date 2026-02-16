@@ -11,6 +11,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import VehicleListingPage from './pages/VehicleListingPage';
 import VehicleDetailsPage from './pages/VehicleDetailsPage';
+import CaravanListingPage from './pages/CaravanListingPage';
+import CaravanDetailsPage from './pages/CaravanDetailsPage';
+import DealerVehiclesPage from './pages/DealerVehiclesPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
 
@@ -30,6 +33,9 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/vehicles" element={<VehicleListingPage />} />
                 <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
+                <Route path="/dealers/:id/vehicles" element={<DealerVehiclesPage />} />
+                <Route path="/caravans" element={<CaravanListingPage />} />
+                <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/admin" element={<AdminPage />} />
               </Routes>
