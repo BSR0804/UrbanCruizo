@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: { type: String }, // For India +91
-    password: { type: String, required: true },
+    password: { type: String }, // Optional for Google Auth users
     role: { type: String, default: 'user', enum: ['user', 'admin'] },
     licenseNumber: { type: String },
     aadhaarNumber: { type: String },
@@ -14,12 +14,14 @@ const userSchema = mongoose.Schema({
 }, { timestamps: true });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
+    if (!this.password) return false;
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) {
+    if (!this.isModified('password') || !this.password) {
         next();
+        return; // Ensure we don't proceed to hash undefined
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
