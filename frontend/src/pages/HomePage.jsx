@@ -18,9 +18,9 @@ const HomePage = () => {
         { name: 'Kolkata', image: '/images/kolkata.jpg' },
         { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
-        { name: 'Kochi', image: 'https://images.unsplash.com/photo-1595168051918-6932c0213197?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
-        { name: 'Ahmedabad', image: 'https://images.unsplash.com/photo-1620803451559-00f796afda62?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
-        { name: 'Chandigarh', image: 'https://images.unsplash.com/photo-1616113886364-f6552a468d60?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
+        { name: 'Kochi', image: 'https://images.unsplash.com/photo-1590393863845-635191834160?q=80&w=2070&auto=format&fit=crop', comingSoon: true },
+        { name: 'Ahmedabad', image: 'https://images.unsplash.com/photo-1589136777351-fdc9c9c05c86?q=80&w=2072&auto=format&fit=crop', comingSoon: true },
+        { name: 'Chandigarh', image: 'https://images.unsplash.com/photo-1510511459019-5dee997d7db4?q=80&w=2070&auto=format&fit=crop', comingSoon: true },
     ];
 
     const handleCitySelect = (city) => {
