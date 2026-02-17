@@ -30,7 +30,7 @@ const Footer = () => {
                         <ul className="space-y-4 text-textSecondary">
                             <li><Link to="/help-center" className="hover:text-primary transition">Help Center</Link></li>
                             <li><Link to="/rental-policy" className="hover:text-primary transition">Rental Policy</Link></li>
-                            <li><a href="#" className="hover:text-primary transition">Privacy Policy</a></li>
+                            <li><Link to="/privacy-policy" className="hover:text-primary transition">Privacy Policy</Link></li>
                             <li><a href="#" className="hover:text-primary transition">Terms of Service</a></li>
                         </ul>
                     </div>

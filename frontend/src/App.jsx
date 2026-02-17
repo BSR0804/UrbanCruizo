@@ -19,6 +19,7 @@ import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
 import HelpCenterPage from './pages/HelpCenterPage';
 import RentalPolicyPage from './pages/RentalPolicyPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/help-center" element={<HelpCenterPage />} />
                 <Route path="/rental-policy" element={<RentalPolicyPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               </Routes>
             </main>
             <Footer />
