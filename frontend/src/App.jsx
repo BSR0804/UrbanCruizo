@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CityProvider } from './context/CityContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
@@ -24,6 +25,7 @@ function App() {
       <AuthProvider>
         <CityProvider>
           <div className="flex flex-col min-h-screen">
+            <ScrollToTop />
             <Toaster position="top-center" />
             <Header />
             <main className="flex-grow">

@@ -17,10 +17,10 @@ import {
     Map,
     Smartphone,
     Settings,
-    Lifebuoy,
+    LifeBuoy,
     UserCheck,
     Sparkles,
-    FileCheck
+    FileSearch
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -63,9 +63,9 @@ const LandingPage = () => {
         { icon: <Map />, label: "GPS Navigation" },
         { icon: <Smartphone />, label: "App-Key Entry" },
         { icon: <Settings />, label: "Performance Tuning" },
-        { icon: <Lifebuoy />, label: "24/7 Roadside Assist" },
+        { icon: <LifeBuoy />, label: "24/7 Roadside Assist" },
         { icon: <UserCheck />, label: "Verified Dealers" },
-        { icon: <FileCheck />, label: "Insurance Covered" },
+        { icon: <FileSearch />, label: "Insurance Covered" },
         { icon: <Sparkles />, label: "Sanitized Vehicles" },
         { icon: <Wifi />, label: "High-Speed WiFi" },
         { icon: <Car />, label: "Smart Drive Tech" },
