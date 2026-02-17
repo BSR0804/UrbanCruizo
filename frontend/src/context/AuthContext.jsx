@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
             return {
                 success: false,
                 message: error.response?.data?.message || 'Google Login failed',
+                details: error.response?.data?.details
             };
         }
     };

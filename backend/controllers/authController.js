@@ -67,7 +67,7 @@ const registerUser = async (req, res) => {
 
 const { OAuth2Client } = require('google-auth-library');
 const axios = require('axios'); // We need axios to call google userinfo endpoint
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID?.trim());
 
 // @desc    Auth user via Google
 // @route   POST /api/auth/google

@@ -20,12 +20,14 @@ const LoginPage = () => {
                 toast.success('Welcome back!');
                 navigate('/');
             } else {
-                console.error("Backend auth failed:", result.message);
-                setError(result.message);
-                toast.error(result.message);
+                console.error("Backend auth failed:", result.message, result.details);
+                const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
+                setError(errorMsg);
+                toast.error(errorMsg);
             }
         } else {
             console.error("No access token in Google response:", tokenResponse);
+            toast.error("Google didn't return an access token.");
         }
     };
 
