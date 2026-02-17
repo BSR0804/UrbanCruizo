@@ -1,21 +1,24 @@
-# UrbanCruizo - Luxury Caravan Booking Platform
+# UrbanCruizo - Premier Luxury Vehicle Rental Platform
 
-UrbanCruizo is a full-stack MERN application for booking luxury caravans. It allows tourists to explore and book premium rides with integrated amenities and provides an admin dashboard for managing caravans and bookings.
+UrbanCruizo is a sophisticated full-stack MERN application for booking premium Cars, rugged Bikes, and luxury Caravans across India. It features a high-end dark luxury aesthetic, real-time dealer connectivity, and a comprehensive support ecosystem.
 
 ## Tech Stack
 
-- **Frontend:** React.js (Vite), Tailwind CSS
+- **Frontend:** React.js (Vite), Tailwind CSS, Framer Motion, Lucide Icons
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (Mongoose ODM)
-- **Authentication:** JWT (JSON Web Tokens)
+- **Authentication:** JWT (JSON Web Tokens), Google OAuth Integration
 
 ## Features
 
-- **User Roles:** Tourist, Admin
-- **Authentication:** Secure Register/Login with JWT & Bcrypt
-- **Caravan Management:** Admin can Add, Edit, Delete caravans
-- **Booking System:** Prevent double bookings, overlapping date checks
-- **Luxury UI:** Dark & Gold aesthetic, fully responsive
+- **Multi-Vehicle Fleet:** Explore premium Cars, Superbikes, and Luxury Caravans.
+- **Strategic Dealer Network:** Connect with authorized, top-rated dealers in major Indian cities.
+- **Luxury Support Ecosystem:**
+  - **Help Center:** Direct personalized support channels.
+  - **Robust Policies:** Comprehensive Rental, Privacy, and Terms of Service documentation.
+- **Dynamic UX:** Responsive grid layouts, premium animations, and interactive "Coming Soon" notifications.
+- **Authentication:** Secure Register/Login with JWT, Bcrypt, and Google Auth.
+- **Booking System:** Advanced overlapping date checks and dual-role (User/Admin) management.
 
 ## Folder Structure
 

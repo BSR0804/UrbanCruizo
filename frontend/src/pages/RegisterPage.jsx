@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -11,15 +11,13 @@ const RegisterPage = () => {
     const [error, setError] = useState('');
     const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/home";
 
     const handleGoogleSuccess = async (tokenResponse) => {
         if (tokenResponse?.access_token) {
             const result = await googleLogin(tokenResponse.access_token);
             if (result.success) {
                 toast.success('Account created successfully!');
-                navigate(from, { replace: true });
+                navigate('/');
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -29,10 +27,7 @@ const RegisterPage = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
-        onError: (error) => {
-            console.error('Google registration error:', error);
-            toast.error('Google Link Failed');
-        },
+        onError: () => toast.error('Google Link Failed'),
     });
 
     const handleSubmit = async (e) => {
@@ -40,7 +35,7 @@ const RegisterPage = () => {
         const result = await register(name, email, password);
         if (result.success) {
             toast.success('Account created successfully!');
-            navigate(from, { replace: true });
+            navigate('/');
         } else {
             setError(result.message);
             toast.error(result.message);

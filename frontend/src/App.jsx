@@ -5,7 +5,6 @@ import { CityProvider } from './context/CityContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import ProtectedRoute from './components/ProtectedRoute';
 
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
@@ -38,13 +37,13 @@ function App() {
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/vehicles" element={<ProtectedRoute><VehicleListingPage /></ProtectedRoute>} />
-                <Route path="/vehicles/:id" element={<ProtectedRoute><VehicleDetailsPage /></ProtectedRoute>} />
-                <Route path="/dealers/:id/vehicles" element={<ProtectedRoute><DealerVehiclesPage /></ProtectedRoute>} />
-                <Route path="/caravans" element={<ProtectedRoute><CaravanListingPage /></ProtectedRoute>} />
-                <Route path="/caravans/:id" element={<ProtectedRoute><CaravanDetailsPage /></ProtectedRoute>} />
-                <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-                <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+                <Route path="/vehicles" element={<VehicleListingPage />} />
+                <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
+                <Route path="/dealers/:id/vehicles" element={<DealerVehiclesPage />} />
+                <Route path="/caravans" element={<CaravanListingPage />} />
+                <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/help-center" element={<HelpCenterPage />} />
                 <Route path="/rental-policy" element={<RentalPolicyPage />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

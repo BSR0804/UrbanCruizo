@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -10,8 +10,6 @@ const LoginPage = () => {
     const [error, setError] = useState('');
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/home";
 
     const handleGoogleSuccess = async (tokenResponse) => {
         // useGoogleLogin 'implicit' flow returns access_token. 
@@ -54,7 +52,7 @@ const LoginPage = () => {
             const result = await googleLogin(tokenResponse.access_token);
             if (result.success) {
                 toast.success('Welcome back!');
-                navigate(from, { replace: true });
+                navigate('/');
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -64,10 +62,7 @@ const LoginPage = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
-        onError: (error) => {
-            console.error('Google Login Error:', error);
-            toast.error('Google Login Failed. Check console for details.');
-        },
+        onError: () => toast.error('Google Login Failed'),
     });
 
     const handleSubmit = async (e) => {
@@ -75,7 +70,7 @@ const LoginPage = () => {
         const result = await login(email, password);
         if (result.success) {
             toast.success('Welcome back!');
-            navigate(from, { replace: true });
+            navigate('/');
         } else {
             setError(result.message);
             toast.error(result.message);
