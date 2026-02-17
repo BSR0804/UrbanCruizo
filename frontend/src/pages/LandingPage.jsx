@@ -58,6 +58,10 @@ const LandingPage = () => {
     ];
 
     const luxuryAmenities = [
+        { icon: <Bike />, label: "Premium Riding Gear" },
+        { icon: <Map />, label: "GPS Navigation" },
+        { icon: <Smartphone />, label: "App-Key Entry" },
+        { icon: <Settings />, label: "Performance Tuning" },
         { icon: <Wifi />, label: "High-Speed WiFi" },
         { icon: <Coffee />, label: "Mini Kitchenette" },
         { icon: <Car />, label: "Smart Drive Tech" },
@@ -67,11 +71,7 @@ const LandingPage = () => {
         { icon: <Tv />, label: "Smart Entertainment" },
         { icon: <Thermometer />, label: "Heated Flooring" },
         { icon: <Music />, label: "Surround Sound" },
-        { icon: <Lock />, label: "Biometric Entry" },
-        { icon: <Bike />, label: "Premium Riding Gear" },
-        { icon: <Map />, label: "GPS Navigation" },
-        { icon: <Smartphone />, label: "App-Key Entry" },
-        { icon: <Settings />, label: "Performance Tuning" }
+        { icon: <Lock />, label: "Biometric Entry" }
     ];
 
     return (
