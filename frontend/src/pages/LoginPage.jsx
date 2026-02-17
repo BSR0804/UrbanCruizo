@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -10,6 +10,8 @@ const LoginPage = () => {
     const [error, setError] = useState('');
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/home";
 
     const handleGoogleSuccess = async (tokenResponse) => {
         // useGoogleLogin 'implicit' flow returns access_token. 
@@ -52,7 +54,7 @@ const LoginPage = () => {
             const result = await googleLogin(tokenResponse.access_token);
             if (result.success) {
                 toast.success('Welcome back!');
-                navigate('/');
+                navigate(from, { replace: true });
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -70,7 +72,7 @@ const LoginPage = () => {
         const result = await login(email, password);
         if (result.success) {
             toast.success('Welcome back!');
-            navigate('/');
+            navigate(from, { replace: true });
         } else {
             setError(result.message);
             toast.error(result.message);
