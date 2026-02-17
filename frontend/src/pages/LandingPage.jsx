@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
     Car,
@@ -8,11 +9,18 @@ import {
     Coffee,
     Zap,
     ChevronRight,
-    Star
+    Star,
+    Waves,
+    Tv,
+    Wind,
+    Thermometer,
+    Music,
+    Lock
 } from 'lucide-react';
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    const [showAllAmenities, setShowAllAmenities] = useState(false);
 
     const fadeIn = {
         initial: { opacity: 0, y: 20 },
@@ -49,7 +57,13 @@ const LandingPage = () => {
         { icon: <Wifi />, label: "High-Speed WiFi" },
         { icon: <Coffee />, label: "Mini Kitchenette" },
         { icon: <Car />, label: "Smart Drive Tech" },
-        { icon: <Star />, label: "Premium Interior" }
+        { icon: <Star />, label: "Premium Interior" },
+        { icon: <Waves />, label: "Modern Shower" },
+        { icon: <Wind />, label: "Climate Control" },
+        { icon: <Tv />, label: "Smart Entertainment" },
+        { icon: <Thermometer />, label: "Heated Flooring" },
+        { icon: <Music />, label: "Surround Sound" },
+        { icon: <Lock />, label: "Biometric Entry" }
     ];
 
     return (
@@ -168,18 +182,28 @@ const LandingPage = () => {
                             </p>
 
                             <div className="grid grid-cols-2 gap-6 mb-10">
-                                {luxuryAmenities.map((item, idx) => (
-                                    <div key={idx} className="flex items-center gap-3 text-textPrimary">
+                                {luxuryAmenities.slice(0, showAllAmenities ? luxuryAmenities.length : 4).map((item, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="flex items-center gap-3 text-textPrimary"
+                                    >
                                         <div className="p-2 rounded-full bg-primary/10 text-primary">
                                             {item.icon}
                                         </div>
                                         <span className="font-semibold">{item.label}</span>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
 
-                            <button className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all">
-                                VIEW ALL AMENITIES <ChevronRight className="w-5 h-5" />
+                            <button
+                                onClick={() => setShowAllAmenities(!showAllAmenities)}
+                                className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all"
+                            >
+                                {showAllAmenities ? 'SHOW LESS' : 'VIEW ALL AMENITIES'}
+                                <ChevronRight className={`w-5 h-5 transition-transform ${showAllAmenities ? 'rotate-90' : ''}`} />
                             </button>
                         </motion.div>
 
@@ -242,4 +266,5 @@ const LandingPage = () => {
         </div>
     );
 };
+
 export default LandingPage;
