@@ -11,21 +11,23 @@ const generateToken = (id) => {
 // @route   POST /api/auth/login
 // @access  Public
 const authUser = async (req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
 
-    const user = await User.findOne({ email });
-
-    if (user && (await user.matchPassword(password))) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id),
-        });
-    } else {
-        res.status(401);
-        throw new Error('Invalid email or password');
+        if (user && (await user.matchPassword(password))) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(401).json({ message: 'Invalid email or password' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -33,32 +35,33 @@ const authUser = async (req, res) => {
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    try {
+        const { name, email, password } = req.body;
+        const userExists = await User.findOne({ email });
 
-    const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
 
-    if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
-    }
-
-    const user = await User.create({
-        name,
-        email,
-        password,
-    });
-
-    if (user) {
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id),
+        const user = await User.create({
+            name,
+            email,
+            password,
         });
-    } else {
-        res.status(400);
-        throw new Error('Invalid user data');
+
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(400).json({ message: 'Invalid user data' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -72,21 +75,28 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const googleAuth = async (req, res) => {
     const { token } = req.body;
 
-    try {
-        // Option 1: If we get ID Token (from <GoogleLogin /> component), use verifyIdToken
-        // Option 2: If we get Access Token (from useGoogleLogin hook), use userinfo endpoint
+    if (!token) {
+        return res.status(400).json({ message: 'Google Token is required' });
+    }
 
-        // Since we are using useGoogleLogin hook which returns access_token by default:
+    try {
+        console.log('Verifying Google token...');
         const googleResponse = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 
         const { name, email, picture, sub } = googleResponse.data;
+        console.log('Google User Info Received:', email);
+
+        if (!email) {
+            return res.status(400).json({ message: 'Google account has no email associated' });
+        }
 
         let user = await User.findOne({ email });
 
         if (user) {
-            res.json({
+            console.log('Existing user found:', user.email);
+            return res.json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
@@ -94,15 +104,14 @@ const googleAuth = async (req, res) => {
                 token: generateToken(user._id),
             });
         } else {
-            // Create user
+            console.log('Creating new user from Google profile...');
             user = await User.create({
                 name,
                 email,
-                // password is optional now thanks to our model change
                 // licenseImage: picture 
             });
 
-            res.status(201).json({
+            return res.status(201).json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
@@ -111,8 +120,11 @@ const googleAuth = async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(400);
-        throw new Error('Invalid Google Token: ' + error.message);
+        console.error('Google Auth Error:', error.response?.data || error.message);
+        return res.status(401).json({
+            message: 'Invalid Google Token or Google API unreachable',
+            details: error.response?.data?.error_description || error.message
+        });
     }
 };
 

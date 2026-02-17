@@ -12,57 +12,29 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleGoogleSuccess = async (tokenResponse) => {
-        // useGoogleLogin 'implicit' flow returns access_token. 
-        // OR better, we can use 'id_token' flow if we want simple backend verification.
-        // However, useGoogleLogin by default (implicit) returns access_token.
-        // But for backend verification 'id_token' is better (OpenID Connect).
-        // Let's use the 'credential' which comes from the <GoogleLogin> component usually.
-        // But for custom button with useGoogleLogin, we receive a code or token depending on flow.
-
-        // Actually, for backend verification, getting an ID Token is standard.
-        // But useGoogleLogin hook gives us an access_token (implicit) or code (auth-code).
-        // Let's use the simplest: GoogleLogin component rendering? 
-        // No, user wants custom button.
-        // So we use useGoogleLogin using 'onSuccess' callback which provides a tokenResponse.
-        // BUT, verification on backend requires ID Token for simplest setup with google-auth-library.
-        // Let's switch to receiving 'credential' if we were using the Component.
-        // For custom button + useGoogleLogin: we can get code and exchange it, OR just get access_token and fetch profile on backend.
-        // WAIT: google-auth-library `verifyIdToken` expects an ID TOKEN.
-        // `useGoogleLogin` with `flow: 'implicit'` returns access_token.
-        // We cannot use verifyIdToken with access_token.
-        // Start simple: Use the `GoogleLogin` component logic?
-        // Or configure useGoogleLogin to give us an id_token?
-        // Actually, the new reacting-oauth/google library has a distinct onSucces for <GoogleLogin> (gives credential/jwt) vs useGoogleLogin (gives access_token).
-
-        // CORRECTION: To get ID Token with custom button via useGoogleLogin, it is harder.
-        // EASIER PATH: Use the provided <GoogleLogin> component but start with invisible mode?
-        // OR: Just send the access_token to backend, and backend uses it to fetch user info from https://www.googleapis.com/oauth2/v3/userinfo.
-        // Let's update backend to handle access_token instead of ID_Token?
-        // NO, ID Token is safer and standard for "Auth".
-
-        // ALTERNATIVE: Use the <GoogleLogin> component but styled?
-        // No, user likely wants the style I just made.
-
-        // Let's use the approach of validation via userinfo endpoint on backend.
-        // It is equally valid for this use case. 
-        // SO: Frontend sends access_token. Backend fetches profile.
-
-        console.log("Google response", tokenResponse);
+        console.log("Google raw response received:", tokenResponse);
         if (tokenResponse?.access_token) {
+            console.log("Attempting backend authentication with access token...");
             const result = await googleLogin(tokenResponse.access_token);
             if (result.success) {
                 toast.success('Welcome back!');
                 navigate('/');
             } else {
+                console.error("Backend auth failed:", result.message);
                 setError(result.message);
                 toast.error(result.message);
             }
+        } else {
+            console.error("No access token in Google response:", tokenResponse);
         }
     };
 
     const loginGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
-        onError: () => toast.error('Google Login Failed'),
+        onError: (err) => {
+            console.error('Google Login Hook Error:', err);
+            toast.error('Google Login Failed. Check console.');
+        },
     });
 
     const handleSubmit = async (e) => {
