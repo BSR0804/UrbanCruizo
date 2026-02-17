@@ -20,13 +20,13 @@ const Header = () => {
                     <Link to="/" className="hover:text-primary transition font-medium">
                         Home
                     </Link>
-                    <Link to="/home" className="hover:text-primary transition font-medium text-sm">
+                    <Link to="/home" className="hover:text-primary transition font-medium">
                         Destinations
                     </Link>
-                    <Link to="/caravans" className="hover:text-primary transition font-medium text-sm">
+                    <Link to="/caravans" className="hover:text-primary transition font-medium">
                         Luxury Fleet
                     </Link>
-                    <Link to="/vehicles" className="hover:text-primary transition font-medium text-sm text-primary">
+                    <Link to="/vehicles" className="hover:text-primary transition font-medium">
                         Find Dealers
                     </Link>
                     {user ? (
