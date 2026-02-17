@@ -112,25 +112,37 @@ const HomePage = () => {
                         </motion.div>
                     ))}
 
-                    {/* Expanding Horizons Card */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.1 * cities.length }}
-                        whileHover={{ scale: 1.02 }}
-                        className="relative overflow-hidden rounded-2xl border-2 border-dashed border-primary/20 bg-primary/5 flex flex-col items-center justify-center p-8 text-center group transition-all duration-500 hover:border-primary/40 aspect-[4/5]"
-                    >
-                        <div className="mb-6 p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-500">
-                            <Compass className="w-10 h-10 text-primary animate-pulse" />
+                </motion.div>
+
+                {/* Expanding Horizons Banner */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className="mt-16 relative overflow-hidden rounded-3xl border-2 border-dashed border-primary/20 bg-primary/5 p-8 md:p-12 group transition-all duration-500 hover:border-primary/40"
+                >
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="flex items-center gap-6 text-left">
+                            <div className="p-4 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-500 flex-shrink-0">
+                                <Compass className="w-10 h-10 text-primary animate-pulse" />
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-serif font-bold text-white mb-2">Expanding Horizons</h3>
+                                <p className="text-textSecondary text-lg max-w-xl">
+                                    Our fleet is preparing to anchor in more prime cities across India. Your next luxury discovery is just around the corner.
+                                </p>
+                            </div>
                         </div>
-                        <h3 className="text-2xl font-serif font-bold text-white mb-4">Expanding Horizons</h3>
-                        <p className="text-sm text-textSecondary leading-relaxed">
-                            More prime destinations coming soon to redefine your journey across India.
-                        </p>
-                        <div className="mt-8 flex items-center gap-2 text-primary font-bold text-xs tracking-[0.2em] uppercase">
-                            <MapPin className="w-3 h-3" /> Stay Tuned
+                        <div className="flex flex-col items-center md:items-end gap-3">
+                            <div className="flex items-center gap-2 text-primary font-bold text-sm tracking-[0.3em] uppercase">
+                                <MapPin className="w-4 h-4" /> New Citadels Await
+                            </div>
+                            <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary/80 text-[10px] font-bold border border-primary/20">
+                                PHASE 2 EN ROUTE
+                            </span>
                         </div>
-                    </motion.div>
+                    </div>
                 </motion.div>
             </section>
         </div>
