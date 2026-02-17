@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../utils/api';
+import { MOCK_CARAVANS } from '../data/staticData';
 
 const CaravanListingPage = () => {
     const [caravans, setCaravans] = useState([]);
@@ -16,6 +17,14 @@ const CaravanListingPage = () => {
                 setLoading(false);
             } catch (error) {
                 console.error(error);
+                // Fallback to mock data
+                const filteredCaravans = keyword
+                    ? MOCK_CARAVANS.filter(caravan =>
+                        caravan.title.toLowerCase().includes(keyword.toLowerCase()) ||
+                        caravan.description.toLowerCase().includes(keyword.toLowerCase())
+                    )
+                    : MOCK_CARAVANS;
+                setCaravans(filteredCaravans);
                 setLoading(false);
             }
         };

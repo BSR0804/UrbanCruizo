@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useCity } from '../context/CityContext';
+import { MOCK_DEALERS } from '../data/staticData';
 
 const CITY_COORDINATES = {
     'Delhi': { lat: 28.6139, lng: 77.2090 },
@@ -40,6 +41,11 @@ const VehicleListingPage = () => {
             setLoading(false);
         } catch (error) {
             console.error('Failed to fetch dealers:', error);
+            // Fallback to mock data
+            const filteredMockDealers = city 
+                ? MOCK_DEALERS.filter(dealer => dealer.city === city)
+                : MOCK_DEALERS;
+            setDealers(filteredMockDealers);
             setLoading(false);
         }
     };

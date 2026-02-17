@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, MapPin, Star, ShieldCheck } from 'lucide-react';
 import axios from '../utils/api';
+import { MOCK_DEALERS, MOCK_VEHICLES } from '../data/staticData';
 
 const DealerVehiclesPage = () => {
     const { id } = useParams();
@@ -22,6 +23,11 @@ const DealerVehiclesPage = () => {
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching dealer vehicles:', error);
+                // Fallback to mock data
+                const mockDealer = MOCK_DEALERS.find(d => d._id === id);
+                const mockVehicles = MOCK_VEHICLES.filter(v => v.dealerId === id);
+                setDealer(mockDealer);
+                setVehicles(mockVehicles);
                 setLoading(false);
             }
         };
