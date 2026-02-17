@@ -16,6 +16,7 @@ import CaravanDetailsPage from './pages/CaravanDetailsPage';
 import DealerVehiclesPage from './pages/DealerVehiclesPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
+import HelpCenterPage from './pages/HelpCenterPage';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/help-center" element={<HelpCenterPage />} />
               </Routes>
             </main>
             <Footer />
