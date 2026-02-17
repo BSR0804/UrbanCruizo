@@ -48,8 +48,8 @@ const LandingPage = () => {
         },
         {
             icon: <MapPin className="w-8 h-8 text-primary" />,
-            title: "Curated Routes",
-            desc: "Discover hidden gems with our specially designed road-trip itineraries across India."
+            title: "Multi-Vehicle Fleet",
+            desc: "Choose from our wide range of premium Cars, rugged Bikes, and luxury Caravans from top local dealers."
         }
     ];
 
@@ -96,13 +96,13 @@ const LandingPage = () => {
                             variants={fadeIn}
                             className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 leading-tight"
                         >
-                            Journey in <span className="text-primary italic">Absolute</span> Luxury
+                            Your Ultimate <span className="text-primary italic">Road Trip</span> Expert
                         </motion.h1>
                         <motion.p
                             variants={fadeIn}
                             className="text-xl text-textSecondary mb-10 max-w-xl leading-relaxed"
                         >
-                            Experience the freedom of the open road without compromising on the comforts of a 5-star suite. Discover India like never before.
+                            Whether it's a sleek Car, a powerful Bike, or a luxury Caravan—find the perfect ride with India's most trusted local dealers.
                         </motion.p>
                         <motion.div
                             variants={fadeIn}
@@ -174,11 +174,11 @@ const LandingPage = () => {
                             className="flex-1"
                         >
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">
-                                More Than Just a <span className="text-primary">Caravan</span>. <br />
-                                It's a Private Retreat.
+                                One App. <span className="text-primary">Every Ride</span>. <br />
+                                Cars, Bikes & Caravans.
                             </h2>
                             <p className="text-lg text-textSecondary mb-8 leading-relaxed">
-                                Our fleet is meticulously maintained to provide an unparalleled travel experience. From biometric entry systems to gourmet kitchenettes, every detail is engineered for excellence.
+                                Our platform connects you with verified local dealers offering a premium fleet for every terrain. From city cruises to cross-country expeditions, we've got you covered.
                             </p>
 
                             <div className="grid grid-cols-2 gap-6 mb-10">

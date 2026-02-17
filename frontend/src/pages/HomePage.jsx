@@ -31,9 +31,9 @@ const HomePage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8 italic">Choose Your Destination</h1>
+                    <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8 italic">Where's Your Next Journey?</h1>
                     <p className="text-xl text-textSecondary mb-12 max-w-2xl mx-auto">
-                        Pick the city where your luxury road adventure begins. We'll handle the rest.
+                        Find top-rated local dealers for premium Cars, rugged Bikes, and luxury Caravans in your favorite Indian cities.
                     </p>
                 </motion.div>
 

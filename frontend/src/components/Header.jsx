@@ -28,7 +28,7 @@ const Header = () => {
                         Destinations
                     </NavLink>
                     <NavLink to="/caravans" className={navLinkClass}>
-                        Luxury Fleet
+                        Luxury Caravans
                     </NavLink>
                     <NavLink to="/vehicles" className={navLinkClass}>
                         Find Dealers

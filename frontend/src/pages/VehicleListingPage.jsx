@@ -110,9 +110,9 @@ const VehicleListingPage = () => {
                         animate={{ opacity: 1, x: 0 }}
                     >
                         <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-2">
-                            {city ? `Dealers in ${city}` : 'Authorized Dealers'}
+                            {city ? `Expert Dealers in ${city}` : 'Authorized Local Dealers'}
                         </h1>
-                        <p className="text-textSecondary">Select a dealer to browse their luxury fleet</p>
+                        <p className="text-textSecondary">Connect with top-rated local dealers for Cars, Bikes, and Caravans.</p>
                     </motion.div>
 
                     <motion.div
