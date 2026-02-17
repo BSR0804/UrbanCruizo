@@ -45,7 +45,7 @@ const RegisterPage = () => {
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background px-4">
             <div className="bg-surface p-8 rounded-lg shadow-2xl w-full max-w-md border border-secondary/20">
-                <h2 className="text-3xl font-serif text-center mb-8 text-primary">Join CarawINN</h2>
+                <h2 className="text-3xl font-serif text-center mb-8 text-primary">Join UrbanCruizo</h2>
                 {error && <div className="bg-red-500/10 text-red-500 p-3 mb-4 rounded text-center">{error}</div>}
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

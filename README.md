@@ -1,6 +1,6 @@
-# CarawINN - Luxury Caravan Booking Platform
+# UrbanCruizo - Luxury Caravan Booking Platform
 
-CarawINN is a full-stack MERN application for booking luxury caravans. It allows tourists to explore and book premium rides with integrated amenities and provides an admin dashboard for managing caravans and bookings.
+UrbanCruizo is a full-stack MERN application for booking luxury caravans. It allows tourists to explore and book premium rides with integrated amenities and provides an admin dashboard for managing caravans and bookings.
 
 ## Tech Stack
 
@@ -20,7 +20,7 @@ CarawINN is a full-stack MERN application for booking luxury caravans. It allows
 ## Folder Structure
 
 ```
-CarawINN/
+UrbanCruizo/
 ├── backend/            # Express Server & API
 │   ├── config/         # DB Connection
 │   ├── controllers/    # Route Logic

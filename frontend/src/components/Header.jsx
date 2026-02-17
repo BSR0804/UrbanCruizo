@@ -18,7 +18,7 @@ const Header = () => {
         <header className="bg-surface shadow-md sticky top-0 z-50 border-b border-secondary/20">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                 <Link to="/" className="text-3xl font-serif font-bold text-primary">
-                    CarawINN
+                    UrbanCruizo
                 </Link>
                 <nav className="hidden md:flex space-x-10 items-center">
                     <NavLink to="/" end className={navLinkClass}>

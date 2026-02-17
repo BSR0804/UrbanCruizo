@@ -249,7 +249,7 @@ const LandingPage = () => {
                             Ready to write your next adventure?
                         </h2>
                         <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto">
-                            Join thousands of explorers who have already experienced the CarawINN difference.
+                            Join thousands of explorers who have already experienced the UrbanCruizo difference.
                         </p>
                         <button
                             onClick={() => navigate('/home')}

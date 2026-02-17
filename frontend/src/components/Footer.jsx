@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="grid md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-1">
                         <Link to="/" className="text-3xl font-serif font-bold text-primary mb-6 block">
-                            CarawINN
+                            UrbanCruizo
                         </Link>
                         <p className="text-textSecondary leading-relaxed">
                             Crafting unforgettable journeys with premium caravans across India's most breathtaking landscapes.
@@ -50,7 +50,7 @@ const Footer = () => {
                         </div>
                         <div className="space-y-3 text-textSecondary text-sm">
                             <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-primary" /> concierge@carawinn.com
+                                <Mail className="w-4 h-4 text-primary" /> concierge@urbancruizo.com
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone className="w-4 h-4 text-primary" /> +91 (800) LUX-RIDE
@@ -61,7 +61,7 @@ const Footer = () => {
 
                 <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-gray-500">
-                        &copy; {new Date().getFullYear()} CarawINN. Designed for the adventurous elite.
+                        &copy; {new Date().getFullYear()} UrbanCruizo. Designed for the adventurous elite.
                     </p>
                     <div className="flex gap-6 text-xs text-gray-600 uppercase tracking-widest">
                         <span>Made in India</span>
