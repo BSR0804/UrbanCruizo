@@ -93,7 +93,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4500,
         securityDeposit: 5000,
         city: 'Delhi',
-        images: ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop'
+        ],
         location: 'Aerocity, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 18,
@@ -142,7 +146,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 3000,
         securityDeposit: 4000,
         city: 'Mumbai',
-        images: ['/images/tata-nexon-1.jfif', '/images/tata-nexon-interior.webp', '/images/tata-nexon-interior2.jpg'],
+        images: [
+            '/images/tata-nexon-1.jfif',
+            '/images/tata-nexon-interior.webp',
+            '/images/tata-nexon-interior2.jpg'
+        ],
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 200,
         extraKmCharge: 15,
@@ -238,7 +246,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 8000,
         securityDeposit: 12000,
         city: 'Mumbai',
-        images: ['https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop'
+        ],
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 300,
         extraKmCharge: 25,
@@ -766,7 +778,11 @@ export const MOCK_CARAVANS = [
         description: 'Spacious 6-seater caravan with modern amenities, perfect for family road trips. Features include air conditioning, comfortable beds, kitchenette, and bathroom facilities.',
         pricePerDay: 6000,
         amenities: ['Air Conditioning', 'Kitchenette', 'Bathroom', 'WiFi', 'Power Outlets', 'Storage'],
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop'
+        ],
         location: 'Whitefield, Bangalore',
         availability: true,
         city: 'Bangalore'
@@ -777,7 +793,11 @@ export const MOCK_CARAVANS = [
         description: 'Luxury 4-seater caravan with premium interiors. Equipped with heating, air conditioning, premium bedding, and entertainment system.',
         pricePerDay: 8000,
         amenities: ['Heating', 'Air Conditioning', 'Premium Bedding', 'Entertainment System', 'Kitchenette', 'Bathroom'],
-        images: ['https://images.unsplash.com/photo-1527626029342-39e4dfb89e71?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1527626029342-39e4dfb89e71?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?q=80&w=1200&auto=format&fit=crop'
+        ],
         location: 'Juhu Beach, Mumbai',
         availability: true,
         city: 'Mumbai'
@@ -788,7 +808,11 @@ export const MOCK_CARAVANS = [
         description: 'Sustainable 5-seater caravan powered by solar panels. Perfect for eco-conscious travelers with modern amenities and zero emissions.',
         pricePerDay: 5500,
         amenities: ['Solar Power', 'Eco-Friendly', 'Kitchenette', 'Bathroom', 'LED Lighting', 'Water Tank'],
-        images: ['https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1566023967268-de0be658b7a7?q=80&w=1200&auto=format&fit=crop'
+        ],
         location: 'Aerocity, Delhi',
         availability: true,
         city: 'Delhi'
