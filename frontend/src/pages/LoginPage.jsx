@@ -64,7 +64,10 @@ const LoginPage = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
-        onError: () => toast.error('Google Login Failed'),
+        onError: (error) => {
+            console.error('Google Login Error:', error);
+            toast.error('Google Login Failed. Check console for details.');
+        },
     });
 
     const handleSubmit = async (e) => {

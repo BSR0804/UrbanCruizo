@@ -29,7 +29,10 @@ const RegisterPage = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: handleGoogleSuccess,
-        onError: () => toast.error('Google Link Failed'),
+        onError: (error) => {
+            console.error('Google registration error:', error);
+            toast.error('Google Link Failed');
+        },
     });
 
     const handleSubmit = async (e) => {
