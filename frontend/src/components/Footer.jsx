@@ -29,7 +29,7 @@ const Footer = () => {
                         <h4 className="text-white font-bold mb-6 italic">Support</h4>
                         <ul className="space-y-4 text-textSecondary">
                             <li><Link to="/help-center" className="hover:text-primary transition">Help Center</Link></li>
-                            <li><a href="#" className="hover:text-primary transition">Rental Policy</a></li>
+                            <li><Link to="/rental-policy" className="hover:text-primary transition">Rental Policy</Link></li>
                             <li><a href="#" className="hover:text-primary transition">Privacy Policy</a></li>
                             <li><a href="#" className="hover:text-primary transition">Terms of Service</a></li>
                         </ul>
