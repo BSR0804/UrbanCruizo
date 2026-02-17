@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { AlertCircle, X } from 'lucide-react';
 import { CityContext } from '../context/CityContext';
 
 const HomePage = () => {
@@ -25,14 +26,38 @@ const HomePage = () => {
 
     const handleCitySelect = (city) => {
         if (city.comingSoon) {
-            toast.success(`UrbanCruizo is arriving in ${city.name} very soon! Stay tuned.`, {
-                icon: '🚀',
-                style: {
-                    borderRadius: '10px',
-                    background: '#1a1a1a',
-                    color: '#c5a059',
-                    border: '1px solid #c5a059',
-                },
+            toast.custom((t) => (
+                <div
+                    className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                        } max-w-md w-full bg-[#fef2f2] shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-black ring-opacity-5 border-l-4 border-red-600 overflow-hidden transition-all duration-300 transform`}
+                >
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <AlertCircle className="h-10 w-10 text-red-600 bg-red-100 rounded-full p-2" />
+                            </div>
+                            <div className="ml-3 flex-1">
+                                <p className="text-sm font-bold text-red-900 uppercase tracking-wider">
+                                    Error!
+                                </p>
+                                <p className="mt-1 text-sm text-red-700 leading-relaxed">
+                                    UrbanCruizo is arriving in <span className="font-bold underline decoration-red-300">{city.name}</span> very soon! Stay tuned.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex border-l border-red-100 bg-red-50/50">
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-2xl p-4 flex items-center justify-center text-sm font-bold text-red-600 hover:text-red-800 hover:bg-red-100 transition-all focus:outline-none"
+                        >
+                            CLOSE
+                        </button>
+                    </div>
+                </div>
+            ), {
+                duration: 4000,
+                position: 'top-center'
             });
             return;
         }
