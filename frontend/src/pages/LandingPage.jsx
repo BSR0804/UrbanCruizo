@@ -6,20 +6,21 @@ import {
     ShieldCheck,
     MapPin,
     Wifi,
-    Coffee,
     Zap,
     ChevronRight,
     Star,
-    Waves,
     Tv,
     Wind,
-    Thermometer,
     Music,
     Lock,
     Bike,
     Map,
     Smartphone,
-    Settings
+    Settings,
+    Lifebuoy,
+    UserCheck,
+    Sparkles,
+    FileCheck
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -48,7 +49,7 @@ const LandingPage = () => {
         {
             icon: <Zap className="w-8 h-8 text-primary" />,
             title: "Ultimate Luxury",
-            desc: "Experience the road in high-end caravans equipped with modern suites and amenities."
+            desc: "Experience the road in high-end vehicles equipped with modern suites and premium amenities."
         },
         {
             icon: <MapPin className="w-8 h-8 text-primary" />,
@@ -62,14 +63,15 @@ const LandingPage = () => {
         { icon: <Map />, label: "GPS Navigation" },
         { icon: <Smartphone />, label: "App-Key Entry" },
         { icon: <Settings />, label: "Performance Tuning" },
+        { icon: <Lifebuoy />, label: "24/7 Roadside Assist" },
+        { icon: <UserCheck />, label: "Verified Dealers" },
+        { icon: <FileCheck />, label: "Insurance Covered" },
+        { icon: <Sparkles />, label: "Sanitized Vehicles" },
         { icon: <Wifi />, label: "High-Speed WiFi" },
-        { icon: <Coffee />, label: "Mini Kitchenette" },
         { icon: <Car />, label: "Smart Drive Tech" },
         { icon: <Star />, label: "Premium Interior" },
-        { icon: <Waves />, label: "Modern Shower" },
         { icon: <Wind />, label: "Climate Control" },
         { icon: <Tv />, label: "Smart Entertainment" },
-        { icon: <Thermometer />, label: "Heated Flooring" },
         { icon: <Music />, label: "Surround Sound" },
         { icon: <Lock />, label: "Biometric Entry" }
     ];
