@@ -15,7 +15,11 @@ import {
     Wind,
     Thermometer,
     Music,
-    Lock
+    Lock,
+    Bike,
+    Map,
+    Smartphone,
+    Settings
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -63,7 +67,11 @@ const LandingPage = () => {
         { icon: <Tv />, label: "Smart Entertainment" },
         { icon: <Thermometer />, label: "Heated Flooring" },
         { icon: <Music />, label: "Surround Sound" },
-        { icon: <Lock />, label: "Biometric Entry" }
+        { icon: <Lock />, label: "Biometric Entry" },
+        { icon: <Bike />, label: "Premium Riding Gear" },
+        { icon: <Map />, label: "GPS Navigation" },
+        { icon: <Smartphone />, label: "App-Key Entry" },
+        { icon: <Settings />, label: "Performance Tuning" }
     ];
 
     return (
