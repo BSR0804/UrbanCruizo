@@ -20,13 +20,12 @@ const LandingPage = () => {
         transition: { duration: 0.6 }
     };
 
-    const staggerContainer = {
-        animate: {
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
+    const interiorImages = [
+        { src: '/images/interiors/interior.jfif', alt: 'Luxury Suite' },
+        { src: '/images/interiors/interior1.webp', alt: 'Modern Living Area' },
+        { src: '/images/interiors/interior2.jpg', alt: 'Gourmet Kitchen' },
+        { src: '/images/interiors/interior4.webp', alt: 'Cozy Bedroom' }
+    ];
 
     const features = [
         {
@@ -59,8 +58,8 @@ const LandingPage = () => {
             <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=2070&auto=format&fit=crop"
-                        alt="Luxury Caravan"
+                        src="/images/interiors/interior3.jpg"
+                        alt="Luxury Caravan Interior"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
@@ -149,7 +148,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Luxury Showcase */}
+            {/* Luxury Showcase / Gallery */}
             <section className="py-24 overflow-hidden">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -189,17 +188,24 @@ const LandingPage = () => {
                             whileInView={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.8 }}
                             viewport={{ once: true }}
-                            className="flex-1 relative"
+                            className="flex-1 grid grid-cols-2 gap-4 relative"
                         >
-                            <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
-                                <img
-                                    src="https://images.unsplash.com/photo-1513311068544-83e8047d1563?q=80&w=2070&auto=format&fit=crop"
-                                    alt="Interior"
-                                    className="w-full h-full object-cover hover:scale-105 transition duration-700"
-                                />
-                            </div>
+                            {interiorImages.map((img, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`relative rounded-xl overflow-hidden shadow-2xl border border-gray-800 group ${idx === 0 ? 'h-64' : idx === 1 ? 'h-48 mt-8' : idx === 2 ? 'h-48 -mt-8' : 'h-64'
+                                        }`}
+                                >
+                                    <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+                                </div>
+                            ))}
                             {/* Decorative element */}
-                            <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 border border-primary/10 rounded-full blur-3xl -z-1" />
+                            <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 border border-primary/10 rounded-full blur-3xl -z-10" />
                         </motion.div>
                     </div>
                 </div>
@@ -236,5 +242,4 @@ const LandingPage = () => {
         </div>
     );
 };
-
 export default LandingPage;
