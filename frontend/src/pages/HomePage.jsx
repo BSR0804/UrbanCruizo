@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 import { CityContext } from '../context/CityContext';
 
 const HomePage = () => {
@@ -16,15 +17,31 @@ const HomePage = () => {
         { name: 'Pune', image: 'https://images.unsplash.com/photo-1600112356915-089abb8fc71a?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Kolkata', image: '/images/kolkata.jpg' },
         { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
+        { name: 'Kochi', image: 'https://images.unsplash.com/photo-1595168051918-6932c0213197?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
+        { name: 'Ahmedabad', image: 'https://images.unsplash.com/photo-1620803451559-00f796afda62?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
+        { name: 'Chandigarh', image: 'https://images.unsplash.com/photo-1616113886364-f6552a468d60?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
     ];
 
     const handleCitySelect = (city) => {
-        setCity(city);
+        if (city.comingSoon) {
+            toast.success(`UrbanCruizo is arriving in ${city.name} very soon! Stay tuned.`, {
+                icon: '🚀',
+                style: {
+                    borderRadius: '10px',
+                    background: '#1a1a1a',
+                    color: '#c5a059',
+                    border: '1px solid #c5a059',
+                },
+            });
+            return;
+        }
+        setCity(city.name);
         navigate('/vehicles');
     };
 
     return (
-        <div className="min-h-screen bg-background pt-12">
+        <div className="min-h-screen bg-background pt-12 pb-20">
             <section className="py-20 px-4 container mx-auto text-center">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -33,7 +50,7 @@ const HomePage = () => {
                 >
                     <h1 className="text-4xl md:text-6xl font-serif text-primary mb-8 italic">Where's Your Next Journey?</h1>
                     <p className="text-xl text-textSecondary mb-12 max-w-2xl mx-auto">
-                        Find top-rated local dealers for premium Cars, rugged Bikes, and luxury Caravans in your favorite Indian cities.
+                        Find top-rated dealers for premium Cars, rugged Bikes, and luxury Caravans in your favorite Indian cities.
                     </p>
                 </motion.div>
 
@@ -50,10 +67,15 @@ const HomePage = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.1 * idx }}
                             whileHover={{ scale: 1.05 }}
-                            onClick={() => handleCitySelect(city.name)}
+                            onClick={() => handleCitySelect(city)}
                             className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg border border-gray-800 hover:border-primary transition duration-300 aspect-[4/5]"
                         >
                             <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition z-10" />
+                            {city.comingSoon && (
+                                <div className="absolute top-4 right-4 z-30 bg-primary/90 text-background text-[10px] font-bold px-2 py-1 rounded-full border border-white/20 shadow-lg tracking-wider">
+                                    COMING SOON
+                                </div>
+                            )}
                             <img
                                 src={city.image}
                                 alt={city.name}
