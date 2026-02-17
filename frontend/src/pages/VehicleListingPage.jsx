@@ -112,7 +112,7 @@ const VehicleListingPage = () => {
                         <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-2">
                             {city ? `Expert Dealers in ${city}` : 'Authorized Local Dealers'}
                         </h1>
-                        <p className="text-textSecondary">Connect with top-rated local dealers for Cars, Bikes, and Caravans.</p>
+                        <p className="text-textSecondary">Partner with India's premier network of authorized dealers for premium Cars, Bikes, and Caravans.</p>
                     </motion.div>
 
                     <motion.div
