@@ -11,10 +11,10 @@ const HomePage = () => {
         { name: 'Delhi', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Mumbai', image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Bangalore', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?q=80&w=1600&auto=format&fit=crop' },
-        { name: 'Hyderabad', image: 'https://images.unsplash.com/photo-1572445271230-a78b5944a659?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Hyderabad', image: '/images/hyderabad.jpg' },
         { name: 'Chennai', image: 'https://images.unsplash.com/photo-1616843413587-9e3a37f7bbd8?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Pune', image: 'https://images.unsplash.com/photo-1600112356915-089abb8fc71a?q=80&w=1600&auto=format&fit=crop' },
-        { name: 'Kolkata', image: 'https://images.unsplash.com/photo-1558431382-7f97576572e9?q=80&w=1600&auto=format&fit=crop' },
+        { name: 'Kolkata', image: '/images/kolkata.jpg' },
         { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
     ];
 
