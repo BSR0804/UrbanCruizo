@@ -20,6 +20,7 @@ import AdminPage from './pages/AdminPage';
 import HelpCenterPage from './pages/HelpCenterPage';
 import RentalPolicyPage from './pages/RentalPolicyPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/help-center" element={<HelpCenterPage />} />
                 <Route path="/rental-policy" element={<RentalPolicyPage />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms-of-service" element={<TermsOfServicePage />} />
               </Routes>
             </main>
             <Footer />
