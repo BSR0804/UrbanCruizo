@@ -53,7 +53,7 @@ const Footer = () => {
                                 <Mail className="w-4 h-4 text-primary" /> concierge@urbancruizo.com
                             </div>
                             <div className="flex items-center gap-2">
-                                <Phone className="w-4 h-4 text-primary" /> +91 (800) LUX-RIDE
+                                <Phone className="w-4 h-4 text-primary" /> +91 7827064282
                             </div>
                         </div>
                     </div>
