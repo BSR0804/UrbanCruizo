@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { AlertCircle, X } from 'lucide-react';
+import { AlertCircle, X, MapPin, Compass } from 'lucide-react';
 import { CityContext } from '../context/CityContext';
 
 const HomePage = () => {
@@ -111,6 +111,26 @@ const HomePage = () => {
                             </div>
                         </motion.div>
                     ))}
+
+                    {/* Expanding Horizons Card */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 * cities.length }}
+                        whileHover={{ scale: 1.02 }}
+                        className="relative overflow-hidden rounded-2xl border-2 border-dashed border-primary/20 bg-primary/5 flex flex-col items-center justify-center p-8 text-center group transition-all duration-500 hover:border-primary/40 aspect-[4/5]"
+                    >
+                        <div className="mb-6 p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-500">
+                            <Compass className="w-10 h-10 text-primary animate-pulse" />
+                        </div>
+                        <h3 className="text-2xl font-serif font-bold text-white mb-4">Expanding Horizons</h3>
+                        <p className="text-sm text-textSecondary leading-relaxed">
+                            More prime destinations coming soon to redefine your journey across India.
+                        </p>
+                        <div className="mt-8 flex items-center gap-2 text-primary font-bold text-xs tracking-[0.2em] uppercase">
+                            <MapPin className="w-3 h-3" /> Stay Tuned
+                        </div>
+                    </motion.div>
                 </motion.div>
             </section>
         </div>
