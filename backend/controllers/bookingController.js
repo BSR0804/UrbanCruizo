@@ -1,9 +1,10 @@
+const asyncHandler = require('express-async-handler');
 const Booking = require('../models/Booking');
 const Vehicle = require('../models/Vehicle');
 
 // @desc    Create new booking (With GST and Deposit Logic)
 // @route   POST /api/bookings
-const createBooking = async (req, res) => {
+const createBooking = asyncHandler(async (req, res) => {
     const { vehicleId, startDate, endDate, rentalType } = req.body; // rentalType: 'Hourly' | 'Daily'
     const vehicle = await Vehicle.findById(vehicleId);
 
@@ -61,19 +62,19 @@ const createBooking = async (req, res) => {
 
     const createdBooking = await booking.save();
     res.status(201).json(createdBooking);
-};
+});
 
 // @desc    Get My Bookings
-const getMyBookings = async (req, res) => {
+const getMyBookings = asyncHandler(async (req, res) => {
     const bookings = await Booking.find({ user: req.user._id }).populate('vehicle').sort({ createdAt: -1 });
     res.json(bookings);
-};
+});
 
 // @desc    Get All Bookings (Admin)
-const getBookings = async (req, res) => {
+const getBookings = asyncHandler(async (req, res) => {
     const bookings = await Booking.find({}).populate('user', 'name email licenseNumber').populate('vehicle');
     res.json(bookings);
-};
+});
 
 module.exports = {
     createBooking,

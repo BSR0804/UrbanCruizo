@@ -1,9 +1,8 @@
+const asyncHandler = require('express-async-handler');
 const Caravan = require('../models/Caravan');
 
 // @desc    Fetch all caravans
-// @route   GET /api/caravans
-// @access  Public
-const getCaravans = async (req, res) => {
+const getCaravans = asyncHandler(async (req, res) => {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
 
@@ -22,12 +21,10 @@ const getCaravans = async (req, res) => {
         .skip(pageSize * (page - 1));
 
     res.json({ caravans, page, pages: Math.ceil(count / pageSize) });
-};
+});
 
 // @desc    Fetch single caravan
-// @route   GET /api/caravans/:id
-// @access  Public
-const getCaravanById = async (req, res) => {
+const getCaravanById = asyncHandler(async (req, res) => {
     const caravan = await Caravan.findById(req.params.id);
 
     if (caravan) {
@@ -36,12 +33,10 @@ const getCaravanById = async (req, res) => {
         res.status(404);
         throw new Error('Caravan not found');
     }
-};
+});
 
 // @desc    Create a caravan
-// @route   POST /api/caravans
-// @access  Private/Admin
-const createCaravan = async (req, res) => {
+const createCaravan = asyncHandler(async (req, res) => {
     const { title, description, pricePerDay, amenities, images, location } = req.body;
 
     const caravan = new Caravan({
@@ -55,12 +50,10 @@ const createCaravan = async (req, res) => {
 
     const createdCaravan = await caravan.save();
     res.status(201).json(createdCaravan);
-};
+});
 
 // @desc    Update a caravan
-// @route   PUT /api/caravans/:id
-// @access  Private/Admin
-const updateCaravan = async (req, res) => {
+const updateCaravan = asyncHandler(async (req, res) => {
     const { title, description, pricePerDay, amenities, images, location, availability } = req.body;
 
     const caravan = await Caravan.findById(req.params.id);
@@ -80,12 +73,10 @@ const updateCaravan = async (req, res) => {
         res.status(404);
         throw new Error('Caravan not found');
     }
-};
+});
 
 // @desc    Delete a caravan
-// @route   DELETE /api/caravans/:id
-// @access  Private/Admin
-const deleteCaravan = async (req, res) => {
+const deleteCaravan = asyncHandler(async (req, res) => {
     const caravan = await Caravan.findById(req.params.id);
 
     if (caravan) {
@@ -95,7 +86,7 @@ const deleteCaravan = async (req, res) => {
         res.status(404);
         throw new Error('Caravan not found');
     }
-};
+});
 
 module.exports = {
     getCaravans,

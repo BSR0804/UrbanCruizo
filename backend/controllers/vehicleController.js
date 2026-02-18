@@ -1,14 +1,11 @@
+const asyncHandler = require('express-async-handler');
 const Vehicle = require('../models/Vehicle');
 const Booking = require('../models/Booking');
 
 // @desc    Fetch all vehicles with filters (Including City)
-// @route   GET /api/vehicles
-// @access  Public
-const getVehicles = async (req, res) => {
+const getVehicles = asyncHandler(async (req, res) => {
     const pageSize = 12;
     const page = Number(req.query.pageNumber) || 1;
-
-    // City is MANDATORY for meaningful results, default to 'Delhi' if missing
     const city = req.query.city;
 
     const keyword = req.query.keyword
@@ -20,7 +17,6 @@ const getVehicles = async (req, res) => {
         }
         : {};
 
-    // Build Filter
     const filter = { ...keyword };
     if (city) filter.city = city;
     if (req.query.owner) filter.owner = req.query.owner;
@@ -39,10 +35,10 @@ const getVehicles = async (req, res) => {
         .skip(pageSize * (page - 1));
 
     res.json({ vehicles, page, pages: Math.ceil(count / pageSize) });
-};
+});
 
 // @desc    Get single vehicle details
-const getVehicleById = async (req, res) => {
+const getVehicleById = asyncHandler(async (req, res) => {
     const vehicle = await Vehicle.findById(req.params.id);
     if (vehicle) {
         res.json(vehicle);
@@ -50,31 +46,30 @@ const getVehicleById = async (req, res) => {
         res.status(404);
         throw new Error('Vehicle not found');
     }
-};
+});
 
 // @desc    Create Vehicle (Admin)
-const createVehicle = async (req, res) => {
-    // Use spread to capture all new fields
+const createVehicle = asyncHandler(async (req, res) => {
     const vehicle = new Vehicle({ ...req.body });
     const createdVehicle = await vehicle.save();
     res.status(201).json(createdVehicle);
-};
+});
 
 // @desc    Update Vehicle
-const updateVehicle = async (req, res) => {
+const updateVehicle = asyncHandler(async (req, res) => {
     const vehicle = await Vehicle.findById(req.params.id);
     if (vehicle) {
-        Object.assign(vehicle, req.body); // Updated logic
+        Object.assign(vehicle, req.body);
         const updatedVehicle = await vehicle.save();
         res.json(updatedVehicle);
     } else {
         res.status(404);
         throw new Error('Vehicle not found');
     }
-};
+});
 
 // @desc    Delete Vehicle
-const deleteVehicle = async (req, res) => {
+const deleteVehicle = asyncHandler(async (req, res) => {
     const vehicle = await Vehicle.findById(req.params.id);
     if (vehicle) {
         await vehicle.deleteOne();
@@ -83,14 +78,13 @@ const deleteVehicle = async (req, res) => {
         res.status(404);
         throw new Error('Vehicle not found');
     }
-};
+});
 
 // @desc    Get Stats
-const getStats = async (req, res) => {
+const getStats = asyncHandler(async (req, res) => {
     const totalVehicles = await Vehicle.countDocuments();
-    // Revenue logic would connect here...
     res.json({ totalVehicles });
-};
+});
 
 module.exports = {
     getVehicles,

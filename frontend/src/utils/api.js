@@ -4,6 +4,11 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
 });
 
+if (import.meta.env.PROD) {
+    console.log("🚀 Running in PRODUCTION mode");
+    console.log("🔗 Backend URL:", api.defaults.baseURL);
+}
+
 // Add a request interceptor to include the token in headers
 api.interceptors.request.use(
     (config) => {
