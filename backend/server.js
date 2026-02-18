@@ -9,10 +9,29 @@ connectDB();
 
 const app = express();
 
+const allowedOrigins = [
+    'https://caraw-inn.vercel.app',       // Vercel production
+    'https://carawinn.vercel.app',         // alternate Vercel domain
+    'http://localhost:5173',               // Vite dev
+    'http://localhost:3000',               // CRA dev
+];
+
 app.use(cors({
-    origin: true, // Reflects the requesting origin (Vercel) back to allow the request
-    credentials: true
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        // Allow any *.vercel.app preview deployment
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        callback(new Error(`CORS blocked: ${origin}`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Handle preflight OPTIONS requests for all routes
+app.options('*', cors());
 
 app.use(express.json());
 
