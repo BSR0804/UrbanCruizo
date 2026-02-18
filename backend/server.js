@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cors = require('cors');
 const connectDB = require('./config/db');
 
 dotenv.config();
@@ -9,25 +8,27 @@ connectDB();
 
 const app = express();
 
-const corsOptions = {
-    origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, Postman, Render health checks)
-        if (!origin) return callback(null, true);
-        // Allow any *.vercel.app deployment (production + previews)
-        if (origin.endsWith('.vercel.app')) return callback(null, true);
-        // Allow localhost for development
-        if (origin.startsWith('http://localhost')) return callback(null, true);
-        callback(new Error(`CORS blocked: ${origin}`));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 200, // Some browsers (IE11) choke on 204
-};
+// ─── CORS: Manual headers — works even if cors package has issues on Render ───
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    // Allow any vercel.app domain + localhost
+    if (
+        !origin ||
+        origin.endsWith('.vercel.app') ||
+        origin.startsWith('http://localhost')
+    ) {
+        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    }
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 
-// Apply CORS to ALL routes including preflight OPTIONS
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Explicit preflight handler with same config
+    // Respond immediately to preflight
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
 
 app.use(express.json());
 
