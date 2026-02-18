@@ -9,29 +9,25 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [
-    'https://caraw-inn.vercel.app',       // Vercel production
-    'https://carawinn.vercel.app',         // alternate Vercel domain
-    'http://localhost:5173',               // Vite dev
-    'http://localhost:3000',               // CRA dev
-];
-
-app.use(cors({
+const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, Postman)
+        // Allow requests with no origin (mobile apps, curl, Postman, Render health checks)
         if (!origin) return callback(null, true);
-        // Allow any *.vercel.app preview deployment
+        // Allow any *.vercel.app deployment (production + previews)
         if (origin.endsWith('.vercel.app')) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // Allow localhost for development
+        if (origin.startsWith('http://localhost')) return callback(null, true);
         callback(new Error(`CORS blocked: ${origin}`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+    optionsSuccessStatus: 200, // Some browsers (IE11) choke on 204
+};
 
-// Handle preflight OPTIONS requests for all routes
-app.options('*', cors());
+// Apply CORS to ALL routes including preflight OPTIONS
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Explicit preflight handler with same config
 
 app.use(express.json());
 
@@ -39,13 +35,12 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/vehicles', require('./routes/vehicleRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
-
-app.get('/', (req, res) => {
-    res.send('API is running...');
-});
-
 app.use('/api/dealers', require('./routes/dealerRoutes'));
 app.use('/api/caravans', require('./routes/caravanRoutes'));
+
+app.get('/', (req, res) => {
+    res.send('CarawINN API is running...');
+});
 
 // 404 Not Found Middleware
 app.use((req, res, next) => {
