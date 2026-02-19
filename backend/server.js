@@ -3,43 +3,20 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const cors = require("cors");
 
-// Load environment variables FIRST
+// Load environment variables
 dotenv.config();
 
-// Connect to Database
+// Connect Database
 connectDB();
 
 const app = express();
 
-// ================= CORS CONFIG =================
-const allowedOrigins = [
-    "https://caraw-inn.vercel.app",
-    "http://localhost:3000",
-];
-
-const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow non-browser requests (like Postman)
-        if (!origin) return callback(null, true);
-
-        if (
-            allowedOrigins.includes(origin) ||
-            origin.endsWith(".vercel.app")
-        ) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-// Use SAME corsOptions everywhere
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-// ===============================================
+// ================= CORS =================
+// Simple and reliable setup for Render + Vercel
+app.use(cors({
+    origin: true,        // Reflects request origin automatically
+    credentials: true    // Allow cookies / auth headers
+}));
 
 // Body parser
 app.use(express.json());
@@ -57,9 +34,7 @@ app.get("/", (req, res) => {
 
 // 404 Middleware
 app.use((req, res, next) => {
-    const error = new Error(`Not Found - ${req.originalUrl}`);
-    res.status(404);
-    next(error);
+    res.status(404).json({ message: `Not Found - ${req.originalUrl}` });
 });
 
 // Global Error Handler
