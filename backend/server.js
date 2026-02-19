@@ -2,6 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
+require("cors");
+
+app.use(cors({
+    origin: "https://caraw-inn.vercel.app",
+    credentials: true,
+}));
+
 dotenv.config();
 
 connectDB();
