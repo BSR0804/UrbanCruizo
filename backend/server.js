@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
 require("cors");
+const app = express();
 
 app.use(cors({
     origin: "https://caraw-inn.vercel.app",
@@ -13,7 +14,6 @@ dotenv.config();
 
 connectDB();
 
-const app = express();
 
 // ─── CORS: Manual headers — works even if cors package has issues on Render ───
 app.use((req, res, next) => {
