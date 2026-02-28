@@ -15,7 +15,6 @@ import {
     IndianRupee,
     Zap,
     Smartphone,
-    Wind,
     Wrench,
     Bluetooth
 } from 'lucide-react';
@@ -293,12 +292,6 @@ const VehicleDetailsPage = () => {
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-3 group">
-                                        <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500 group-hover:bg-orange-500 group-hover:text-background transition-colors duration-300">
-                                            <Wind className="w-4 h-4" />
-                                        </div>
-                                        <span className="text-sm text-textPrimary font-medium">Climate Ctrl</span>
-                                    </div>
                                     <div className="flex items-center gap-3 group">
                                         <div className="p-2 rounded-xl bg-red-500/10 text-red-500 group-hover:bg-red-500 group-hover:text-background transition-colors duration-300">
                                             <Wrench className="w-4 h-4" />
