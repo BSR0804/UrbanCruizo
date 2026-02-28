@@ -70,8 +70,9 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
             rzp.open();
 
         } catch (error) {
-            console.error(error);
-            toast.error(error.response?.data?.message || "Payment Initialization Failed");
+            console.error('Payment Error:', error);
+            const errorMsg = error.response?.data?.details || error.response?.data?.message || "Payment Initialization Failed";
+            toast.error(errorMsg, { duration: 5000 });
             setStep('method');
         } finally {
             setLoading(false);

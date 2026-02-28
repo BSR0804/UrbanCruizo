@@ -2,11 +2,8 @@ const asyncHandler = require('express-async-handler');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 
-// Initialize Razorpay
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_your_id',
-    key_secret: process.env.RAZORPAY_KEY_SECRET || 'your_secret',
-});
+// Initialize Razorpay placeholder - keys are picked up from env inside methods
+
 
 // @desc    Create Razorpay Order
 // @route   POST /api/v1/payment/razorpay/order
@@ -18,29 +15,39 @@ const createOrder = asyncHandler(async (req, res) => {
         throw new Error('Amount is required to create a payment order');
     }
 
-    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-        console.error('CRITICAL: Razorpay keys missing from environment.');
+    const key_id = process.env.RAZORPAY_KEY_ID;
+    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!key_id || !key_secret || key_id === 'rzp_test_your_id') {
+        console.error('CRITICAL: Razorpay keys missing or using dummy values.');
         res.status(500).json({
-            message: 'Razorpay keys not configured on server',
+            message: 'Razorpay keys not configured correctly on server',
             tip: 'Check Render/Backend environment variables for RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET'
         });
         return;
     }
 
+    // Initialize Razorpay instance inside or ensure it's updated
+    const instance = new Razorpay({
+        key_id: key_id,
+        key_secret: key_secret,
+    });
+
     const options = {
-        amount: Math.round(amount * 100), // Amount in paise
+        amount: Math.round(Number(amount) * 100), // Amount in paise
         currency: 'INR',
         receipt: `receipt_${Date.now()}`,
     };
 
     try {
-        const order = await razorpay.orders.create(options);
+        const order = await instance.orders.create(options);
         res.status(200).json(order);
     } catch (error) {
         console.error('Razorpay API Error:', error);
         res.status(500).json({
             message: 'Error creating Razorpay order',
-            details: error.description || error.message || 'Check your Razorpay credentials'
+            details: error.description || error.message || 'Check your Razorpay credentials',
+            error: error // Send full error object for debugging in dev
         });
     }
 });
