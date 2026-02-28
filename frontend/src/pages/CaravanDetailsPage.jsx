@@ -17,6 +17,8 @@ import {
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { MOCK_CARAVANS } from '../data/staticData';
+import PaymentModal from '../components/PaymentModal';
+import toast from 'react-hot-toast';
 
 const CaravanDetailsPage = () => {
     const { id } = useParams();
@@ -28,6 +30,8 @@ const CaravanDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -56,15 +60,36 @@ const CaravanDetailsPage = () => {
             return;
         }
 
+        if (!startDate || !endDate) {
+            toast.error('Please select dates');
+            return;
+        }
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+        if (nights <= 0) {
+            toast.error('Invalid dates');
+            return;
+        }
+
+        const amount = nights * caravan.pricePerDay + 499; // 499 service fee
+        setTotalAmount(amount);
+        setIsPaymentModalOpen(true);
+    };
+
+    const confirmBookingAfterPayment = async () => {
         try {
             await axios.post('/bookings', {
                 caravanId: id,
                 startDate,
                 endDate
             });
+            toast.success('Payment Received! Adventure details sent to dashboard.');
             navigate('/dashboard');
         } catch (err) {
-            setError(err.response?.data?.message || 'Booking Failed');
+            toast.error(err.response?.data?.message || 'Booking Failed');
         }
     };
 
@@ -276,6 +301,13 @@ const CaravanDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                amount={totalAmount}
+                onPaymentSuccess={confirmBookingAfterPayment}
+            />
         </div>
     );
 };

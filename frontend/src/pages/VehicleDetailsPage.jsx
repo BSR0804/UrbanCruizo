@@ -18,6 +18,7 @@ import toast from 'react-hot-toast';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { MOCK_VEHICLES } from '../data/staticData';
+import PaymentModal from '../components/PaymentModal';
 
 const VehicleDetailsPage = () => {
     const { id } = useParams();
@@ -31,6 +32,7 @@ const VehicleDetailsPage = () => {
     const [rentalType, setRentalType] = useState('Daily');
     const [priceBreakdown, setPriceBreakdown] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -103,6 +105,10 @@ const VehicleDetailsPage = () => {
             return;
         }
 
+        setIsPaymentModalOpen(true);
+    };
+
+    const confirmBookingAfterPayment = async () => {
         try {
             setBookingLoading(true);
             await axios.post('/bookings', {
@@ -111,7 +117,7 @@ const VehicleDetailsPage = () => {
                 endDate: `${endDate}T${endTime}`,
                 rentalType
             });
-            toast.success('Booking confirmed! Check your dashboard.');
+            toast.success('Payment Received! Booking confirmed.');
             navigate('/dashboard');
         } catch (error) {
             toast.error(error.response?.data?.message || 'Booking failed');
@@ -435,6 +441,13 @@ const VehicleDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                amount={priceBreakdown?.total || 0}
+                onPaymentSuccess={confirmBookingAfterPayment}
+            />
         </div>
     );
 };

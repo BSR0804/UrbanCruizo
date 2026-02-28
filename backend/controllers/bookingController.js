@@ -56,8 +56,8 @@ const createBooking = asyncHandler(async (req, res) => {
         gstAmount,
         securityDeposit: deposit,
         finalAmount, // Pay this amount
-        status: 'confirmed', // Auto-confirm for MVP (Usually 'pending' payment)
-        paymentStatus: 'pending' // Integrate payment gateway here
+        status: 'confirmed',
+        paymentStatus: 'paid'
     });
 
     const createdBooking = await booking.save();
