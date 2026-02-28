@@ -94,10 +94,20 @@ const seedData = async () => {
 
         const dealers = users.filter(user => user.role === 'dealer');
         const vehicles = MOCK_VEHICLES_DATA.map((vehicleData) => {
-            const cityDealer = dealers.find(d => d.city === vehicleData.city);
+            // First try to match by specific dealer name if provided in data
+            let ownerDealer = null;
+            if (vehicleData.dealerName) {
+                ownerDealer = dealers.find(d => d.name === vehicleData.dealerName);
+            }
+
+            // Fallback to first dealer in that city if no specific dealer name
+            if (!ownerDealer) {
+                ownerDealer = dealers.find(d => d.city === vehicleData.city);
+            }
+
             return {
                 ...vehicleData,
-                owner: cityDealer ? cityDealer._id : admin._id
+                owner: ownerDealer ? ownerDealer._id : admin._id
             };
         });
 
