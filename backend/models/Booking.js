@@ -11,7 +11,20 @@ const bookingSchema = mongoose.Schema({
     securityDeposit: { type: Number, required: true, default: 0 },
     gstAmount: { type: Number, required: true, default: 0 }, // 18%
     finalAmount: { type: Number, required: true }, // Total + Deposit + GST
-    status: { type: String, enum: ['pending', 'confirmed', 'ongoing', 'completed', 'cancelled'], default: 'confirmed' },
+
+    // User Details for Booking Verification
+    bookingName: { type: String },
+    bookingEmail: { type: String },
+    bookingPhone: { type: String },
+    bookingAddress: { type: String },
+    aadhaarImage: { type: String }, // URL to stored image
+    licenseImage: { type: String }, // URL to stored image
+
+    status: {
+        type: String,
+        enum: ['pending_approval', 'approved', 'rejected', 'confirmed', 'ongoing', 'completed', 'cancelled'],
+        default: 'pending_approval'
+    },
     paymentStatus: { type: String, enum: ['pending', 'paid', 'refunded'], default: 'pending' },
     paymentId: { type: String }, // Razorpay Payment ID
 }, { timestamps: true });

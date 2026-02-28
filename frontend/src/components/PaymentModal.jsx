@@ -5,7 +5,7 @@ import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId }) => {
+const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId, bookingId }) => {
     const [step, setStep] = useState('method'); // method, processing, success
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
@@ -24,6 +24,13 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId }) 
             // Handle Mock Success for Sandbox
             if (order.mock) {
                 console.log("Sandbox checkout detected, simulating success...");
+                // Simulate status update locally for mock bookings
+                if (bookingId && bookingId.startsWith('mock')) {
+                    const mockBookings = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+                    const updated = mockBookings.map(b => b._id === bookingId ? { ...b, status: 'confirmed' } : b);
+                    localStorage.setItem('mock_bookings', JSON.stringify(updated));
+                }
+
                 setTimeout(() => {
                     setStep('success');
                     setTimeout(() => {
@@ -36,11 +43,11 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId }) 
 
             // 2. Configure Razorpay Options
             const options = {
-                key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID', // Better if fetched from backend or env
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID',
                 amount: order.amount,
                 currency: order.currency,
                 name: "CarawINN",
-                description: "Premium Rental Booking",
+                description: "Premium Rental Booking Confirmation",
                 image: "/vite.svg",
                 order_id: order.id,
                 handler: async function (response) {
@@ -49,7 +56,8 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId }) 
                         const { data } = await axios.post('payment/razorpay/verify', {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature
+                            razorpay_signature: response.razorpay_signature,
+                            bookingId // PASS BOOKING ID HERE
                         });
 
                         if (data.success) {

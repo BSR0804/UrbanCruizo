@@ -73,13 +73,16 @@ const createOrder = asyncHandler(async (req, res) => {
     }
 });
 
+const Booking = require('../models/Booking');
+
 // @desc    Verify Razorpay Payment
 // @route   POST /api/v1/payment/razorpay/verify
 const verifyPayment = asyncHandler(async (req, res) => {
     const {
         razorpay_order_id,
         razorpay_payment_id,
-        razorpay_signature
+        razorpay_signature,
+        bookingId
     } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -90,6 +93,16 @@ const verifyPayment = asyncHandler(async (req, res) => {
         .digest('hex');
 
     if (expectedSignature === razorpay_signature) {
+        // If bookingId is provided, update the booking to 'confirmed' and 'paid'
+        if (bookingId) {
+            const booking = await Booking.findById(bookingId);
+            if (booking) {
+                booking.status = 'confirmed';
+                booking.paymentStatus = 'paid';
+                booking.paymentId = razorpay_payment_id;
+                await booking.save();
+            }
+        }
         res.status(200).json({ success: true, message: 'Payment verified successfully' });
     } else {
         res.status(400);

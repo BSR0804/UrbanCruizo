@@ -25,6 +25,7 @@ import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { MOCK_VEHICLES } from '../data/staticData';
 import PaymentModal from '../components/PaymentModal';
+import BookingFormModal from '../components/BookingFormModal';
 
 const VehicleDetailsPage = () => {
     const { id } = useParams();
@@ -39,6 +40,7 @@ const VehicleDetailsPage = () => {
     const [priceBreakdown, setPriceBreakdown] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -111,7 +113,41 @@ const VehicleDetailsPage = () => {
             return;
         }
 
-        setIsPaymentModalOpen(true);
+        setIsBookingModalOpen(true);
+    };
+
+    const submitApplication = async (formData) => {
+        try {
+            await axios.post('bookings', {
+                vehicleId: id,
+                startDate: `${startDate}T${startTime}`,
+                endDate: `${endDate}T${endTime}`,
+                rentalType,
+                ...formData
+            });
+            toast.success('Application Submitted! Dealer will review your request.', { duration: 5000 });
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Booking submission error:', error);
+            // Fallback for Mock/ID issues
+            if (id.length < 10) {
+                const mockBooking = {
+                    _id: `mock_app_${Date.now()}`,
+                    vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
+                    startDate: `${startDate}T${startTime}`,
+                    endDate: `${endDate}T${endTime}`,
+                    totalPrice: priceBreakdown?.total || 0,
+                    status: 'pending_approval',
+                    isMock: true
+                };
+                const existing = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+                localStorage.setItem('mock_bookings', JSON.stringify([mockBooking, ...existing]));
+                toast.success('Demo: Application logged locally');
+                navigate('/dashboard');
+            } else {
+                toast.error(error.response?.data?.message || 'Failed to submit booking application.');
+            }
+        }
     };
 
     const confirmBookingAfterPayment = async () => {
@@ -531,6 +567,14 @@ const VehicleDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <BookingFormModal
+                isOpen={isBookingModalOpen}
+                onClose={() => setIsBookingModalOpen(false)}
+                onSubmit={submitApplication}
+                vehicle={vehicle}
+                priceBreakdown={priceBreakdown}
+            />
 
             <PaymentModal
                 isOpen={isPaymentModalOpen}

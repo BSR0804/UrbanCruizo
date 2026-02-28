@@ -5,25 +5,37 @@ const mongoose = require('mongoose');
 
 // @desc    Create new booking (With GST and Deposit Logic)
 // @route   POST /api/bookings
+// @desc    Create new booking (Approval workflow)
+// @route   POST /api/bookings
 const createBooking = asyncHandler(async (req, res) => {
-    const { vehicleId, startDate, endDate, rentalType } = req.body; // rentalType: 'Hourly' | 'Daily'
+    const {
+        vehicleId,
+        startDate,
+        endDate,
+        rentalType,
+        bookingName,
+        bookingEmail,
+        bookingPhone,
+        bookingAddress,
+        aadhaarImage,
+        licenseImage
+    } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
         res.status(400);
-        throw new Error('Invalid Vehicle ID. Mock vehicles cannot be booked in the database.');
+        throw new Error('Invalid Vehicle ID');
     }
 
     const vehicle = await Vehicle.findById(vehicleId);
-
     if (!vehicle) {
         res.status(404);
         throw new Error('Vehicle Not Found');
     }
 
-    // Overlap check
+    // Overlap check (only for confirmed/ongoing/approved)
     const overlapping = await Booking.findOne({
         vehicle: vehicleId,
-        status: { $in: ['confirmed', 'ongoing'] },
+        status: { $in: ['approved', 'confirmed', 'ongoing'] },
         $or: [
             { startDate: { $lt: new Date(endDate) }, endDate: { $gt: new Date(startDate) } }
         ]
@@ -31,7 +43,7 @@ const createBooking = asyncHandler(async (req, res) => {
 
     if (overlapping) {
         res.status(400);
-        throw new Error('Selected dates are not available.');
+        throw new Error('Vehicle already booked for selected dates.');
     }
 
     // Pricing Logic
@@ -48,7 +60,7 @@ const createBooking = asyncHandler(async (req, res) => {
         baseFare = days * vehicle.pricePerDay;
     }
 
-    const gstAmount = baseFare * 0.18; // 18% GST standard in India
+    const gstAmount = baseFare * 0.18;
     const deposit = vehicle.securityDeposit || 0;
     const finalAmount = baseFare + gstAmount + deposit;
 
@@ -59,32 +71,75 @@ const createBooking = asyncHandler(async (req, res) => {
         startDate,
         endDate,
         rentalType,
-        totalPrice: baseFare, // Store base separately for invoice
+        totalPrice: baseFare,
         gstAmount,
         securityDeposit: deposit,
-        finalAmount, // Pay this amount
-        status: 'confirmed',
-        paymentStatus: 'paid'
+        finalAmount,
+        bookingName,
+        bookingEmail,
+        bookingPhone,
+        bookingAddress,
+        aadhaarImage,
+        licenseImage,
+        status: 'pending_approval',
+        paymentStatus: 'pending'
     });
 
     const createdBooking = await booking.save();
     res.status(201).json(createdBooking);
 });
 
+// @desc    Update Booking Status (Dealer/Admin Review)
+const updateBookingStatus = asyncHandler(async (req, res) => {
+    const { status } = req.body; // 'approved' or 'rejected'
+    const booking = await Booking.findById(req.params.id).populate('vehicle');
+
+    if (!booking) {
+        res.status(404);
+        throw new Error('Booking not found');
+    }
+
+    // Authorization: only dealer of the vehicle or Admin
+    if (req.user.role !== 'admin' && booking.vehicle.owner.toString() !== req.user._id.toString()) {
+        res.status(401);
+        throw new Error('Not authorized to review this booking');
+    }
+
+    booking.status = status;
+    await booking.save();
+
+    res.json({ message: `Booking ${status} successfully`, booking });
+});
+
 // @desc    Get My Bookings
 const getMyBookings = asyncHandler(async (req, res) => {
-    const bookings = await Booking.find({ user: req.user._id }).populate('vehicle').sort({ createdAt: -1 });
+    const bookings = await Booking.find({ user: req.user._id })
+        .populate('vehicle')
+        .sort({ createdAt: -1 });
     res.json(bookings);
 });
 
-// @desc    Get All Bookings (Admin)
+// @desc    Get All Bookings (Admin/Dealer View)
 const getBookings = asyncHandler(async (req, res) => {
-    const bookings = await Booking.find({}).populate('user', 'name email licenseNumber').populate('vehicle');
+    let query = {};
+
+    // If dealer, only show bookings for their vehicles
+    if (req.user.role === 'dealer') {
+        const vehicles = await Vehicle.find({ owner: req.user._id });
+        const vehicleIds = vehicles.map(v => v._id);
+        query.vehicle = { $in: vehicleIds };
+    }
+
+    const bookings = await Booking.find(query)
+        .populate('user', 'name email')
+        .populate('vehicle')
+        .sort({ createdAt: -1 });
     res.json(bookings);
 });
 
 module.exports = {
     createBooking,
+    updateBookingStatus,
     getMyBookings,
     getBookings
 };
