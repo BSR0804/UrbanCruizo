@@ -302,10 +302,10 @@ const VehicleDetailsPage = () => {
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8 shadow-inner">
                             <h3 className="text-2xl font-serif font-bold text-white mb-4">Inside the Experience</h3>
                             <p className="text-textSecondary leading-relaxed mb-4">
-                                This premium {vehicle.brand} {vehicle.model} embodies ultimate refinement and performance. Meticulously maintained to the highest standards, it offers an unparalleled driving experience for both city commutes and scenic long-drives across {vehicle.city}.
+                                {vehicle.description1 || `This premium ${vehicle.brand} ${vehicle.model} embodies ultimate refinement and performance. Meticulously maintained to the highest standards, it offers an unparalleled driving experience for both city commutes and scenic long-drives across ${vehicle.city}.`}
                             </p>
                             <p className="text-textSecondary leading-relaxed mb-8">
-                                Designed with the modern traveler in mind, this {vehicle.year} edition features advanced safety systems, intuitive controls, and a suite of smart connectivity options. Whether you're heading for a business meeting or a weekend getaway, expect nothing less than absolute comfort and reliability.
+                                {vehicle.description2 || `Designed with the modern traveler in mind, this ${vehicle.year} edition features advanced safety systems, intuitive controls, and a suite of smart connectivity options. Whether you're heading for a business meeting or a weekend getaway, expect nothing less than absolute comfort and reliability.`}
                             </p>
 
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
@@ -377,7 +377,8 @@ const VehicleDetailsPage = () => {
                                 { icon: Fuel, label: 'Fuel', value: vehicle.fuelType },
                                 { icon: Settings2, label: 'Transmission', value: vehicle.transmission },
                                 { icon: Users, label: 'Capacity', value: `${vehicle.seats} Seats` },
-                                { icon: Gauge, label: 'Mileage', value: `${vehicle.mileage || '22.3'} km/ltr` }
+                                { icon: Gauge, label: 'Mileage', value: `${vehicle.mileage || '22.3'} km/ltr` },
+                                ...(vehicle.type === 'car' ? [{ icon: ShieldCheck, label: 'Airbags', value: `${vehicle.airbags || '2'} Airbags` }] : [])
                             ].map((spec, i) => (
                                 <div key={i} className="bg-surface/50 border border-gray-800 p-4 rounded-2xl flex items-center gap-4">
                                     <div className="p-3 rounded-xl bg-primary/10 text-primary">
