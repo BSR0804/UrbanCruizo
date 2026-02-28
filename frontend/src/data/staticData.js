@@ -965,7 +965,7 @@ export const MOCK_DEALERS = [
         phone: '+91-98765-43210',
         email: 'delhi.luxury@urbancruizo.in',
         rating: 4.9,
-        vehicleCount: 8,
+        vehicleCount: 3,
         image: 'https://images.unsplash.com/photo-1486973351329-e5c2c3e0c2f0?q=80&w=1200&auto=format&fit=crop',
         description: 'Exquisite luxury fleet including Bentley, BMW, and Audi.'
     },
