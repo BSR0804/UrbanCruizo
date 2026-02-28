@@ -38,7 +38,7 @@ const CaravanDetailsPage = () => {
     useEffect(() => {
         const fetchCaravanDetails = async () => {
             try {
-                const { data } = await axios.get(`/caravans/${id}`);
+                const { data } = await axios.get(`caravans/${id}`);
                 setCaravan(data);
                 setLoading(false);
             } catch (err) {
@@ -81,7 +81,7 @@ const CaravanDetailsPage = () => {
 
     const confirmBookingAfterPayment = async () => {
         try {
-            await axios.post('/bookings', {
+            await axios.post('bookings', {
                 caravanId: id,
                 startDate,
                 endDate

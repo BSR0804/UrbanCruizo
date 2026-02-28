@@ -36,13 +36,13 @@ const VehicleListingPage = () => {
     const fetchDealers = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.get(`/dealers${city ? `?city=${city}` : ''}`);
+            const { data } = await axios.get(`dealers${city ? `?city=${city}` : ''}`);
             setDealers(data);
             setLoading(false);
         } catch (error) {
             console.error('Failed to fetch dealers:', error);
             // Fallback to mock data
-            const filteredMockDealers = city 
+            const filteredMockDealers = city
                 ? MOCK_DEALERS.filter(dealer => dealer.city === city)
                 : MOCK_DEALERS;
             setDealers(filteredMockDealers);

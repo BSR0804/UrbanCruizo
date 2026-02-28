@@ -16,7 +16,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
             setStep('processing');
 
             // 1. Create order on backend
-            const { data: order } = await axios.post('/payment/razorpay/order', {
+            const { data: order } = await axios.post('payment/razorpay/order', {
                 amount: amount
             });
 
@@ -32,7 +32,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                 handler: async function (response) {
                     try {
                         // 3. Verify payment on backend
-                        const { data } = await axios.post('/payment/razorpay/verify', {
+                        const { data } = await axios.post('payment/razorpay/verify', {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature

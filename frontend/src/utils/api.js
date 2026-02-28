@@ -5,7 +5,7 @@ import axios from 'axios';
 //   VITE_API_URL=https://carawinn-2.onrender.com        → https://carawinn-2.onrender.com/api
 //   VITE_API_URL=https://carawinn-2.onrender.com/api    → https://carawinn-2.onrender.com/api
 const rawUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const baseURL = rawUrl.replace(/\/api\/?$/, '').replace(/\/$/, '') + '/api/v1';
+const baseURL = rawUrl.replace(/\/api\/?$/, '').replace(/\/$/, '') + '/api/v1/';
 
 const api = axios.create({ baseURL });
 

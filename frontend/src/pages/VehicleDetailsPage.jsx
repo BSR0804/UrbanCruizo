@@ -41,7 +41,7 @@ const VehicleDetailsPage = () => {
     useEffect(() => {
         const fetchVehicle = async () => {
             try {
-                const { data } = await axios.get(`/vehicles/${id}`);
+                const { data } = await axios.get(`vehicles/${id}`);
                 setVehicle(data);
                 setLoading(false);
             } catch (error) {
@@ -111,7 +111,7 @@ const VehicleDetailsPage = () => {
     const confirmBookingAfterPayment = async () => {
         try {
             setBookingLoading(true);
-            await axios.post('/bookings', {
+            await axios.post('bookings', {
                 vehicleId: id,
                 startDate: `${startDate}T${startTime}`,
                 endDate: `${endDate}T${endTime}`,
