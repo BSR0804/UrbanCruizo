@@ -30,8 +30,10 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, vehicle, priceBreakdown }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.aadhaarImage || !formData.licenseImage) {
-            toast.error('Please upload both Aadhaar and Driving License');
+        // Check if all fields are filled
+        const { fullName, email, phone, address, aadhaarImage, licenseImage } = formData;
+        if (!fullName || !email || !phone || !address || !aadhaarImage || !licenseImage) {
+            toast.error('All details are mandatory. Please fill in all fields and upload documents.');
             return;
         }
 
