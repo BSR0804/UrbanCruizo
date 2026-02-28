@@ -829,7 +829,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 5500,
         securityDeposit: 10000,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/fortuner-exterior-right-front-three-quarter-3.jpeg?q=75'],
+        images: [
+            '/images/toyota-fortuner.jpg',
+            '/images/toyota-fortuner-interior-1.jpg',
+            '/images/toyota-fortuner-interior-2.jpg'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 25,
