@@ -133,7 +133,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 3000,
         securityDeposit: 4000,
         city: 'Mumbai',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121479/nexon-ev-max-exterior-right-front-three-quarter-3.jpeg?q=75'],
+        images: [
+            '/images/tata-nexon-ev.avif',
+            '/images/tata-nexon-interior.webp',
+            '/images/tata-nexon-interior2.jpg'
+        ],
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 200,
         extraKmCharge: 15,
@@ -157,7 +161,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 1500,
         securityDeposit: 2500,
         city: 'Mumbai',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/48542/dzire-exterior-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/dzire.webp',
+            '/images/dzire-interior-1.avif',
+            '/images/dzire-interior-2.avif'
+        ],
         location: 'Bandra, Mumbai',
         kmsLimitPerDay: 240,
         extraKmCharge: 8,
@@ -181,7 +189,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 1200,
         securityDeposit: 2000,
         city: 'Mumbai',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/101487/classic-350-Right-Front-Three-Quarter.jpeg?q=75'],
+        images: [
+            '/images/classic-350.avif',
+            '/images/classic-350-interior-1.webp',
+            '/images/classic-350-interior-2.jpg'
+        ],
         location: 'Colaba, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 5,
@@ -204,7 +216,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 1000,
         securityDeposit: 1500,
         city: 'Mumbai',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/cb350h-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/cb350h.avif',
+            '/images/cb350h-interior-1.jpg',
+            '/images/cb350h-interior-2.webp'
+        ],
         location: 'Dadar, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 4,
@@ -378,7 +394,12 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 8000,
         securityDeposit: 12000,
         city: 'Mumbai',
-        images: ['https://images.unsplash.com/photo-1527626029342-39e4dfb89e71?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/sprinter-caravan.jpg',
+            '/images/sprinter-interior-1.png',
+            '/images/sprinter-interior-2.jpg',
+            '/images/sprinter-interior-3.jpg'
+        ],
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 300,
         extraKmCharge: 25,

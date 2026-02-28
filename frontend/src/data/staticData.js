@@ -158,7 +158,7 @@ export const MOCK_VEHICLES = [
         securityDeposit: 4000,
         city: 'Mumbai',
         images: [
-            '/images/tata-nexon-1.jfif',
+            '/images/tata-nexon-ev.avif',
             '/images/tata-nexon-interior.webp',
             '/images/tata-nexon-interior2.jpg'
         ],
@@ -186,7 +186,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1500,
         securityDeposit: 2500,
         city: 'Mumbai',
-        images: ['https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/dzire.webp',
+            '/images/dzire-interior-1.avif',
+            '/images/dzire-interior-2.avif'
+        ],
         location: 'Bandra, Mumbai',
         kmsLimitPerDay: 240,
         extraKmCharge: 8,
@@ -211,7 +215,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1200,
         securityDeposit: 2000,
         city: 'Mumbai',
-        images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/classic-350.avif',
+            '/images/classic-350-interior-1.webp',
+            '/images/classic-350-interior-2.jpg'
+        ],
         location: 'Colaba, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 5,
@@ -235,7 +243,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1000,
         securityDeposit: 1500,
         city: 'Mumbai',
-        images: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/cb350h.avif',
+            '/images/cb350h-interior-1.jpg',
+            '/images/cb350h-interior-2.webp'
+        ],
         location: 'Dadar, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 4,
@@ -260,9 +272,10 @@ export const MOCK_VEHICLES = [
         securityDeposit: 12000,
         city: 'Mumbai',
         images: [
-            'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop'
+            '/images/sprinter-caravan.jpg',
+            '/images/sprinter-interior-1.png',
+            '/images/sprinter-interior-2.jpg',
+            '/images/sprinter-interior-3.jpg'
         ],
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 300,
@@ -1171,9 +1184,10 @@ export const MOCK_CARAVANS = [
         pricePerDay: 8000,
         amenities: ['Heating', 'Air Conditioning', 'Premium Bedding', 'Entertainment System', 'Kitchenette', 'Bathroom'],
         images: [
-            'https://images.unsplash.com/photo-1527626029342-39e4dfb89e71?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?q=80&w=1200&auto=format&fit=crop'
+            '/images/sprinter-caravan.jpg',
+            '/images/sprinter-interior-1.png',
+            '/images/sprinter-interior-2.jpg',
+            '/images/sprinter-interior-3.jpg'
         ],
         description1: 'The Mercedes Sprinter Caravan is the ultimate foundation for your home on wheels, offering a premium driving experience with unmatched reliability. Its agile handling and smooth suspension ensure a serene journey across the coastline.',
         description2: 'Inside, expect a sanctuary of comfort with ergonomic designs and high-quality finishes. Whether it is a coastal escape or a cross-country adventure, this van provides the perfect blend of luxury and freedom.',
