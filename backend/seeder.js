@@ -59,25 +59,47 @@ const seedData = async () => {
                 licenseNumber: 'TG-11-2023-2468135'
             },
             {
-                name: 'Dealer Premium Motors',
-                email: 'dealer@premiummotors.in',
+                name: 'Delhi Luxury Motors',
+                email: 'delhi.luxury@urbancruizo.in',
                 password: 'dealer123',
                 role: 'dealer',
-                verified: true
+                verified: true,
+                city: 'Delhi'
             },
             {
-                name: 'Dealer Mumbai Wheels',
-                email: 'dealer@mumbaiweels.in',
+                name: 'Capital City Wheels',
+                email: 'capital.wheels@urbancruizo.in',
                 password: 'dealer123',
                 role: 'dealer',
-                verified: true
+                verified: true,
+                city: 'Delhi'
+            },
+            {
+                name: 'Metro Auto House',
+                email: 'metro.auto@urbancruizo.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Delhi'
+            },
+            {
+                name: 'Mumbai Elite Wheels',
+                email: 'mumbai.elite@urbancruizo.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Mumbai'
             }
         ]);
 
-        const vehicles = MOCK_VEHICLES_DATA.map((vehicleData, index) => ({
-            ...vehicleData,
-            owner: index < 4 ? admin._id : (index < 8 ? users[4]._id : (index < 12 ? admin._id : users[5]._id))
-        }));
+        const dealers = users.filter(user => user.role === 'dealer');
+        const vehicles = MOCK_VEHICLES_DATA.map((vehicleData) => {
+            const cityDealer = dealers.find(d => d.city === vehicleData.city);
+            return {
+                ...vehicleData,
+                owner: cityDealer ? cityDealer._id : admin._id
+            };
+        });
 
         const createdVehicles = await Vehicle.insertMany(vehicles);
 
