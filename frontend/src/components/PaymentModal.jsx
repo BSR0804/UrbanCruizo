@@ -5,7 +5,7 @@ import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
-const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
+const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess, vehicleId }) => {
     const [step, setStep] = useState('method'); // method, processing, success
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
@@ -17,8 +17,22 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
 
             // 1. Create order on backend
             const { data: order } = await axios.post('payment/razorpay/order', {
-                amount: amount
+                amount: amount,
+                vehicleId: vehicleId // Pass vehicle ID for Sandbox/Demo detection
             });
+
+            // Handle Mock Success for Sandbox
+            if (order.mock) {
+                console.log("Sandbox checkout detected, simulating success...");
+                setTimeout(() => {
+                    setStep('success');
+                    setTimeout(() => {
+                        onPaymentSuccess();
+                        onClose();
+                    }, 2000);
+                }, 1500);
+                return;
+            }
 
             // 2. Configure Razorpay Options
             const options = {

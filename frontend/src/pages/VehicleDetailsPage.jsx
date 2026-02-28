@@ -454,6 +454,7 @@ const VehicleDetailsPage = () => {
                 isOpen={isPaymentModalOpen}
                 onClose={() => setIsPaymentModalOpen(false)}
                 amount={priceBreakdown?.total || 0}
+                vehicleId={id}
                 onPaymentSuccess={confirmBookingAfterPayment}
             />
         </div>

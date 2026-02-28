@@ -8,15 +8,28 @@ const crypto = require('crypto');
 // @desc    Create Razorpay Order
 // @route   POST /api/v1/payment/razorpay/order
 const createOrder = asyncHandler(async (req, res) => {
-    const { amount } = req.body;
+    const { amount, vehicleId } = req.body;
 
     if (!amount) {
         res.status(400);
         throw new Error('Amount is required to create a payment order');
     }
 
-    const key_id = process.env.RAZORPAY_KEY_ID;
-    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+    // --- SANDBOX MODE FOR MOCK VEHICLES ---
+    // If the ID is a mock ID (e.g. "1"), we simulate success for the demo.
+    if (vehicleId && String(vehicleId).length < 10) {
+        console.log(`[Sandbox] Simulating Razorpay order for mock vehicle: ${vehicleId}`);
+        return res.status(200).json({
+            id: `order_mock_${Date.now()}`,
+            amount: Math.round(Number(amount) * 100),
+            currency: 'INR',
+            status: 'created',
+            mock: true
+        });
+    }
+
+    const key_id = String(process.env.RAZORPAY_KEY_ID || '').trim();
+    const key_secret = String(process.env.RAZORPAY_KEY_SECRET || '').trim();
 
     if (!key_id || !key_secret || key_id === 'rzp_test_your_id') {
         console.error('CRITICAL: Razorpay keys missing or using dummy values.');
@@ -27,11 +40,10 @@ const createOrder = asyncHandler(async (req, res) => {
         return;
     }
 
-    // Diagnostic logging (Safely)
-    console.log(`[Diagnostic] Attempting Razorpay order. KeyID starts with: ${String(key_id).substring(0, 8)}...`);
-    console.log(`[Diagnostic] KeySecret length: ${String(key_secret).length}. First 3 chars: ${String(key_secret).substring(0, 3)}...`);
+    // Diagnostic logging
+    console.log(`[Diagnostic] Attempting Razorpay order. KeyID prefix: ${key_id.substring(0, 8)}`);
 
-    // Initialize Razorpay instance inside or ensure it's updated
+    // Initialize Razorpay instance
     const instance = new Razorpay({
         key_id: key_id,
         key_secret: key_secret,
@@ -51,7 +63,7 @@ const createOrder = asyncHandler(async (req, res) => {
         res.status(500).json({
             message: 'Error creating Razorpay order',
             details: error.description || error.message || 'Check your Razorpay credentials',
-            error: error // Send full error object for debugging in dev
+            error: error
         });
     }
 });

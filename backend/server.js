@@ -44,6 +44,11 @@ app.use((req, res, next) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
+    // Handle Mongoose CastError (Invalid IDs)
+    if (err.name === 'CastError' && err.kind === 'ObjectId') {
+        return res.status(404).json({ message: `Resource Not Found - Invalid ${err.path}` });
+    }
+
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
     console.error(`[Error] ${req.method} ${req.url}:`, err.message);
