@@ -1732,7 +1732,7 @@ export const FEATURES = [
     {
         title: 'Competitive Pricing',
         description: 'Best rental rates in the market with transparent, no-hidden-fees pricing.',
-        icon: '�'�'
+        icon: '💰'
     },
     {
         title: 'Flexible Booking',
