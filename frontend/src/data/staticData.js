@@ -833,6 +833,42 @@ export const MOCK_DEALERS = [
         description: 'Leading luxury car rental service in Delhi with premium fleet'
     },
     {
+        _id: 'dealer9',
+        name: 'Elite Wheels New Delhi',
+        city: 'Delhi',
+        location: 'Dwarka Sector 10',
+        phone: '+91-99887-76655',
+        email: 'contact@elitewheels.in',
+        rating: 4.8,
+        vehicleCount: 12,
+        image: 'https://images.unsplash.com/photo-1562519819-016930ada31b?q=80&w=1200&auto=format&fit=crop',
+        description: 'Exclusive luxury and sports car collection in the heart of Dwarka.'
+    },
+    {
+        _id: 'dealer10',
+        name: 'Capital Cruisers',
+        city: 'Delhi',
+        location: 'Saket District Centre',
+        phone: '+91-95544-33221',
+        email: 'saket@capitalcruisers.com',
+        rating: 4.6,
+        vehicleCount: 8,
+        image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop',
+        description: 'Premium sedan and SUV specialists serving South Delhi.'
+    },
+    {
+        _id: 'dealer11',
+        name: 'North Delhi Moto Hub',
+        city: 'Delhi',
+        location: 'Rohini Sector 7',
+        phone: '+91-91122-33445',
+        email: 'info@northdelhimoto.in',
+        rating: 4.5,
+        vehicleCount: 15,
+        image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=1200&auto=format&fit=crop',
+        description: 'The largest fleet of commuter and economy cars in North Delhi.'
+    },
+    {
         _id: 'dealer2',
         name: 'Mumbai Wheels Express',
         city: 'Mumbai',
