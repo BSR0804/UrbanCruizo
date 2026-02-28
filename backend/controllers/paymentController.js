@@ -13,6 +13,20 @@ const razorpay = new Razorpay({
 const createOrder = asyncHandler(async (req, res) => {
     const { amount } = req.body;
 
+    if (!amount) {
+        res.status(400);
+        throw new Error('Amount is required to create a payment order');
+    }
+
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+        console.error('CRITICAL: Razorpay keys missing from environment.');
+        res.status(500).json({
+            message: 'Razorpay keys not configured on server',
+            tip: 'Check Render/Backend environment variables for RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET'
+        });
+        return;
+    }
+
     const options = {
         amount: Math.round(amount * 100), // Amount in paise
         currency: 'INR',
@@ -23,8 +37,11 @@ const createOrder = asyncHandler(async (req, res) => {
         const order = await razorpay.orders.create(options);
         res.status(200).json(order);
     } catch (error) {
-        res.status(500);
-        throw new Error(error.message || 'Error creating Razorpay order');
+        console.error('Razorpay API Error:', error);
+        res.status(500).json({
+            message: 'Error creating Razorpay order',
+            details: error.description || error.message || 'Check your Razorpay credentials'
+        });
     }
 });
 
