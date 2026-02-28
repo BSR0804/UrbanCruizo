@@ -22,7 +22,12 @@ app.use(cors({
 app.use(express.json());
 
 // ================= ROUTES (V1) =================
-app.use("/api/v1", require("./routes/v1"));
+app.use("/api/v1/auth", require("./routes/authRoutes"));
+app.use("/api/v1/vehicles", require("./routes/vehicleRoutes"));
+app.use("/api/v1/bookings", require("./routes/bookingRoutes"));
+app.use("/api/v1/dealers", require("./routes/dealerRoutes"));
+app.use("/api/v1/caravans", require("./routes/caravanRoutes"));
+app.use("/api/v1/payment", require("./routes/paymentRoutes"));
 
 app.get("/", (req, res) => {
     res.send("CarawINN API is running...");
