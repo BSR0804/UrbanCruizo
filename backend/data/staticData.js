@@ -29,7 +29,7 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 3000,
         city: 'Delhi',
         images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/48542/swift-exterior-right-front-three-quarter-3.jpeg?q=75'],
-        location: 'Connaught Place, Delhi',
+        location: 'Karol Bagh, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
         mileage: '22.3',

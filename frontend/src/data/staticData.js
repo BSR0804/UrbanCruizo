@@ -74,7 +74,7 @@ export const MOCK_VEHICLES = [
             '/images/maruti-suzuki-swift-interior-1.jfif',
             '/images/maruti-suzuki-swift-interior-2.jpg'
         ],
-        location: 'Connaught Place, Delhi',
+        location: 'Karol Bagh, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
         mileage: '22.3',
@@ -961,7 +961,7 @@ export const MOCK_DEALERS = [
         _id: 'dealer_delhi_1',
         name: 'Delhi Luxury Motors',
         city: 'Delhi',
-        location: 'Connaught Place',
+        location: 'Karol Bagh',
         phone: '+91-98765-43210',
         email: 'delhi.luxury@urbancruizo.in',
         rating: 4.9,
