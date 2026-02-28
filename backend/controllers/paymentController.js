@@ -10,15 +10,20 @@ const crypto = require('crypto');
 const createOrder = asyncHandler(async (req, res) => {
     const { amount, vehicleId } = req.body;
 
+    // Log for debugging
+    console.log(`[Payment] Order Request: amount=${amount}, vehicleId=${vehicleId} (type: ${typeof vehicleId}, length: ${String(vehicleId).length})`);
+
     if (!amount) {
         res.status(400);
         throw new Error('Amount is required to create a payment order');
     }
 
     // --- SANDBOX MODE FOR MOCK VEHICLES ---
-    // If the ID is a mock ID (e.g. "1"), we simulate success for the demo.
-    if (vehicleId && String(vehicleId).length < 10) {
-        console.log(`[Sandbox] Simulating Razorpay order for mock vehicle: ${vehicleId}`);
+    // If the ID is a mock ID (e.g. "1") or NOT a valid MongoDB ObjectID, we simulate success.
+    const isMockId = !vehicleId || String(vehicleId).length < 10 || !mongoose.Types.ObjectId.isValid(vehicleId);
+
+    if (isMockId) {
+        console.log(`[Sandbox] Simulating SUCCESS for ID: ${vehicleId}`);
         return res.status(200).json({
             id: `order_mock_${Date.now()}`,
             amount: Math.round(Number(amount) * 100),
@@ -31,26 +36,22 @@ const createOrder = asyncHandler(async (req, res) => {
     const key_id = String(process.env.RAZORPAY_KEY_ID || '').trim();
     const key_secret = String(process.env.RAZORPAY_KEY_SECRET || '').trim();
 
-    if (!key_id || !key_secret || key_id === 'rzp_test_your_id') {
-        console.error('CRITICAL: Razorpay keys missing or using dummy values.');
-        res.status(500).json({
+    if (!key_id || !key_id.startsWith('rzp_test_')) {
+        console.error('CRITICAL: Razorpay keys missing or invalid in production environment.');
+        return res.status(500).json({
             message: 'Razorpay keys not configured correctly on server',
-            tip: 'Check Render/Backend environment variables for RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET'
+            tip: 'Check Render Dashboard for RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET',
+            debug: { keyIdUsed: key_id.substring(0, 10) + '...' }
         });
-        return;
     }
 
-    // Diagnostic logging
-    console.log(`[Diagnostic] Attempting Razorpay order. KeyID prefix: ${key_id.substring(0, 8)}`);
-
-    // Initialize Razorpay instance
     const instance = new Razorpay({
-        key_id: key_id,
-        key_secret: key_secret,
+        key_id,
+        key_secret,
     });
 
     const options = {
-        amount: Math.round(Number(amount) * 100), // Amount in paise
+        amount: Math.round(Number(amount) * 100), // paise
         currency: 'INR',
         receipt: `receipt_${Date.now()}`,
     };
@@ -63,7 +64,11 @@ const createOrder = asyncHandler(async (req, res) => {
         res.status(500).json({
             message: 'Error creating Razorpay order',
             details: error.description || error.message || 'Check your Razorpay credentials',
-            error: error
+            debug: {
+                receivedVehicleId: vehicleId,
+                sandboxTriggered: false,
+                keyIdUsed: key_id.substring(0, 10) + '...'
+            }
         });
     }
 });
