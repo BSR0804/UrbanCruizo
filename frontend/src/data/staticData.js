@@ -1131,7 +1131,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 20000,
         securityDeposit: 30000,
         city: 'Delhi',
-        images: ['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/mercedes-s-class.jpg',
+            '/images/mercedes-s-class-interior-1.jfif',
+            '/images/mercedes-s-class-interior-2.jfif'
+        ],
         location: 'Saket District Centre, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 60,
