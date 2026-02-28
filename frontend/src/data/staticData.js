@@ -130,7 +130,7 @@ export const MOCK_VEHICLES = [
         images: [
             '/images/i20.jpg',
             '/images/i20-interior-1.avif',
-            '/images/i20-interior-2.jpg'
+            '/images/i20-interior-3.jpg'
         ],
         location: 'South Delhi, Delhi',
         kmsLimitPerDay: 240,
