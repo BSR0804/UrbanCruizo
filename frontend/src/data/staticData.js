@@ -1102,7 +1102,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 18000,
         securityDeposit: 25000,
         city: 'Delhi',
-        images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1600&auto=format&fit=crop',
+            '/images/bmw-7-series-interior-1.jfif',
+            '/images/bmw-7-series-interior-2.jpg'
+        ],
         location: 'Saket District Centre, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 50,
