@@ -79,8 +79,8 @@ export const MOCK_VEHICLES = [
         extraKmCharge: 12,
         availability: true,
         rating: 4.5,
-        owner: 'dealer1',
-        dealerId: 'dealer1'
+        owner: 'dealer_delhi_1',
+        dealerId: 'dealer_delhi_1'
     },
     {
         _id: '2',
@@ -107,8 +107,8 @@ export const MOCK_VEHICLES = [
         extraKmCharge: 18,
         availability: true,
         rating: 4.7,
-        owner: 'dealer1',
-        dealerId: 'dealer1'
+        owner: 'dealer_delhi_1',
+        dealerId: 'dealer_delhi_1'
     },
     {
         _id: '3',
@@ -131,8 +131,8 @@ export const MOCK_VEHICLES = [
         extraKmCharge: 10,
         availability: true,
         rating: 4.3,
-        owner: 'dealer1',
-        dealerId: 'dealer1'
+        owner: 'dealer_delhi_1',
+        dealerId: 'dealer_delhi_1'
     },
     // Mumbai Fleet - dealer2
     {
