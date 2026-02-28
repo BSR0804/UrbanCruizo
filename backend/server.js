@@ -21,12 +21,12 @@ app.use(cors({
 // Body parser
 app.use(express.json());
 
-// ================= ROUTES =================
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/vehicles", require("./routes/vehicleRoutes"));
-app.use("/api/bookings", require("./routes/bookingRoutes"));
-app.use("/api/dealers", require("./routes/dealerRoutes"));
-app.use("/api/caravans", require("./routes/caravanRoutes"));
+// ================= ROUTES (V1) =================
+app.use("/api/v1/auth", require("./routes/authRoutes"));
+app.use("/api/v1/vehicles", require("./routes/vehicleRoutes"));
+app.use("/api/v1/bookings", require("./routes/bookingRoutes"));
+app.use("/api/v1/dealers", require("./routes/dealerRoutes"));
+app.use("/api/v1/caravans", require("./routes/caravanRoutes"));
 
 app.get("/", (req, res) => {
     res.send("CarawINN API is running...");
