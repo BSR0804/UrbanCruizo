@@ -502,7 +502,11 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 12000,
         city: 'Delhi',
         dealerName: 'Capital City Wheels',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/a6-exterior-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/audi-a6.jpg',
+            '/images/audi-a6-interior-1.jpg',
+            '/images/audi-a6-interior-2.jpg'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 22,
