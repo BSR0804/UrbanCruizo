@@ -18,7 +18,8 @@ import {
     Wrench,
     Bluetooth,
     MapPin,
-    Navigation
+    Navigation,
+    AlertCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from '../utils/api';
