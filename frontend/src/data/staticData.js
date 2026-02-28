@@ -99,9 +99,9 @@ export const MOCK_VEHICLES = [
         securityDeposit: 5000,
         city: 'Delhi',
         images: [
-            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop'
+            '/images/thar.jpg',
+            '/images/thar-interior-1.jpg',
+            '/images/thar-interior-2.jpeg'
         ],
         location: 'Aerocity, Delhi',
         kmsLimitPerDay: 200,

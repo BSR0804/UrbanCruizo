@@ -72,7 +72,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 4500,
         securityDeposit: 5000,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/40087/thar-exterior-right-front-three-quarter-11.jpeg?q=75'],
+        images: [
+            '/images/thar.jpg',
+            '/images/thar-interior-1.jpg',
+            '/images/thar-interior-2.jpeg'
+        ],
         location: 'Aerocity, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 18,
