@@ -1,11 +1,18 @@
 const asyncHandler = require('express-async-handler');
 const Booking = require('../models/Booking');
 const Vehicle = require('../models/Vehicle');
+const mongoose = require('mongoose');
 
 // @desc    Create new booking (With GST and Deposit Logic)
 // @route   POST /api/bookings
 const createBooking = asyncHandler(async (req, res) => {
     const { vehicleId, startDate, endDate, rentalType } = req.body; // rentalType: 'Hourly' | 'Daily'
+
+    if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
+        res.status(400);
+        throw new Error('Invalid Vehicle ID. Mock vehicles cannot be booked in the database.');
+    }
+
     const vehicle = await Vehicle.findById(vehicleId);
 
     if (!vehicle) {
