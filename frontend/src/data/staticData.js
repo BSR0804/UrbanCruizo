@@ -69,7 +69,7 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1800,
         securityDeposit: 3000,
         city: 'Delhi',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1200&auto=format&fit=crop'],
+        images: ['/images/maruti-suzuki-swift.jfif'],
         location: 'Connaught Place, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
