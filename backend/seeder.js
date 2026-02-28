@@ -64,7 +64,8 @@ const seedData = async () => {
                 password: 'dealer123',
                 role: 'dealer',
                 verified: true,
-                city: 'Delhi'
+                city: 'Delhi',
+                location: 'Karol Bagh'
             },
             {
                 name: 'Capital City Wheels',
@@ -72,7 +73,8 @@ const seedData = async () => {
                 password: 'dealer123',
                 role: 'dealer',
                 verified: true,
-                city: 'Delhi'
+                city: 'Delhi',
+                location: 'Dwarka Sector 10'
             },
             {
                 name: 'Metro Auto House',
@@ -80,7 +82,8 @@ const seedData = async () => {
                 password: 'dealer123',
                 role: 'dealer',
                 verified: true,
-                city: 'Delhi'
+                city: 'Delhi',
+                location: 'Saket District Centre'
             },
             {
                 name: 'Mumbai Elite Wheels',

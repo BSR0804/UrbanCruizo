@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
     password: { type: String }, // Optional for Google Auth users
     role: { type: String, default: 'user', enum: ['user', 'admin', 'dealer'] },
     city: { type: String }, // For dealers/users location
+    location: { type: String }, // For specific dealer address (e.g., Dwarka Sec-10)
     licenseNumber: { type: String },
     aadhaarNumber: { type: String },
     licenseImage: { type: String },

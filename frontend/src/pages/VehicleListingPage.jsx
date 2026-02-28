@@ -201,7 +201,7 @@ const VehicleListingPage = () => {
                                     <div className="space-y-3 mb-8 flex-grow">
                                         <div className="flex items-center gap-3 text-textSecondary text-sm">
                                             <Map className="w-4 h-4 text-primary/60" />
-                                            {dealer.city || 'Location not specified'}
+                                            {(dealer.location && dealer.city) ? (dealer.location.includes(dealer.city) ? dealer.location : `${dealer.location}, ${dealer.city}`) : (dealer.location || dealer.city || 'Location not specified')}
                                         </div>
                                         <div className="flex items-center gap-3 text-textSecondary text-sm">
                                             <Phone className="w-4 h-4 text-primary/60" />
