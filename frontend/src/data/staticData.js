@@ -858,7 +858,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 5000,
         securityDeposit: 8000,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/a-class-limousine-exterior-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/mercedes-a-class.avif',
+            '/images/mercedes-a-class-interior-1.avif',
+            '/images/mercedes-a-class-interior-2.jfif'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 20,
