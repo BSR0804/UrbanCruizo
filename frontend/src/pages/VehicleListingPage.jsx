@@ -37,7 +37,15 @@ const VehicleListingPage = () => {
         setLoading(true);
         try {
             const { data } = await axios.get(`dealers${city ? `?city=${city}` : ''}`);
-            setDealers(data);
+            if (data.length === 0) {
+                // If DB is empty, use mock data as fallback
+                const filteredMockDealers = city
+                    ? MOCK_DEALERS.filter(dealer => dealer.city === city)
+                    : MOCK_DEALERS;
+                setDealers(filteredMockDealers);
+            } else {
+                setDealers(data);
+            }
             setLoading(false);
         } catch (error) {
             console.error('Failed to fetch dealers:', error);
