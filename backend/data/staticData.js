@@ -475,7 +475,11 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 3000,
         city: 'Delhi',
         dealerName: 'Capital City Wheels',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/interceptor-650-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/interceptor-650.avif',
+            '/images/interceptor-650-interior-1.avif',
+            '/images/interceptor-650-interior-2.jpg'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 150,
         extraKmCharge: 10,
