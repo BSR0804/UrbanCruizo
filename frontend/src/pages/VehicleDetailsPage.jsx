@@ -12,7 +12,12 @@ import {
     Settings2,
     Users,
     Gauge,
-    IndianRupee
+    IndianRupee,
+    Zap,
+    Smartphone,
+    Wind,
+    Wrench,
+    Bluetooth
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from '../utils/api';
@@ -247,26 +252,59 @@ const VehicleDetailsPage = () => {
                             </div>
                         )}
 
-                        {/* Description & Features */}
-                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8">
-                            <h3 className="text-2xl font-serif font-bold text-white mb-4">About this {vehicle.type}</h3>
-                            <p className="text-textSecondary leading-relaxed mb-6">
-                                Experience the pinnacle of automotive excellence with this {vehicle.year} {vehicle.brand} {vehicle.model}.
-                                Perfectly maintained and fully equipped for your next journey through {vehicle.city}.
+                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8 shadow-inner">
+                            <h3 className="text-2xl font-serif font-bold text-white mb-4">Inside the Experience</h3>
+                            <p className="text-textSecondary leading-relaxed mb-4">
+                                This premium {vehicle.brand} {vehicle.model} embodies ultimate refinement and performance. Meticulously maintained to the highest standards, it offers an unparalleled driving experience for both city commutes and scenic long-drives across {vehicle.city}.
+                            </p>
+                            <p className="text-textSecondary leading-relaxed mb-8">
+                                Designed with the modern traveler in mind, this {vehicle.year} edition features advanced safety systems, intuitive controls, and a suite of smart connectivity options. Whether you're heading for a business meeting or a weekend getaway, expect nothing less than absolute comfort and reliability.
                             </p>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-lg bg-green-500/10 text-green-500">
-                                        <ShieldCheck className="w-5 h-5" />
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-green-500/10 text-green-500 group-hover:bg-green-500 group-hover:text-background transition-colors duration-300">
+                                            <ShieldCheck className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">Fully Insured</span>
                                     </div>
-                                    <span className="text-sm text-textPrimary">Fully Insured</span>
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-background transition-colors duration-300">
+                                            <Zap className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">GPS Tracking</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-                                        <Info className="w-5 h-5" />
+
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-purple-500/10 text-purple-500 group-hover:bg-purple-500 group-hover:text-background transition-colors duration-300">
+                                            <Smartphone className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">USB Charging</span>
                                     </div>
-                                    <span className="text-sm text-textPrimary">GPS Tracking</span>
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-pink-500/10 text-pink-500 group-hover:bg-pink-500 group-hover:text-background transition-colors duration-300">
+                                            <Bluetooth className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">Bluetooth</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500 group-hover:bg-orange-500 group-hover:text-background transition-colors duration-300">
+                                            <Wind className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">Climate Ctrl</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 group">
+                                        <div className="p-2 rounded-xl bg-red-500/10 text-red-500 group-hover:bg-red-500 group-hover:text-background transition-colors duration-300">
+                                            <Wrench className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm text-textPrimary font-medium">24/7 Road Aid</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
