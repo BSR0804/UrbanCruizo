@@ -18,6 +18,7 @@ CarawINN is a high-performance, scalable MERN (MongoDB, Express.js, React.js, No
 - **Database:** MongoDB with Mongoose ODM
 - **Authentication:** JWT (JSON Web Tokens) with custom middleware
 - **Security:** Bcrypt.js for password hashing, CORS protection, Input sanitization
+- **Payment Gateway:** Razorpay Integration for secure transactions
 - **Documentation:** Postman API Collection (Included)
 
 ### Frontend (Supportive UI)
@@ -40,6 +41,7 @@ CarawINN is a high-performance, scalable MERN (MongoDB, Express.js, React.js, No
 - **Full CRUD Operations:** Admins/Dealers can Create, Read, Update, and Delete vehicle listings.
 - **Advanced Filtering:** Search vehicles by city, type, fuel type, price, and more.
 - **Booking System:** Users can book vehicles with real-time availability checks.
+- **Razorpay Integration:** Secure end-to-end payment flow with order creation and signature verification.
 
 ### 🛡️ Security & Scalability
 - **Secure Token Handling:** JWT stored securely and verified via middleware.
@@ -120,6 +122,8 @@ The application will be available at `http://localhost:5173`.
 | `DELETE` | `/api/v1/vehicles/:id` | Delete a vehicle listing | Admin/Dealer |
 | `POST` | `/api/v1/bookings` | Create a new booking | User |
 | `GET` | `/api/v1/bookings/my` | Get current user's bookings | User |
+| `POST` | `/api/v1/payment/razorpay/order` | Create Razorpay Order | User |
+| `POST` | `/api/v1/payment/razorpay/verify` | Verify Razorpay Signature | User |
 
 ---
 
