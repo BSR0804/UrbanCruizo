@@ -108,7 +108,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 4000,
         securityDeposit: 5000,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/132564/seltos-exterior-right-front-three-quarter-3.jpeg?q=75'],
+        images: [
+            '/images/seltos.avif',
+            '/images/seltos-interior-1.avif',
+            '/images/seltos-interior-2.avif'
+        ],
         location: 'East Delhi, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 16,
@@ -357,7 +361,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 4000,
         securityDeposit: 6000,
         city: 'Hyderabad',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/101487/innova-crysta-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/innova-crysta.jpg',
+            '/images/innova-crysta-interior-1.webp',
+            '/images/innova-crysta-interior-2.jfif'
+        ],
         location: 'Hitech City, Hyderabad',
         kmsLimitPerDay: 280,
         extraKmCharge: 16,

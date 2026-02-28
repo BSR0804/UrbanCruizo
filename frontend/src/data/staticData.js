@@ -446,7 +446,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4000,
         securityDeposit: 6000,
         city: 'Hyderabad',
-        images: ['https://images.unsplash.com/photo-1605559424843-9e4c3ca4b7f7?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/innova-crysta.jpg',
+            '/images/innova-crysta-interior-1.webp',
+            '/images/innova-crysta-interior-2.jfif'
+        ],
         location: 'Hitech City, Hyderabad',
         kmsLimitPerDay: 280,
         extraKmCharge: 16,
@@ -470,7 +474,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4000,
         securityDeposit: 5000,
         city: 'Hyderabad',
-        images: ['https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/seltos.avif',
+            '/images/seltos-interior-1.avif',
+            '/images/seltos-interior-2.avif'
+        ],
         location: 'HITEC City, Hyderabad',
         kmsLimitPerDay: 240,
         extraKmCharge: 16,
@@ -480,30 +488,7 @@ export const MOCK_VEHICLES = [
         owner: 'dealer4',
         dealerId: 'dealer4'
     },
-    {
-        _id: '16',
-        title: 'Eco-Friendly Solar Caravan',
-        type: 'caravan',
-        category: 'standard',
-        brand: 'Solar Innovations',
-        model: 'Green Explorer',
-        year: 2023,
-        transmission: 'Manual',
-        fuelType: 'Diesel',
-        seats: 5,
-        pricePerHour: 400,
-        pricePerDay: 5500,
-        securityDeposit: 8000,
-        city: 'Hyderabad',
-        images: ['https://images.unsplash.com/photo-1518391846015-55a9cc003b25?q=80&w=1200&auto=format&fit=crop'],
-        location: 'Hitech City, Hyderabad',
-        kmsLimitPerDay: 300,
-        extraKmCharge: 18,
-        availability: true,
-        rating: 4.6,
-        owner: 'dealer4',
-        dealerId: 'dealer4'
-    },
+
     // Chennai Fleet - dealer5
     {
         _id: '17',
