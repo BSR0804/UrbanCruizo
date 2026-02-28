@@ -825,53 +825,42 @@ export const MOCK_CARAVANS = [
 
 export const MOCK_DEALERS = [
     {
-        _id: 'dealer1',
-        name: 'Premium Motors Delhi',
+        _id: 'dealer_delhi_1',
+        name: 'Delhi Luxury Motors',
         city: 'Delhi',
         location: 'Connaught Place',
         phone: '+91-98765-43210',
-        email: 'dealer@premiummotors.in',
-        rating: 4.7,
-        vehicleCount: 3,
+        email: 'delhi.luxury@urbancruizo.in',
+        rating: 4.9,
+        vehicleCount: 8,
         image: 'https://images.unsplash.com/photo-1486973351329-e5c2c3e0c2f0?q=80&w=1200&auto=format&fit=crop',
-        description: 'Leading luxury car rental service in Delhi with premium fleet'
+        description: 'Exquisite luxury fleet including Bentley, BMW, and Audi.'
     },
     {
-        _id: 'dealer9',
-        name: 'Elite Wheels New Delhi',
+        _id: 'dealer_delhi_2',
+        name: 'Capital City Wheels',
         city: 'Delhi',
         location: 'Dwarka Sector 10',
         phone: '+91-99887-76655',
-        email: 'contact@elitewheels.in',
+        email: 'capital.wheels@urbancruizo.in',
         rating: 4.8,
         vehicleCount: 12,
         image: 'https://images.unsplash.com/photo-1562519819-016930ada31b?q=80&w=1200&auto=format&fit=crop',
-        description: 'Exclusive luxury and sports car collection in the heart of Dwarka.'
+        description: 'Premium sedans and sports cars for the ultimate road experience.'
     },
     {
-        _id: 'dealer10',
-        name: 'Capital Cruisers',
+        _id: 'dealer_delhi_3',
+        name: 'Metro Auto House',
         city: 'Delhi',
         location: 'Saket District Centre',
         phone: '+91-95544-33221',
-        email: 'saket@capitalcruisers.com',
-        rating: 4.6,
-        vehicleCount: 8,
-        image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop',
-        description: 'Premium sedan and SUV specialists serving South Delhi.'
-    },
-    {
-        _id: 'dealer11',
-        name: 'North Delhi Moto Hub',
-        city: 'Delhi',
-        location: 'Rohini Sector 7',
-        phone: '+91-91122-33445',
-        email: 'info@northdelhimoto.in',
-        rating: 4.5,
+        email: 'metro.auto@urbancruizo.in',
+        rating: 4.7,
         vehicleCount: 15,
-        image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=1200&auto=format&fit=crop',
-        description: 'The largest fleet of commuter and economy cars in North Delhi.'
+        image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop',
+        description: 'The largest selection of SUVs and premium commuters in South Delhi.'
     },
+
     {
         _id: 'dealer2',
         name: 'Mumbai Wheels Express',
