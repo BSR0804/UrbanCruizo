@@ -866,9 +866,10 @@ export const MOCK_VEHICLES = [
         securityDeposit: 8000,
         city: 'Delhi',
         images: [
-            '/images/mercedes-a-class.avif',
+            '/images/mercedies-benz-a-class-5.jpg',
             '/images/mercedes-a-class-interior-1.avif',
-            '/images/mercedes-a-class-interior-2.jfif'
+            '/images/mercedes-a-class-interior-2.jfif',
+            '/images/mercedes-a-class-interior-4.avif'
         ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 200,
