@@ -504,7 +504,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 2300,
         securityDeposit: 3500,
         city: 'Chennai',
-        images: ['https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/honda-city.avif',
+            '/images/honda-city-interior-1.avif',
+            '/images/honda-city-interior-2.avif'
+        ],
         location: 'T Nagar, Chennai',
         kmsLimitPerDay: 240,
         extraKmCharge: 10,
@@ -796,7 +800,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 2500,
         securityDeposit: 3000,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/city-exterior-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/honda-city.avif',
+            '/images/honda-city-interior-1.avif',
+            '/images/honda-city-interior-2.avif'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
