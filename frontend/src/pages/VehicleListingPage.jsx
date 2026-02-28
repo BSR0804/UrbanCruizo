@@ -39,10 +39,13 @@ const VehicleListingPage = () => {
             const { data } = await axios.get(`dealers${city ? `?city=${city}` : ''}`);
             if (data.length === 0) {
                 // If DB is empty, use mock data as fallback
-                const filteredMockDealers = city
-                    ? MOCK_DEALERS.filter(dealer => dealer.city === city)
+                const normalizedCity = city ? city.charAt(0).toUpperCase() + city.slice(1).toLowerCase() : '';
+                const filteredMockDealers = normalizedCity
+                    ? MOCK_DEALERS.filter(dealer => dealer.city.toLowerCase() === normalizedCity.toLowerCase())
                     : MOCK_DEALERS;
-                setDealers(filteredMockDealers);
+
+                // Final safety: even if normalized filter fails, show something
+                setDealers(filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS);
             } else {
                 setDealers(data);
             }
@@ -50,10 +53,11 @@ const VehicleListingPage = () => {
         } catch (error) {
             console.error('Failed to fetch dealers:', error);
             // Fallback to mock data
-            const filteredMockDealers = city
-                ? MOCK_DEALERS.filter(dealer => dealer.city === city)
+            const normalizedCity = city ? city.charAt(0).toUpperCase() + city.slice(1).toLowerCase() : '';
+            const filteredMockDealers = normalizedCity
+                ? MOCK_DEALERS.filter(dealer => dealer.city.toLowerCase() === normalizedCity.toLowerCase())
                 : MOCK_DEALERS;
-            setDealers(filteredMockDealers);
+            setDealers(filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS);
             setLoading(false);
         }
     };
