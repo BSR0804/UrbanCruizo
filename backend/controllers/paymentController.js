@@ -27,6 +27,10 @@ const createOrder = asyncHandler(async (req, res) => {
         return;
     }
 
+    // Diagnostic logging (Safely)
+    console.log(`[Diagnostic] Attempting Razorpay order. KeyID starts with: ${String(key_id).substring(0, 8)}...`);
+    console.log(`[Diagnostic] KeySecret length: ${String(key_secret).length}. First 3 chars: ${String(key_secret).substring(0, 3)}...`);
+
     // Initialize Razorpay instance inside or ensure it's updated
     const instance = new Razorpay({
         key_id: key_id,

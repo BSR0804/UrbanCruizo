@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Vehicle = require('../models/Vehicle');
 const Booking = require('../models/Booking');
+const mongoose = require('mongoose');
 
 // @desc    Fetch all vehicles with filters (Including City)
 const getVehicles = asyncHandler(async (req, res) => {
@@ -19,7 +20,14 @@ const getVehicles = asyncHandler(async (req, res) => {
 
     const filter = { ...keyword };
     if (city) filter.city = city;
-    if (req.query.owner) filter.owner = req.query.owner;
+    if (req.query.owner) {
+        if (mongoose.Types.ObjectId.isValid(req.query.owner)) {
+            filter.owner = req.query.owner;
+        } else {
+            // If owner is not a valid ObjectId, we return empty vehicles safely
+            return res.json({ vehicles: [], page, pages: 0 });
+        }
+    }
     if (req.query.type) filter.type = req.query.type;
     if (req.query.category) filter.category = req.query.category;
     if (req.query.fuelType) filter.fuelType = req.query.fuelType;
@@ -39,6 +47,10 @@ const getVehicles = asyncHandler(async (req, res) => {
 
 // @desc    Get single vehicle details
 const getVehicleById = asyncHandler(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.status(404);
+        throw new Error('Vehicle not found (Invalid ID)');
+    }
     const vehicle = await Vehicle.findById(req.params.id);
     if (vehicle) {
         res.json(vehicle);
