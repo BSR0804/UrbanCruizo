@@ -111,14 +111,14 @@ The application will be available at `http://localhost:5173`.
 
 | Method | Endpoint | Description | Access |
 | :--- | :---- | :--- | :--- |
-| `POST` | `/api/auth/register` | Register a new user | Public |
-| `POST` | `/api/auth/login` | Login and receive JWT | Public |
-| `GET` | `/api/vehicles` | List all vehicles with filters | Public |
-| `POST` | `/api/vehicles` | Add a new vehicle | Admin/Dealer |
-| `PUT` | `/api/vehicles/:id` | Update vehicle details | Admin/Dealer |
-| `DELETE` | `/api/vehicles/:id` | Delete a vehicle listing | Admin/Dealer |
-| `POST` | `/api/bookings` | Create a new booking | User |
-| `GET` | `/api/bookings/my` | Get current user's bookings | User |
+| `POST` | `/api/v1/auth/register` | Register a new user | Public |
+| `POST` | `/api/v1/auth/login` | Login and receive JWT | Public |
+| `GET` | `/api/v1/vehicles` | List all vehicles with filters | Public |
+| `POST` | `/api/v1/vehicles` | Add a new vehicle | Admin/Dealer |
+| `PUT` | `/api/v1/vehicles/:id` | Update vehicle details | Admin/Dealer |
+| `DELETE` | `/api/v1/vehicles/:id` | Delete a vehicle listing | Admin/Dealer |
+| `POST` | `/api/v1/bookings` | Create a new booking | User |
+| `GET` | `/api/v1/bookings/my` | Get current user's bookings | User |
 
 ---
 
