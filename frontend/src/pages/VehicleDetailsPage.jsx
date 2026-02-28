@@ -304,40 +304,7 @@ const VehicleDetailsPage = () => {
                             </div>
                         </div>
 
-                        {/* Map Section */}
-                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8 shadow-inner">
-                            <h3 className="text-2xl font-serif font-bold text-white mb-6 flex items-center gap-3">
-                                <div className="p-3 rounded-xl bg-orange-500/10 text-orange-500">
-                                    <MapPin className="w-5 h-5" />
-                                </div>
-                                Dealer Location
-                            </h3>
-                            <div className="w-full h-72 rounded-2xl overflow-hidden border border-gray-700 shadow-lg relative group">
-                                <iframe
-                                    title="Dealer Location"
-                                    width="100%"
-                                    height="100%"
-                                    frameBorder="0"
-                                    scrolling="no"
-                                    marginHeight="0"
-                                    marginWidth="0"
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(vehicle.location || 'Karol Bagh, Delhi')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                                    className="contrast-[1.1] grayscale-[20%] brightness-90 w-full h-full"
-                                    style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
-                                ></iframe>
-                                <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/5 rounded-2xl"></div>
-                            </div>
-                            <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div className="flex items-center gap-3 text-textSecondary text-sm">
-                                    <MapPin className="w-4 h-4 text-primary" />
-                                    <span>{vehicle.location || 'Karol Bagh, Delhi'}</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase cursor-pointer hover:underline">
-                                    <Navigation className="w-3 h-3" />
-                                    Get Directions
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                     {/* Right: Details & Booking Section */}
@@ -527,6 +494,40 @@ const VehicleDetailsPage = () => {
                             </button>
                             {!user && <p className="text-xs text-center text-red-500 font-bold">Login required to book.</p>}
                         </form>
+
+                        {/* Map Section */}
+                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl overflow-hidden">
+                            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                                <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-500">
+                                    <MapPin className="w-5 h-5" />
+                                </div>
+                                Dealer Location
+                            </h3>
+                            <div className="w-full h-64 rounded-2xl overflow-hidden border border-gray-800 shadow-lg relative group">
+                                <iframe
+                                    title="Dealer Location"
+                                    width="100%"
+                                    height="100%"
+                                    frameBorder="0"
+                                    scrolling="no"
+                                    marginHeight="0"
+                                    marginWidth="0"
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(vehicle.location || 'Karol Bagh, Delhi')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    className="w-full h-full"
+                                    style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
+                                ></iframe>
+                            </div>
+                            <div className="mt-6 space-y-3">
+                                <div className="flex items-start gap-3 text-textSecondary text-sm">
+                                    <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <span className="leading-relaxed">{vehicle.location || 'Karol Bagh, Delhi'}</span>
+                                </div>
+                                <button className="w-full mt-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors">
+                                    <Navigation className="w-3 h-3" />
+                                    Get Directions on Google Maps
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
