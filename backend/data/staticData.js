@@ -32,6 +32,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Connaught Place, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
+        mileage: '22.3',
         availability: true,
         rating: 4.5
     },
@@ -53,6 +54,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'South Delhi, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 10,
+        mileage: '20.3',
         availability: true,
         rating: 4.3
     },
@@ -74,6 +76,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Aerocity, Delhi',
         kmsLimitPerDay: 200,
         extraKmCharge: 18,
+        mileage: '15.2',
         availability: true,
         rating: 4.7
     },
@@ -95,6 +98,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'East Delhi, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 16,
+        mileage: '17.0',
         availability: true,
         rating: 4.4
     },
@@ -117,6 +121,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 200,
         extraKmCharge: 15,
+        mileage: '312 km/range',
         availability: true,
         rating: 4.6
     },
@@ -138,6 +143,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Bandra, Mumbai',
         kmsLimitPerDay: 240,
         extraKmCharge: 8,
+        mileage: '22.5',
         availability: true,
         rating: 4.2
     },
@@ -159,6 +165,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Colaba, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 5,
+        mileage: '36.0',
         availability: true,
         rating: 4.4
     },
@@ -180,6 +187,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Dadar, Mumbai',
         kmsLimitPerDay: 150,
         extraKmCharge: 4,
+        mileage: '35.0',
         availability: true,
         rating: 4.3
     },
@@ -202,6 +210,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Indiranagar, Bangalore',
         kmsLimitPerDay: 240,
         extraKmCharge: 14,
+        mileage: '18.0',
         availability: true,
         rating: 4.5
     },
@@ -223,6 +232,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
+        mileage: '18.0',
         availability: true,
         rating: 4.6
     },
@@ -244,6 +254,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Koramangala, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 25,
+        mileage: '11.2',
         availability: true,
         rating: 4.8
     },
@@ -265,6 +276,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'MG Road, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 24,
+        mileage: '14.0',
         availability: true,
         rating: 4.7
     },
@@ -287,6 +299,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Hitech City, Hyderabad',
         kmsLimitPerDay: 280,
         extraKmCharge: 16,
+        mileage: '12.0',
         availability: true,
         rating: 4.6
     },
@@ -309,6 +322,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 20,
+        mileage: '11.0',
         availability: true,
         rating: 4.5
     },
@@ -330,6 +344,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Juhu Beach, Mumbai',
         kmsLimitPerDay: 300,
         extraKmCharge: 25,
+        mileage: '12.0',
         availability: true,
         rating: 4.8
     },
@@ -351,6 +366,7 @@ const MOCK_VEHICLES_DATA = [
         location: 'Aerocity, Delhi',
         kmsLimitPerDay: 300,
         extraKmCharge: 18,
+        mileage: 'Solar Eco',
         availability: true,
         rating: 4.6
     }

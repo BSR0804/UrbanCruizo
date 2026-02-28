@@ -296,7 +296,7 @@ const VehicleDetailsPage = () => {
                                 { icon: Fuel, label: 'Fuel', value: vehicle.fuelType },
                                 { icon: Settings2, label: 'Transmission', value: vehicle.transmission },
                                 { icon: Users, label: 'Capacity', value: `${vehicle.seats} Seats` },
-                                { icon: Gauge, label: 'KM Limit', value: `${vehicle.kmsLimitPerDay} km/day` }
+                                { icon: Gauge, label: 'Mileage', value: `${vehicle.mileage || '22.3'} km/ltr` }
                             ].map((spec, i) => (
                                 <div key={i} className="bg-surface/50 border border-gray-800 p-4 rounded-2xl flex items-center gap-4">
                                     <div className="p-3 rounded-xl bg-primary/10 text-primary">

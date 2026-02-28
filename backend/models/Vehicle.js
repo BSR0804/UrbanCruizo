@@ -17,6 +17,7 @@ const vehicleSchema = mongoose.Schema({
     images: [{ type: String }],
     kmsLimitPerDay: { type: Number, default: 240 }, // Indian standard
     extraKmCharge: { type: Number, default: 0 },
+    mileage: { type: String, default: '20.0' }, // km/ltr
     availability: { type: Boolean, default: true, required: true },
     rating: { type: Number, default: 0 },
     owner: {
