@@ -50,7 +50,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 1600,
         securityDeposit: 2500,
         city: 'Delhi',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/141116/i20-exterior-right-front-three-quarter-5.jpeg?q=75'],
+        images: [
+            '/images/i20.jpg',
+            '/images/i20-interior-1.avif',
+            '/images/i20-interior-2.jpg'
+        ],
         location: 'South Delhi, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 10,

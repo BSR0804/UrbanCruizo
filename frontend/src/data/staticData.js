@@ -127,7 +127,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1600,
         securityDeposit: 2500,
         city: 'Delhi',
-        images: ['https://images.unsplash.com/photo-1507818726519-40bda199fb16?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/i20.jpg',
+            '/images/i20-interior-1.avif',
+            '/images/i20-interior-2.jpg'
+        ],
         location: 'South Delhi, Delhi',
         kmsLimitPerDay: 240,
         extraKmCharge: 10,
