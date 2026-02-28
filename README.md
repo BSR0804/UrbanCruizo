@@ -130,5 +130,5 @@ The application will be available at `http://localhost:5173`.
 
 ---
 
-**Developed for Backend Developer Internship Assignment.**  
-**Submitted by BSR0804**
+**Backend Developer Internship Assignment.**  
+**Submitted by Bhaskar Shamo Ray**
