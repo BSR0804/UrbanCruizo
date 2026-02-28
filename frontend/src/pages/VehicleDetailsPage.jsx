@@ -84,6 +84,10 @@ const VehicleDetailsPage = () => {
 
         if (rentalType === 'Hourly') {
             const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+            if (hours > 24) {
+                setPriceBreakdown({ error: 'Hourly rental is capped at 24 hours. Please switch to Daily mode for longer trips.' });
+                return;
+            }
             baseFare = hours * (vehicle.pricePerHour || 0);
         } else {
             const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
@@ -105,6 +109,11 @@ const VehicleDetailsPage = () => {
         if (!user) {
             toast.error('Please login to book a vehicle');
             navigate('/login');
+            return;
+        }
+
+        if (priceBreakdown?.error) {
+            toast.error(priceBreakdown.error);
             return;
         }
 
@@ -487,7 +496,14 @@ const VehicleDetailsPage = () => {
                                 </div>
                             </div>
 
-                            {priceBreakdown ? (
+                            {priceBreakdown?.error ? (
+                                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start gap-3">
+                                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                                    <p className="text-[11px] text-red-200/70 leading-relaxed font-medium">
+                                        {priceBreakdown.error}
+                                    </p>
+                                </div>
+                            ) : priceBreakdown ? (
                                 <motion.div
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
