@@ -25,8 +25,8 @@ const AdminPage = () => {
 
     const fetchData = async () => {
         try {
-            const bookingsRes = await axios.get('/bookings');
-            const vehiclesRes = await axios.get('/vehicles?limit=1000'); // Get all for admin
+            const bookingsRes = await axios.get('bookings');
+            const vehiclesRes = await axios.get('vehicles?limit=1000'); // Get all for admin
             setBookings(bookingsRes.data);
             setVehicles(vehiclesRes.data.vehicles);
         } catch (error) {
@@ -42,7 +42,7 @@ const AdminPage = () => {
     const handleDeleteVehicle = async (id) => {
         if (window.confirm('Are you sure you want to delete this vehicle?')) {
             try {
-                await axios.delete(`/vehicles/${id}`);
+                await axios.delete(`vehicles/${id}`);
                 toast.success('Vehicle deleted successfully');
                 fetchData();
             } catch (error) {
@@ -56,7 +56,7 @@ const AdminPage = () => {
         try {
             const imagesArray = formData.images.split(',').map((item) => item.trim());
 
-            await axios.post('/vehicles', {
+            await axios.post('vehicles', {
                 ...formData,
                 images: imagesArray,
             });

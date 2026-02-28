@@ -8,7 +8,7 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const { data } = await axios.get('/bookings/mybookings');
+                const { data } = await axios.get('bookings/mybookings');
                 setBookings(data);
                 setLoading(false);
             } catch (error) {

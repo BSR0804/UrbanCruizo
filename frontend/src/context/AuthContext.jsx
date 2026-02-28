@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('/auth/login', { email, password });
+            const { data } = await axios.post('auth/login', { email, password });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         try {
-            const { data } = await axios.post('/auth/register', {
+            const { data } = await axios.post('auth/register', {
                 name,
                 email,
                 password,
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
     const googleLogin = async (token) => {
         try {
-            const { data } = await axios.post('/auth/google', { token });
+            const { data } = await axios.post('auth/google', { token });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
