@@ -1317,6 +1317,188 @@ export const MOCK_DEALERS = [
         vehicleCount: 9,
         image: 'https://images.unsplash.com/photo-1566023967268-de0be658b7a7?q=80&w=1200&auto=format&fit=crop',
         description: 'Pink City royal treatment for your journeys'
+    },
+
+    // ===== NEW DEALERS =====
+
+    // Mumbai +1
+    {
+        _id: 'dealer_mumbai_2',
+        name: 'Gateway Premium Rides',
+        city: 'Mumbai',
+        location: 'Bandra West',
+        phone: '+91-98200-11223',
+        email: 'gateway@premiumrides.in',
+        rating: 4.7,
+        vehicleCount: 6,
+        image: 'https://images.unsplash.com/photo-1567818735868-e71b99932e29?q=80&w=1200&auto=format&fit=crop',
+        description: 'Luxury and sports car specialists serving the heart of Mumbai since 2018.'
+    },
+
+    // Bangalore +4
+    {
+        _id: 'dealer_blr_2',
+        name: 'Namma Bengaluru Cars',
+        city: 'Bangalore',
+        location: 'Koramangala',
+        phone: '+91-98450-22334',
+        email: 'namma@bengalurucars.in',
+        rating: 4.6,
+        vehicleCount: 8,
+        image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop',
+        description: "Bangalore's favorite neighborhood car rental with a vast premium fleet."
+    },
+    {
+        _id: 'dealer_blr_3',
+        name: 'Silicon Valley Wheels',
+        city: 'Bangalore',
+        location: 'Whitefield',
+        phone: '+91-98450-33445',
+        email: 'sv@siliconvalleywheels.in',
+        rating: 4.5,
+        vehicleCount: 5,
+        image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?q=80&w=1200&auto=format&fit=crop',
+        description: "Tech park commuters' top choice for daily and weekend rentals."
+    },
+    {
+        _id: 'dealer_blr_4',
+        name: 'Garden City Motors',
+        city: 'Bangalore',
+        location: 'Jayanagar',
+        phone: '+91-98450-44556',
+        email: 'info@gardencitymotors.in',
+        rating: 4.8,
+        vehicleCount: 10,
+        image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1200&auto=format&fit=crop',
+        description: 'Family-friendly fleet with SUVs, sedans, and eco-friendly options.'
+    },
+    {
+        _id: 'dealer_blr_5',
+        name: 'MG Road Premium Autos',
+        city: 'Bangalore',
+        location: 'MG Road',
+        phone: '+91-98450-55667',
+        email: 'premium@mgroadautos.in',
+        rating: 4.9,
+        vehicleCount: 4,
+        image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop',
+        description: "Hand-picked luxury collection in the heart of Bangalore's business district."
+    },
+
+    // Hyderabad +1
+    {
+        _id: 'dealer_hyd_2',
+        name: 'Deccan Wheels',
+        city: 'Hyderabad',
+        location: 'Banjara Hills',
+        phone: '+91-99490-11223',
+        email: 'info@deccanwheels.in',
+        rating: 4.7,
+        vehicleCount: 7,
+        image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1200&auto=format&fit=crop',
+        description: "Hyderabad's premium ride partner for corporate and leisure travel."
+    },
+
+    // Pune +1
+    {
+        _id: 'dealer_pune_2',
+        name: 'Western Ghats Rides',
+        city: 'Pune',
+        location: 'Hinjewadi',
+        phone: '+91-98230-22334',
+        email: 'rides@westernghats.in',
+        rating: 4.6,
+        vehicleCount: 5,
+        image: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=1200&auto=format&fit=crop',
+        description: 'Perfect road-trip partner for weekend getaways to Lonavala and beyond.'
+    },
+
+    // Kolkata +2
+    {
+        _id: 'dealer_kol_2',
+        name: 'Howrah Bridge Motors',
+        city: 'Kolkata',
+        location: 'Howrah',
+        phone: '+91-98310-33445',
+        email: 'howrah@bridgemotors.in',
+        rating: 4.4,
+        vehicleCount: 6,
+        image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1200&auto=format&fit=crop',
+        description: 'Reliable fleet covering Howrah and greater Kolkata with 24/7 support.'
+    },
+    {
+        _id: 'dealer_kol_3',
+        name: 'Salt Lake City Cars',
+        city: 'Kolkata',
+        location: 'Salt Lake, Sector V',
+        phone: '+91-98310-44556',
+        email: 'saltlake@citycars.in',
+        rating: 4.5,
+        vehicleCount: 4,
+        image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop',
+        description: 'IT hub specialist with modern sedans and SUVs for tech professionals.'
+    },
+
+    // Jaipur +5
+    {
+        _id: 'dealer_jpr_2',
+        name: 'Rajputana Wheels',
+        city: 'Jaipur',
+        location: 'MI Road',
+        phone: '+91-98290-11223',
+        email: 'info@rajputanawheels.in',
+        rating: 4.6,
+        vehicleCount: 7,
+        image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1200&auto=format&fit=crop',
+        description: 'Royal Rajasthani hospitality meets modern luxury vehicle rentals.'
+    },
+    {
+        _id: 'dealer_jpr_3',
+        name: 'Amber Fort Rides',
+        city: 'Jaipur',
+        location: 'Amer Road',
+        phone: '+91-98290-22334',
+        email: 'rides@amberfort.in',
+        rating: 4.5,
+        vehicleCount: 5,
+        image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop',
+        description: "Heritage route specialists — the best way to explore Jaipur's forts and palaces."
+    },
+    {
+        _id: 'dealer_jpr_4',
+        name: 'Desert Safari Motors',
+        city: 'Jaipur',
+        location: 'Tonk Road',
+        phone: '+91-98290-33445',
+        email: 'desert@safarimotors.in',
+        rating: 4.7,
+        vehicleCount: 8,
+        image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop',
+        description: 'Rugged SUVs and 4x4s built for desert adventures and Rajasthan road trips.'
+    },
+    {
+        _id: 'dealer_jpr_5',
+        name: 'Hawa Mahal Car Rentals',
+        city: 'Jaipur',
+        location: 'Badi Chaupar',
+        phone: '+91-98290-44556',
+        email: 'info@hawamahalcars.in',
+        rating: 4.4,
+        vehicleCount: 6,
+        image: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?q=80&w=1200&auto=format&fit=crop',
+        description: 'Budget-friendly to premium — a car for every traveler in the Pink City.'
+    },
+    {
+        _id: 'dealer_jpr_6',
+        name: 'Nahargarh Drive Co',
+        city: 'Jaipur',
+        location: 'Vaishali Nagar',
+        phone: '+91-98290-55667',
+        email: 'drive@nahargarhco.in',
+        rating: 4.8,
+        vehicleCount: 4,
+        image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?q=80&w=1200&auto=format&fit=crop',
+        description: 'Curated luxury collection with chauffeur services for discerning travelers.'
     }
 ];
 
@@ -1536,7 +1718,7 @@ export const FEATURES = [
     {
         title: 'Competitive Pricing',
         description: 'Best rental rates in the market with transparent, no-hidden-fees pricing.',
-        icon: '💰'
+        icon: '�'�'
     },
     {
         title: 'Flexible Booking',

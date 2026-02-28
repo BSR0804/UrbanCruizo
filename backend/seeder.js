@@ -92,6 +92,132 @@ const seedData = async () => {
                 role: 'dealer',
                 verified: true,
                 city: 'Mumbai'
+            },
+            {
+                name: 'Gateway Premium Rides',
+                email: 'gateway@premiumrides.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Mumbai',
+                location: 'Bandra West'
+            },
+            {
+                name: 'Namma Bengaluru Cars',
+                email: 'namma@bengalurucars.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Bangalore',
+                location: 'Koramangala'
+            },
+            {
+                name: 'Silicon Valley Wheels',
+                email: 'sv@siliconvalleywheels.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Bangalore',
+                location: 'Whitefield'
+            },
+            {
+                name: 'Garden City Motors',
+                email: 'info@gardencitymotors.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Bangalore',
+                location: 'Jayanagar'
+            },
+            {
+                name: 'MG Road Premium Autos',
+                email: 'premium@mgroadautos.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Bangalore',
+                location: 'MG Road'
+            },
+            {
+                name: 'Deccan Wheels',
+                email: 'info@deccanwheels.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Hyderabad',
+                location: 'Banjara Hills'
+            },
+            {
+                name: 'Western Ghats Rides',
+                email: 'rides@westernghats.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Pune',
+                location: 'Hinjewadi'
+            },
+            {
+                name: 'Howrah Bridge Motors',
+                email: 'howrah@bridgemotors.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Kolkata',
+                location: 'Howrah'
+            },
+            {
+                name: 'Salt Lake City Cars',
+                email: 'saltlake@citycars.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Kolkata',
+                location: 'Salt Lake, Sector V'
+            },
+            {
+                name: 'Rajputana Wheels',
+                email: 'info@rajputanawheels.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Jaipur',
+                location: 'MI Road'
+            },
+            {
+                name: 'Amber Fort Rides',
+                email: 'rides@amberfort.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Jaipur',
+                location: 'Amer Road'
+            },
+            {
+                name: 'Desert Safari Motors',
+                email: 'desert@safarimotors.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Jaipur',
+                location: 'Tonk Road'
+            },
+            {
+                name: 'Hawa Mahal Car Rentals',
+                email: 'info@hawamahalcars.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Jaipur',
+                location: 'Badi Chaupar'
+            },
+            {
+                name: 'Nahargarh Drive Co',
+                email: 'drive@nahargarhco.in',
+                password: 'dealer123',
+                role: 'dealer',
+                verified: true,
+                city: 'Jaipur',
+                location: 'Vaishali Nagar'
             }
         ]);
 
