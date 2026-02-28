@@ -183,19 +183,20 @@ const VehicleListingPage = () => {
                                     transition={{ delay: idx * 0.1 }}
                                     className="bg-surface rounded-2xl border border-gray-800 p-6 hover:border-primary/50 transition-all group flex flex-col"
                                 >
-                                    <div className="flex justify-between items-start mb-6">
-                                        <div className="p-4 rounded-xl bg-primary/10 text-primary">
-                                            <MapPin className="w-6 h-6" />
+                                    <div className="flex justify-between items-start mb-6 gap-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="p-4 rounded-xl bg-primary/10 text-primary shrink-0">
+                                                <MapPin className="w-6 h-6" />
+                                            </div>
+                                            <h3 className="text-xl md:text-2xl font-serif font-bold text-white group-hover:text-primary transition-colors leading-tight">
+                                                {dealer.name}
+                                            </h3>
                                         </div>
-                                        <div className="bg-background border border-gray-800 px-3 py-1 rounded-full text-xs text-textSecondary flex items-center gap-2">
+                                        <div className="bg-background border border-gray-800 px-3 py-1 rounded-full text-xs text-textSecondary flex items-center gap-2 shrink-0">
                                             <Car className="w-3 h-3 text-primary" />
                                             {dealer.vehicleCount} Vehicles
                                         </div>
                                     </div>
-
-                                    <h3 className="text-2xl font-serif font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                                        {dealer.name}
-                                    </h3>
 
                                     <div className="space-y-3 mb-8 flex-grow">
                                         <div className="flex items-center gap-3 text-textSecondary text-sm">
