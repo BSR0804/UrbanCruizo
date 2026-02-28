@@ -244,7 +244,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 3500,
         securityDeposit: 5000,
         city: 'Bangalore',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/141115/creta-exterior-right-front-three-quarter-2.jpeg?q=75'],
+        images: [
+            '/images/creta.jpg',
+            '/images/creta-interior-1.jfif',
+            '/images/creta-interior-2.avif'
+        ],
         location: 'Indiranagar, Bangalore',
         kmsLimitPerDay: 240,
         extraKmCharge: 14,
@@ -268,7 +272,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 2400,
         securityDeposit: 3500,
         city: 'Bangalore',
-        images: ['https://imgd.aeplcdn.com/1056x594/n/cw/ec/121487/polo-exterior-right-front-three-quarter.jpeg?q=75'],
+        images: [
+            '/images/polo.avif',
+            '/images/polo-interior-1.avif',
+            '/images/polo-interior-2.jpg'
+        ],
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
@@ -292,7 +300,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 8000,
         securityDeposit: 15000,
         city: 'Bangalore',
-        images: ['https://images.unsplash.com/photo-1567818735868-e71b99932e29?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/x5.avif',
+            '/images/x5-interior-1.jfif',
+            '/images/x5-interior-2.avif'
+        ],
         location: 'Koramangala, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 25,
@@ -316,7 +328,11 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 7500,
         securityDeposit: 12000,
         city: 'Bangalore',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/c-class.avif',
+            '/images/c-class-interior-1.webp',
+            '/images/c-class-interior-2.avif'
+        ],
         location: 'MG Road, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 24,
