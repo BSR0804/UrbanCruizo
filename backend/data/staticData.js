@@ -386,7 +386,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 300,
@@ -613,7 +613,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 300,
@@ -642,7 +642,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'T Nagar, Chennai',
         kmsLimitPerDay: 300,
@@ -671,7 +671,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Jaipur Mall, Jaipur',
         kmsLimitPerDay: 300,
@@ -700,7 +700,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Camp, Pune',
         kmsLimitPerDay: 250,
@@ -729,7 +729,7 @@ const MOCK_VEHICLES_DATA = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Park Street, Kolkata',
         kmsLimitPerDay: 240,

@@ -420,7 +420,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 300,
@@ -602,7 +602,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'T Nagar, Chennai',
         kmsLimitPerDay: 300,
@@ -703,7 +703,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Camp, Pune',
         kmsLimitPerDay: 250,
@@ -805,7 +805,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Park Street, Kolkata',
         kmsLimitPerDay: 240,
@@ -931,7 +931,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Jaipur Mall, Jaipur',
         kmsLimitPerDay: 300,
@@ -1106,7 +1106,7 @@ export const MOCK_VEHICLES = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 300,
@@ -1187,7 +1187,7 @@ export const MOCK_CARAVANS = [
             '/images/force-traveller-caravan.jpg',
             '/images/force-traveller-interior-1.webp',
             '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-3.jpg'
+            '/images/force-traveller-interior-4.jpg'
         ],
         description1: 'The Force Traveler Caravan is a versatile "home on wheels," designed for self-sufficient exploration across the vast landscapes of India. Its durable diesel engine and spacious interior provide a reliable foundation for long-term travel.',
         description2: 'Custom-built with modern amenities including climate control and comfortable sleeping quarters, this 2022 edition offers freedom without compromise. Navigate from coastal roads to mountain passes with ease.',
