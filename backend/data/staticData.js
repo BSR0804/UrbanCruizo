@@ -350,7 +350,12 @@ const MOCK_VEHICLES_DATA = [
         pricePerDay: 6000,
         securityDeposit: 10000,
         city: 'Bangalore',
-        images: ['https://trucks.cardekho.com/trucks/force/traveller-3350/force-traveller-3350.jpg'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'Whitefield, Bangalore',
         kmsLimitPerDay: 300,
         extraKmCharge: 20,
@@ -567,7 +572,12 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 10000,
         city: 'Delhi',
         dealerName: 'Capital City Wheels',
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'Dwarka, Delhi',
         kmsLimitPerDay: 300,
         extraKmCharge: 20,
@@ -591,7 +601,12 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 9000,
         city: 'Chennai',
         dealerName: 'Chennai Luxury Cars',
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'T Nagar, Chennai',
         kmsLimitPerDay: 300,
         extraKmCharge: 20,
@@ -615,7 +630,12 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 10000,
         city: 'Jaipur',
         dealerName: 'Jaipur Wheels',
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'Jaipur Mall, Jaipur',
         kmsLimitPerDay: 300,
         extraKmCharge: 20,
@@ -639,7 +659,12 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 8000,
         city: 'Pune',
         dealerName: 'Pune Elite Rentals',
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'Camp, Pune',
         kmsLimitPerDay: 250,
         extraKmCharge: 15,
@@ -663,7 +688,12 @@ const MOCK_VEHICLES_DATA = [
         securityDeposit: 7000,
         city: 'Kolkata',
         dealerName: 'City of Joy Motors',
-        images: ['https://images.unsplash.com/photo-1494519990589-8633a9765e08?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/force-traveller-caravan.jpg',
+            '/images/force-traveller-interior-1.webp',
+            '/images/force-traveller-interior-2.jpg',
+            '/images/force-traveller-interior-3.jpg'
+        ],
         location: 'Park Street, Kolkata',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
@@ -692,8 +722,8 @@ const MOCK_VEHICLES_DATA = [
         kmsLimitPerDay: 200,
         extraKmCharge: 50,
         description1: 'The BMW 7 Series is the definitive statement of luxury and innovation, offering a groundbreaking digital experience and supreme comfort. Its TwinPower Turbo engine provides effortless grace and performance on any road.',
-        description2: 'Equipped with 8 airbags and the latest Integral Active Steering, the 2024 7 Series ensures a serene and secure journey. Experience the futuristic Executive Lounge and a ride calibrated for absolute tranquility.',
-        airbags: 8,
+        description2: 'Equipped with 10 airbags and the latest Integral Active Steering, the 2024 7 Series ensures a serene and secure journey. Experience the futuristic Executive Lounge and a ride calibrated for absolute tranquility.',
+        airbags: 10,
         availability: true,
         rating: 4.9
     },

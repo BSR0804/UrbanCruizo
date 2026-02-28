@@ -18,8 +18,27 @@ const DealerVehiclesPage = () => {
                     axios.get(`/dealers/${id}`),
                     axios.get(`/vehicles?owner=${id}`)
                 ]);
-                setDealer(dealerRes.data);
-                setVehicles(vehiclesRes.data.vehicles);
+                const apiDealer = dealerRes.data;
+                const apiVehicles = vehiclesRes.data.vehicles || [];
+
+                // If API returns a valid dealer but no vehicles,
+                // check if we have matching mock data to supplement
+                if (apiVehicles.length === 0) {
+                    // Try to find vehicles in mock data by matching dealer name
+                    const mockDealer = MOCK_DEALERS.find(d => d.name === apiDealer?.name);
+                    if (mockDealer) {
+                        const mockVehicles = MOCK_VEHICLES.filter(v => v.dealerId === mockDealer._id);
+                        if (mockVehicles.length > 0) {
+                            setDealer(apiDealer);
+                            setVehicles(mockVehicles);
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                }
+
+                setDealer(apiDealer);
+                setVehicles(apiVehicles);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching dealer vehicles:', error);
