@@ -103,13 +103,7 @@ const DealerVehiclesPage = () => {
                             </div>
 
                             <div className="p-6">
-                                <h3 className="text-xl font-bold text-white mb-4">{vehicle.title}</h3>
-
-                                <div className="flex justify-between items-center text-sm text-textSecondary mb-6 border-y border-gray-800 py-4">
-                                    <span>⚙️ {vehicle.transmission}</span>
-                                    <span>⛽ {vehicle.fuelType}</span>
-                                    <span>💺 {vehicle.seats} Seats</span>
-                                </div>
+                                <h3 className="text-xl font-bold text-white mb-6">{vehicle.title}</h3>
 
                                 <Link
                                     to={`/vehicles/${vehicle._id}`}
