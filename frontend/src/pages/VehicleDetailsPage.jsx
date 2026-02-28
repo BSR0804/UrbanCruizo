@@ -123,8 +123,21 @@ const VehicleDetailsPage = () => {
             console.error('Booking confirmation error:', error);
             // Special handling for Mock Vehicles: if payment succeeded but saving to DB failed
             // because of ID issues, we still show success to the user.
-            if (id.length < 10 || error.response?.status === 400) {
-                toast.success('Payment Received! (Demo Mode: Booking logged locally)');
+            if (id.length < 10 || error.response?.status === 400 || error.response?.status === 404) {
+                // Save locally for demo
+                const mockBooking = {
+                    _id: `mock_b_${Date.now()}`,
+                    vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
+                    startDate: `${startDate}T${startTime}`,
+                    endDate: `${endDate}T${endTime}`,
+                    totalPrice: priceBreakdown?.total || 0,
+                    status: 'confirmed',
+                    isMock: true
+                };
+                const existing = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+                localStorage.setItem('mock_bookings', JSON.stringify([mockBooking, ...existing]));
+
+                toast.success('Payment Received! (Demo Mode: Booking logged locally)', { duration: 5000 });
                 navigate('/dashboard');
             } else {
                 toast.error(error.response?.data?.message || 'Booking failed to sync. Please contact support.');

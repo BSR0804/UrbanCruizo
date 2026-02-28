@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from '../utils/api';
+import { Clock, CheckCircle2, IndianRupee, History } from 'lucide-react';
 
 const DashboardPage = () => {
     const [bookings, setBookings] = useState([]);
@@ -8,8 +9,24 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const { data } = await axios.get('bookings/mybookings');
-                setBookings(data);
+                // 1. Fetch real bookings from backend
+                let apiBookings = [];
+                try {
+                    const { data } = await axios.get('bookings/mybookings');
+                    apiBookings = data;
+                } catch (e) {
+                    console.warn("Backend bookings fetch failed, using local only.");
+                }
+
+                // 2. Fetch mock bookings from localStorage
+                const mockBookings = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+
+                // 3. Merge and Sort (Newest first)
+                const merged = [...mockBookings, ...apiBookings].sort((a, b) =>
+                    new Date(b.startDate) - new Date(a.startDate)
+                );
+
+                setBookings(merged);
                 setLoading(false);
             } catch (error) {
                 console.error(error);
@@ -19,43 +36,84 @@ const DashboardPage = () => {
         fetchBookings();
     }, []);
 
-    if (loading) return <div className="text-center py-20 text-primary">Loading Dashboard...</div>;
+    if (loading) return (
+        <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-4">
+            <Clock className="w-12 h-12 text-primary animate-spin" />
+            <p className="text-textSecondary animate-pulse">Loading your luxury travels...</p>
+        </div>
+    );
 
     return (
-        <div className="container mx-auto px-4 py-12">
-            <h1 className="text-3xl font-serif text-primary mb-8">My Dashboard</h1>
-
-            <div className="bg-surface rounded-lg shadow overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-700">
-                    <h2 className="text-xl font-bold text-textPrimary">Booking History</h2>
+        <div className="min-h-screen bg-background text-textPrimary py-12">
+            <div className="container mx-auto px-6 max-w-5xl">
+                <div className="flex items-center justify-between mb-12">
+                    <div>
+                        <h1 className="text-5xl font-serif font-bold text-white mb-2">My Dashboard</h1>
+                        <p className="text-textSecondary">Manage your premium rentals and travel history.</p>
+                    </div>
                 </div>
 
-                {bookings.length === 0 ? (
-                    <div className="p-6 text-textSecondary">You have no bookings yet.</div>
-                ) : (
-                    <div className="divide-y divide-gray-700">
-                        {bookings.map((booking) => (
-                            <div key={booking._id} className="p-6 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition">
-                                <div>
-                                    <h3 className="text-lg font-bold text-primary mb-1">{booking.vehicle?.title || 'Vehicle Removed'}</h3>
-                                    <p className="text-sm text-textSecondary">
-                                        {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
-                                    </p>
-                                </div>
-                                <div className="mt-4 md:mt-0 text-right">
-                                    <div className="text-xl font-bold text-textPrimary">${booking.totalPrice}</div>
-                                    <span className={`inline-block px-3 py-1 text-xs rounded mt-2 ${booking.status === 'confirmed' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                                        }`}>
-                                        {booking.status.toUpperCase()}
-                                    </span>
-                                </div>
-                            </div>
-                        ))}
+                <div className="bg-surface rounded-3xl border border-gray-800 shadow-2xl overflow-hidden">
+                    <div className="px-8 py-6 border-b border-gray-800 bg-white/5 flex items-center gap-3">
+                        <History className="w-6 h-6 text-primary" />
+                        <h2 className="text-xl font-bold text-white">Booking History</h2>
                     </div>
-                )}
+
+                    {bookings.length === 0 ? (
+                        <div className="p-16 text-center space-y-4">
+                            <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto">
+                                <History className="w-8 h-8 text-gray-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-white">No Bookings Yet</h3>
+                            <p className="text-textSecondary">Your travel story hasn't started. Experience luxury today.</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-gray-800/50">
+                            {bookings.map((booking) => (
+                                <div key={booking._id} className="p-8 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition-colors group">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                                            <CheckCircle2 className="w-8 h-8" />
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
+                                                    {booking.vehicle?.title || 'Premium Vehicle'}
+                                                </h3>
+                                                {booking.isMock && (
+                                                    <span className="text-[10px] uppercase bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold">Demo</span>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-textSecondary flex items-center gap-2">
+                                                {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                <span className="w-1 h-1 bg-gray-600 rounded-full" />
+                                                {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-6 md:mt-0 text-right">
+                                        <div className="text-2xl font-bold text-white flex items-center justify-end gap-1">
+                                            <IndianRupee className="w-5 h-5 text-primary" />
+                                            {Number(booking.totalPrice).toLocaleString('en-IN')}
+                                        </div>
+                                        <div className="flex items-center justify-end mt-2">
+                                            <span className={`px-4 py-1 text-[10px] font-bold rounded-full uppercase tracking-widest ${booking.status === 'confirmed'
+                                                    ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                                                    : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'
+                                                }`}>
+                                                {booking.status}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
 export default DashboardPage;
+
