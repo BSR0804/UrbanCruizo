@@ -4,8 +4,9 @@ CarawINN is a high-performance, scalable MERN (MongoDB, Express.js, React.js, No
 
 ## 🚀 Live Demo & Repository
 - **GitHub Repository:** [BSR0804/CarawINN](https://github.com/BSR0804/CarawINN)
-- **Backend API:** [Hosted on Render/Vercel]
+- **Backend API:** [Hosted on Render]
 - **Frontend UI:** [Hosted on Vercel]
+- **Live Link:** https://caraw-inn.vercel.app/
 
 ---
 
