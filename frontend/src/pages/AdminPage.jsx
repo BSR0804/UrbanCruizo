@@ -300,7 +300,7 @@ const AdminPage = () => {
                                 <h3 className="text-sm font-bold text-primary uppercase tracking-widest">Vehicle Request</h3>
                                 <div className="space-y-2 text-textSecondary text-sm bg-background p-4 rounded-xl border border-gray-800">
                                     <p><span className="text-white">Vehicle:</span> {selectedDocBooking.vehicle?.title}</p>
-                                    <p><span className="text-white">Dates:</span> {new Date(selectedDocBooking.startDate).toLocaleDateString()} - {new Date(selectedDocBooking.endDate).toLocaleDateString()}</p>
+                                    <p><span className="text-white">Dates:</span> {new Date(selectedDocBooking.startDate).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })} - {new Date(selectedDocBooking.endDate).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
                                     <p><span className="text-white">Amount:</span> ₹{selectedDocBooking.finalAmount}</p>
                                 </div>
                             </div>

@@ -438,21 +438,21 @@ const VehicleDetailsPage = () => {
                                             />
                                         </div>
                                     </div>
-                                    {rentalType === 'Hourly' && (
-                                        <div>
-                                            <label className="block text-xs text-textSecondary mb-2 uppercase tracking-widest">Start Time</label>
-                                            <div className="relative">
-                                                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
-                                                <input
-                                                    type="time"
-                                                    className="input-field pl-10 h-12 text-sm"
-                                                    value={startTime}
-                                                    onChange={(e) => setStartTime(e.target.value)}
-                                                    required
-                                                />
-                                            </div>
+                                    <div>
+                                        <label className="block text-xs text-textSecondary mb-2 uppercase tracking-widest">
+                                            {rentalType === 'Hourly' ? 'Start Time' : 'Pickup Time'}
+                                        </label>
+                                        <div className="relative">
+                                            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+                                            <input
+                                                type="time"
+                                                className="input-field pl-10 h-12 text-sm"
+                                                value={startTime}
+                                                onChange={(e) => setStartTime(e.target.value)}
+                                                required
+                                            />
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
                                 <div className="space-y-4">
                                     <div>
@@ -469,21 +469,21 @@ const VehicleDetailsPage = () => {
                                             />
                                         </div>
                                     </div>
-                                    {rentalType === 'Hourly' && (
-                                        <div>
-                                            <label className="block text-xs text-textSecondary mb-2 uppercase tracking-widest">End Time</label>
-                                            <div className="relative">
-                                                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
-                                                <input
-                                                    type="time"
-                                                    className="input-field pl-10 h-12 text-sm"
-                                                    value={endTime}
-                                                    onChange={(e) => setEndTime(e.target.value)}
-                                                    required
-                                                />
-                                            </div>
+                                    <div>
+                                        <label className="block text-xs text-textSecondary mb-2 uppercase tracking-widest">
+                                            {rentalType === 'Hourly' ? 'End Time' : 'Drop-off Time'}
+                                        </label>
+                                        <div className="relative">
+                                            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+                                            <input
+                                                type="time"
+                                                className="input-field pl-10 h-12 text-sm"
+                                                value={endTime}
+                                                onChange={(e) => setEndTime(e.target.value)}
+                                                required
+                                            />
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
                             </div>
 

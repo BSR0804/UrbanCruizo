@@ -89,11 +89,20 @@ const DashboardPage = () => {
                                                     <span className="text-[10px] uppercase bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold">Demo</span>
                                                 )}
                                             </div>
-                                            <p className="text-sm text-textSecondary flex items-center gap-2">
-                                                {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                <span className="w-1 h-1 bg-gray-600 rounded-full" />
-                                                {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                            </p>
+                                            <div className="text-sm text-textSecondary space-y-1">
+                                                <p className="flex items-center gap-2">
+                                                    <span className="font-bold text-white/40 uppercase text-[10px] tracking-widest min-w-[50px]">From:</span>
+                                                    {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                    <span className="w-1 h-1 bg-gray-600 rounded-full" />
+                                                    <span className="text-primary font-medium">{new Date(booking.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                </p>
+                                                <p className="flex items-center gap-2">
+                                                    <span className="font-bold text-white/40 uppercase text-[10px] tracking-widest min-w-[50px]">To:</span>
+                                                    {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                    <span className="w-1 h-1 bg-gray-600 rounded-full" />
+                                                    <span className="text-primary font-medium">{new Date(booking.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="mt-6 md:mt-0 flex flex-col items-end gap-3">
@@ -115,10 +124,10 @@ const DashboardPage = () => {
                                                 </button>
                                             )}
                                             <span className={`px-4 py-1.5 text-[10px] font-bold rounded-full uppercase tracking-widest flex items-center gap-1.5 ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border border-green-500/20' :
-                                                    booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
-                                                        booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border border-orange-500/20' :
-                                                            booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
-                                                                'bg-gray-500/10 text-gray-500 border border-gray-500/20'
+                                                booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
+                                                    booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border border-orange-500/20' :
+                                                        booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                                                            'bg-gray-500/10 text-gray-500 border border-gray-500/20'
                                                 }`}>
                                                 {booking.status === 'pending_approval' && <Clock className="w-3 h-3" />}
                                                 {booking.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
