@@ -39,8 +39,9 @@ const RegisterPage = () => {
         e.preventDefault();
         const result = await register(name, email, password, role);
         if (result.success) {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             toast.success('Account created successfully!');
-            navigate(role === 'dealer' ? '/dealer/dashboard' : '/');
+            navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
         } else {
             setError(result.message);
             toast.error(result.message);
