@@ -49,7 +49,24 @@ const RegisterPage = () => {
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
             <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20 transition-all">
-                {!queryRole && (
+                {queryRole === 'dealer' ? (
+                    <div className="flex justify-center mb-8">
+                        <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                            <button
+                                onClick={() => navigate('/login?role=dealer')}
+                                className="px-6 py-2 rounded-lg text-sm font-bold transition-all text-textSecondary hover:text-white"
+                            >
+                                Login
+                            </button>
+                            <button
+                                onClick={() => navigate('/register?role=dealer')}
+                                className="px-6 py-2 rounded-lg text-sm font-bold transition-all bg-primary text-background shadow-lg"
+                            >
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                ) : !queryRole && (
                     <div className="flex justify-center mb-8">
                         <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
                             <button
