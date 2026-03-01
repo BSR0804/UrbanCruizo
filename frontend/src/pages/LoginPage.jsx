@@ -19,7 +19,7 @@ const LoginPage = () => {
         console.log("Google raw response received:", tokenResponse);
         if (tokenResponse?.access_token) {
             console.log("Attempting backend authentication with access token...");
-            const result = await googleLogin(tokenResponse.access_token);
+            const result = await googleLogin(tokenResponse.access_token, loginType);
             if (result.success) {
                 // Check role if loginType is dealer
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -30,7 +30,7 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Welcome back!');
-                navigate(userInfo.role === 'dealer' ? '/admin' : '/');
+                navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/');
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -65,8 +65,10 @@ const LoginPage = () => {
 
             toast.success('Welcome back!');
             // Redirect based on role
-            if (userInfo.role === 'admin' || userInfo.role === 'dealer') {
+            if (userInfo.role === 'admin') {
                 navigate('/admin');
+            } else if (userInfo.role === 'dealer') {
+                navigate('/dealer/dashboard');
             } else {
                 navigate('/');
             }

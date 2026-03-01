@@ -36,8 +36,11 @@ const Header = () => {
                     </NavLink>
                     {user ? (
                         <>
-                            <NavLink to="/dashboard" className={navLinkClass}>
-                                Dashboard
+                            <NavLink
+                                to={user.role === 'dealer' ? "/dealer/dashboard" : "/dashboard"}
+                                className={navLinkClass}
+                            >
+                                {user.role === 'dealer' ? 'Dealer Panel' : 'Dashboard'}
                             </NavLink>
                             {user.role === 'admin' && (
                                 <NavLink to="/admin" className={navLinkClass}>

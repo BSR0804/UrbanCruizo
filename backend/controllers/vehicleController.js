@@ -60,9 +60,12 @@ const getVehicleById = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Create Vehicle (Admin)
+// @desc    Create Vehicle (Admin/Dealer)
 const createVehicle = asyncHandler(async (req, res) => {
-    const vehicle = new Vehicle({ ...req.body });
+    const vehicle = new Vehicle({
+        ...req.body,
+        owner: req.body.owner || req.user._id // Assign owner
+    });
     const createdVehicle = await vehicle.save();
     res.status(201).json(createdVehicle);
 });

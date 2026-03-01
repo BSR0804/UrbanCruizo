@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
     aadhaarNumber: { type: String },
     licenseImage: { type: String },
     verified: { type: Boolean, default: false }, // KYC Status
+    isProfileComplete: { type: Boolean, default: false },
 }, { timestamps: true });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

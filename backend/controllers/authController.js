@@ -21,6 +21,7 @@ const authUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                isProfileComplete: user.isProfileComplete,
                 token: generateToken(user._id),
             });
         } else {
@@ -56,6 +57,7 @@ const registerUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                isProfileComplete: user.isProfileComplete,
                 token: generateToken(user._id),
             });
         } else {
@@ -74,7 +76,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID?.trim());
 // @route   POST /api/auth/google
 // @access  Public
 const googleAuth = async (req, res) => {
-    const { token } = req.body;
+    const { token, role } = req.body; // Take optional role from frontend
 
     if (!token) {
         return res.status(400).json({ message: 'Google Token is required' });
@@ -97,11 +99,15 @@ const googleAuth = async (req, res) => {
 
         if (user) {
             console.log('Existing user found:', user.email);
+            // If logging in as dealer, but user is not a dealer, send error if it was a create request
+            // or just allow login if they exist. Usually, we want to allow existing user to log in.
+
             return res.json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                isProfileComplete: user.isProfileComplete,
                 token: generateToken(user._id),
             });
         } else {
@@ -109,7 +115,8 @@ const googleAuth = async (req, res) => {
             user = await User.create({
                 name,
                 email,
-                // licenseImage: picture 
+                role: role || 'user', // Set role to dealer if specified
+                isProfileComplete: false
             });
 
             return res.status(201).json({
@@ -117,6 +124,7 @@ const googleAuth = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                isProfileComplete: user.isProfileComplete,
                 token: generateToken(user._id),
             });
         }

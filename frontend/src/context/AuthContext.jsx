@@ -48,9 +48,9 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const googleLogin = async (token) => {
+    const googleLogin = async (token, role) => {
         try {
-            const { data } = await axios.post('auth/google', { token });
+            const { data } = await axios.post('auth/google', { token, role });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };

@@ -1,0 +1,670 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    LayoutDashboard,
+    Car,
+    CalendarCheck,
+    Wallet,
+    Bell,
+    Settings,
+    Plus,
+    TrendingUp,
+    Users,
+    MapPin,
+    Trash2,
+    Edit,
+    Check,
+    X,
+    Eye,
+    MessageSquare,
+    RefreshCw
+} from 'lucide-react';
+import axios from '../utils/api';
+import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const DealerDashboard = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('overview');
+    const [stats, setStats] = useState(null);
+    const [vehicles, setVehicles] = useState([]);
+    const [bookings, setBookings] = useState([]);
+    const [carRequests, setCarRequests] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [showProfileForm, setShowProfileForm] = useState(false);
+    const [profileData, setProfileData] = useState({
+        phone: user?.phone || '',
+        city: user?.city || '',
+        location: user?.location || '',
+        aadhaarNumber: user?.aadhaarNumber || '',
+        licenseNumber: user?.licenseNumber || ''
+    });
+
+    // Vehicle Form State
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [editingVehicle, setEditingVehicle] = useState(null);
+    const [vehicleFormData, setVehicleFormData] = useState({
+        title: '',
+        brand: '',
+        model: '',
+        year: '',
+        type: 'car',
+        category: 'normal',
+        pricePerDay: '',
+        transmission: 'Automatic',
+        fuelType: 'Petrol',
+        seats: '',
+        location: '',
+        city: '',
+        images: '',
+        availability: true
+    });
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [statsRes, vehiclesRes, bookingsRes, requestsRes] = await Promise.all([
+                axios.get('dealers/dashboard/stats'),
+                axios.get('dealers/dashboard/vehicles'),
+                axios.get('dealers/dashboard/bookings'),
+                axios.get('dealers/dashboard/car-requests') // This will be created soon
+            ]);
+
+            setStats(statsRes.data);
+            setVehicles(vehiclesRes.data);
+            setBookings(bookingsRes.data);
+            setCarRequests(requestsRes.data);
+
+            if (!user.isProfileComplete) {
+                setShowProfileForm(true);
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error('Dashboard error:', error);
+            // Don't show toast immediately if it's the 404 for car-requests (will be handled)
+            // toast.error('Failed to load dashboard data');
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!user || user.role !== 'dealer') {
+            navigate('/login');
+            return;
+        }
+        fetchData();
+    }, [user]);
+
+    const handleProfileSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.put('dealers/profile', profileData);
+            // Update local storage/context
+            const updatedUser = { ...user, ...data, isProfileComplete: true };
+            localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            toast.success('Profile updated successfully! You can now list vehicles.');
+            setShowProfileForm(false);
+            window.location.reload(); // Quick way to update everything
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Update failed');
+        }
+    };
+
+    const handleVehicleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const imagesArray = vehicleFormData.images.split(',').map(img => img.trim());
+            const dataToSubmit = { ...vehicleFormData, images: imagesArray };
+
+            if (editingVehicle) {
+                await axios.put(`vehicles/${editingVehicle._id}`, dataToSubmit);
+                toast.success('Vehicle updated!');
+            } else {
+                await axios.post('vehicles', dataToSubmit);
+                toast.success('Vehicle added successfully!');
+            }
+            setShowAddModal(false);
+            setEditingVehicle(null);
+            fetchData();
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Operation failed');
+        }
+    };
+
+    const handleDeleteVehicle = async (id) => {
+        if (window.confirm('Delete this vehicle permanently?')) {
+            try {
+                await axios.delete(`vehicles/${id}`);
+                toast.success('Vehicle removed');
+                fetchData();
+            } catch (error) {
+                toast.error('Failed to delete');
+            }
+        }
+    };
+
+    const handleBookingStatus = async (id, status) => {
+        try {
+            await axios.put(`bookings/${id}/review`, { status });
+            toast.success(`Booking ${status}`);
+            fetchData();
+        } catch (error) {
+            toast.error('Failed to update status');
+        }
+    };
+
+    if (loading) return (
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full"
+            />
+            <p className="mt-4 text-primary font-serif italic text-xl">Loading your premium dashboard...</p>
+        </div>
+    );
+
+    return (
+        <div className="min-h-screen bg-background pt-8 pb-20 px-4 md:px-8">
+            <div className="container mx-auto max-w-7xl">
+                {/* Header */}
+                <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                    <div>
+                        <h1 className="text-4xl font-serif font-bold text-white mb-2 underline decoration-primary/50 underline-offset-8">
+                            Dealer Dashboard
+                        </h1>
+                        <p className="text-textSecondary">Manage your premium fleet and bookings from one place.</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={fetchData}
+                            disabled={loading}
+                            className={`p-3 bg-surface rounded-xl border border-gray-800 text-textSecondary hover:text-primary transition-all ${loading ? 'animate-spin' : ''}`}
+                        >
+                            <RefreshCw className="w-5 h-5" />
+                        </button>
+                        <button className="p-3 bg-surface rounded-xl border border-gray-800 text-textSecondary hover:text-primary transition-all relative">
+                            <Bell className="w-5 h-5" />
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
+                        </button>
+                        <div className="h-10 w-[1px] bg-gray-800" />
+                        <div className="flex items-center gap-3">
+                            <div className="text-right hidden sm:block">
+                                <p className="text-sm font-bold text-white leading-none">{user.name}</p>
+                                <p className="text-[10px] text-primary uppercase tracking-widest mt-1">Authorized Dealer</p>
+                            </div>
+                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20">
+                                {user.name[0]}
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* Main Content Layout */}
+                <div className="grid lg:grid-cols-[1fr_3fr] gap-10">
+
+                    {/* Sidebar Nav */}
+                    <nav className="space-y-2">
+                        {[
+                            { id: 'overview', icon: <LayoutDashboard />, label: 'Overview' },
+                            { id: 'vehicles', icon: <Car />, label: 'My Vehicles' },
+                            { id: 'bookings', icon: <CalendarCheck />, label: 'Booking Requests' },
+                            { id: 'requests', icon: <MessageSquare />, label: 'Car Requests' },
+                            { id: 'earnings', icon: <Wallet />, label: 'Earnings' },
+                            { id: 'settings', icon: <Settings />, label: 'Settings' }
+                        ].map(item => (
+                            <button
+                                key={item.id}
+                                onClick={() => setActiveTab(item.id)}
+                                className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 font-medium ${activeTab === item.id
+                                    ? 'bg-primary text-background shadow-xl shadow-primary/20 scale-105'
+                                    : 'text-textSecondary hover:bg-surface hover:text-white'
+                                    }`}
+                            >
+                                {item.icon}
+                                {item.label}
+                            </button>
+                        ))}
+                        <div className="pt-10">
+                            <button
+                                onClick={logout}
+                                className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"
+                            >
+                                <X className="w-5 h-5" /> Logout
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* Content Section */}
+                    <main className="bg-surface rounded-[2.5rem] border border-gray-800 p-8 shadow-2xl relative overflow-hidden">
+
+                        {/* Decorative Gradient Background */}
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -z-10" />
+
+                        <AnimatePresence mode="wait">
+                            {activeTab === 'overview' && (
+                                <motion.div
+                                    key="overview"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    className="space-y-8"
+                                >
+                                    <h2 className="text-2xl font-serif font-bold text-white mb-6">Performance Insights</h2>
+
+                                    {/* Stats Grid */}
+                                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                        {[
+                                            { label: 'Total Fleet', value: stats?.totalVehicles, icon: <Car />, color: 'primary' },
+                                            { label: 'Earnings', value: `₹${stats?.totalEarnings?.toLocaleString()}`, icon: <Wallet />, color: 'green' },
+                                            { label: 'Avg Requests', value: stats?.totalBookings, icon: <Users />, color: 'blue' },
+                                            { label: 'Pending', value: stats?.pendingBookings, icon: <Bell />, color: 'orange' }
+                                        ].map((stat, idx) => (
+                                            <div key={idx} className="bg-background border border-gray-800 p-6 rounded-[2rem] hover:scale-105 transition-all">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="p-3 bg-surface rounded-xl text-primary">{stat.icon}</div>
+                                                    <TrendingUp className="w-4 h-4 text-green-500" />
+                                                </div>
+                                                <p className="text-sm text-textSecondary uppercase tracking-widest font-bold mb-1">{stat.label}</p>
+                                                <p className="text-3xl font-serif font-bold text-white">{stat.value || 0}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Recent Activity */}
+                                    <div className="bg-background border border-gray-800 p-8 rounded-[2rem]">
+                                        <h3 className="text-lg font-bold text-white mb-6 border-b border-gray-800 pb-4">Recent Notifications</h3>
+                                        <div className="space-y-6">
+                                            {stats?.recentActivity?.length > 0 ? stats.recentActivity.map((activity, idx) => (
+                                                <div key={idx} className="flex gap-4 items-start group">
+                                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                                        <Bell className="w-4 h-4" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-white text-sm">
+                                                            New booking request for <span className="font-bold text-primary">{activity.vehicle?.title}</span> by <span className="text-gray-300">{activity.user?.name || activity.bookingName}</span>
+                                                        </p>
+                                                        <p className="text-[10px] text-textSecondary mt-1 uppercase tracking-tighter">
+                                                            {new Date(activity.createdAt).toLocaleString()}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )) : (
+                                                <p className="text-textSecondary italic">No recent activity found.</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'vehicles' && (
+                                <motion.div
+                                    key="vehicles"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-8"
+                                >
+                                    <div className="flex justify-between items-center">
+                                        <h2 className="text-2xl font-serif font-bold text-white">Your Premium Fleet</h2>
+                                        <button
+                                            onClick={() => {
+                                                if (!user.isProfileComplete) {
+                                                    toast.error('Complete your profile before listing!');
+                                                    setShowProfileForm(true);
+                                                    return;
+                                                }
+                                                setEditingVehicle(null);
+                                                setVehicleFormData({
+                                                    title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
+                                                });
+                                                setShowAddModal(true);
+                                            }}
+                                            className="bg-primary text-background px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"
+                                        >
+                                            <Plus className="w-5 h-5" /> Add Vehicle
+                                        </button>
+                                    </div>
+
+                                    <div className="grid md:grid-cols-2 gap-6">
+                                        {vehicles.map(vehicle => (
+                                            <div key={vehicle._id} className="bg-background border border-gray-800 rounded-3xl p-6 group">
+                                                <div className="relative h-48 mb-6 rounded-2xl overflow-hidden flex items-center justify-center bg-surface">
+                                                    {vehicle.images?.[0] ? (
+                                                        <img src={vehicle.images[0]} alt={vehicle.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                                    ) : (
+                                                        <Car className="w-16 h-16 text-gray-800" />
+                                                    )}
+                                                    <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase border border-primary/20">
+                                                        {vehicle.availability ? 'Available' : 'Booked'}
+                                                    </div>
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white mb-1">{vehicle.title}</h3>
+                                                <p className="text-sm text-textSecondary flex items-center gap-2 mb-6">
+                                                    <MapPin className="w-4 h-4 text-primary/60" /> {vehicle.location}, {vehicle.city}
+                                                </p>
+                                                <div className="flex justify-between items-center bg-surface/50 p-4 rounded-xl border border-gray-800/50">
+                                                    <span className="text-primary font-bold">₹{vehicle.pricePerDay}/day</span>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            onClick={() => {
+                                                                setEditingVehicle(vehicle);
+                                                                setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
+                                                                setShowAddModal(true);
+                                                            }}
+                                                            className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg"
+                                                        >
+                                                            <Edit className="w-4 h-4" />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteVehicle(vehicle._id)}
+                                                            className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'bookings' && (
+                                <motion.div
+                                    key="bookings"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-8"
+                                >
+                                    <h2 className="text-2xl font-serif font-bold text-white">Rental Applications</h2>
+                                    <div className="space-y-6">
+                                        {bookings.length > 0 ? bookings.map(booking => (
+                                            <div key={booking._id} className="bg-background border border-gray-800 rounded-3xl p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden group">
+                                                {/* Status Badge */}
+                                                <div className={`absolute top-0 right-0 px-6 py-2 rounded-bl-3xl text-[10px] uppercase font-black italic tracking-widest ${booking.status === 'pending_approval' ? 'bg-orange-500 text-white' :
+                                                    booking.status === 'confirmed' ? 'bg-green-500 text-white' : 'bg-gray-800 text-gray-400'
+                                                    }`}>
+                                                    {booking.status.replace('_', ' ')}
+                                                </div>
+
+                                                <div className="w-full md:w-32 h-32 bg-surface rounded-2xl shrink-0 flex items-center justify-center overflow-hidden border border-gray-800">
+                                                    {booking.vehicle?.images?.[0] ? (
+                                                        <img src={booking.vehicle.images[0]} className="w-full h-full object-cover" />
+                                                    ) : <Car className="w-10 h-10 text-gray-800" />}
+                                                </div>
+
+                                                <div className="flex-grow">
+                                                    <h3 className="text-xl font-bold text-white mb-2">{booking.vehicle?.title || 'Unknown Vehicle'}</h3>
+                                                    <div className="space-y-1 text-sm text-textSecondary mb-4">
+                                                        <p className="flex items-center gap-2"><Users className="w-3 h-3 text-primary" /> {booking.user?.name || booking.bookingName}</p>
+                                                        <p className="flex items-center gap-2"><CalendarCheck className="w-3 h-3 text-primary" /> {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}</p>
+                                                        <p className="flex items-center gap-2 font-bold text-primary">₹{booking.finalAmount || booking.totalPrice}</p>
+                                                    </div>
+
+                                                    {booking.status === 'pending_approval' && (
+                                                        <div className="flex gap-4">
+                                                            <button
+                                                                onClick={() => handleBookingStatus(booking._id, 'approved')}
+                                                                className="flex-1 bg-green-500/10 text-green-500 border border-green-500/20 py-2 rounded-xl text-xs font-bold hover:bg-green-500 hover:text-white transition-all"
+                                                            >
+                                                                Approve
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleBookingStatus(booking._id, 'rejected')}
+                                                                className="flex-1 bg-red-500/10 text-red-500 border border-red-500/20 py-2 rounded-xl text-xs font-bold hover:bg-red-500 hover:text-white transition-all"
+                                                            >
+                                                                Deny
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <div className="text-center py-20 bg-background/50 rounded-3xl border border-dashed border-gray-800">
+                                                <CalendarCheck className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                                                <p className="text-textSecondary italic">No booking requests yet. Once users apply for your cars, they'll appear here.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'requests' && (
+                                <motion.div
+                                    key="requests"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-8"
+                                >
+                                    <h2 className="text-2xl font-serif font-bold text-white">General Car Requests</h2>
+                                    <p className="text-sm text-textSecondary italic bg-primary/5 p-4 rounded-xl border border-primary/10">
+                                        These are custom requests from users who couldn't find exactly what they were looking for. Reach out to them to strike a deal!
+                                    </p>
+                                    <div className="space-y-6">
+                                        {carRequests.length > 0 ? carRequests.map(req => (
+                                            <div key={req._id} className="bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 border-l-primary/50">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <h3 className="text-lg font-bold text-white">{req.requirements}</h3>
+                                                        <p className="text-xs text-primary uppercase tracking-widest font-bold mt-1">FOR {req.vehicleType}</p>
+                                                    </div>
+                                                    <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase">{new Date(req.createdAt).toLocaleDateString()}</span>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800">
+                                                    <p><span className="text-white">User:</span> {req.name}</p>
+                                                    <p><span className="text-white">City:</span> {req.city}</p>
+                                                    <p><span className="text-white">Phone:</span> {req.phone}</p>
+                                                    <p><span className="text-white">Email:</span> {req.email}</p>
+                                                </div>
+                                                <button className="w-full mt-6 py-2 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+                                                    Contact User <MessageSquare className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        )) : (
+                                            <div className="text-center py-20 bg-background/50 rounded-3xl border border-dashed border-gray-800">
+                                                <MessageSquare className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                                                <p className="text-textSecondary italic">No general requests at the moment. When users submit custom forms, you'll see them here.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'earnings' && (
+                                <motion.div
+                                    key="earnings"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-8"
+                                >
+                                    <h2 className="text-2xl font-serif font-bold text-white text-center mb-10">Earnings & Performance</h2>
+                                    <div className="bg-background border border-gray-800 p-10 rounded-[3rem] text-center space-y-4">
+                                        <Wallet className="w-16 h-16 text-primary mx-auto mb-6" />
+                                        <h3 className="text-xl font-bold text-white">Total Disbursed Earnings</h3>
+                                        <p className="text-5xl font-serif font-bold text-primary">₹{stats?.totalEarnings?.toLocaleString()}</p>
+                                        <p className="text-sm text-textSecondary italic">Commission of 10% already deducted. Next payout scheduled for 5th of next month.</p>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'settings' && (
+                                <motion.div
+                                    key="settings"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="space-y-8"
+                                >
+                                    <h2 className="text-2xl font-serif font-bold text-white">Account Management</h2>
+                                    <div className="bg-background border border-gray-800 p-8 rounded-[2rem] space-y-6">
+                                        <div className="space-y-2">
+                                            <p className="text-xs uppercase tracking-widest text-primary font-bold">Profile Identity</p>
+                                            <div className="flex items-center gap-4 bg-surface p-4 rounded-2xl border border-gray-800">
+                                                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">{user.name[0]}</div>
+                                                <div>
+                                                    <p className="text-white font-bold">{user.name}</p>
+                                                    <p className="text-xs text-textSecondary">{user.email}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => setShowProfileForm(true)}
+                                            className="w-full btn-outline py-4 rounded-xl flex items-center justify-center gap-2"
+                                        >
+                                            Update Profile Details <Edit className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </main>
+                </div>
+            </div>
+
+            {/* Profile Completion Modal */}
+            <AnimatePresence>
+                {showProfileForm && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="w-full max-w-xl bg-surface border border-gray-800 rounded-[3rem] p-10 shadow-2xl relative"
+                        >
+                            {!user.isProfileComplete && (
+                                <div className="absolute -top-4 -right-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce">
+                                    Action Required
+                                </div>
+                            )}
+
+                            <h2 className="text-3xl font-serif font-bold text-primary mb-2">Partner Profile</h2>
+                            <p className="text-textSecondary mb-8 text-sm italic">
+                                {!user.isProfileComplete
+                                    ? "Before you can start listing your premium fleet, we need a few details to verify your identity and dealership."
+                                    : "Keep your dealership details updated for better trust scores."}
+                            </p>
+
+                            <form onSubmit={handleProfileSubmit} className="space-y-6">
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Phone Number</label>
+                                        <input type="tel" required className="input-field" placeholder="+91 XXXX XXX XXX" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">City</label>
+                                        <input type="text" required className="input-field" placeholder="Delhi, Mumbai, etc." value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Detailed Address / Point of Contact</label>
+                                    <input type="text" required className="input-field" placeholder="Sec-10 Dwarka Metro Station" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Aadhaar Card Number</label>
+                                        <input type="text" required className="input-field" placeholder="XXXX XXXX XXXX" value={profileData.aadhaarNumber} onChange={(e) => setProfileData({ ...profileData, aadhaarNumber: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Dealership License No.</label>
+                                        <input type="text" required className="input-field" placeholder="DL-XXXX-XXXX" value={profileData.licenseNumber} onChange={(e) => setProfileData({ ...profileData, licenseNumber: e.target.value })} />
+                                    </div>
+                                </div>
+
+                                <div className="pt-6 flex gap-4">
+                                    <button type="submit" className="flex-1 btn-primary py-4 rounded-2xl shadow-xl shadow-primary/20">
+                                        Save & Continue
+                                    </button>
+                                    {user.isProfileComplete && (
+                                        <button type="button" onClick={() => setShowProfileForm(false)} className="px-6 border border-gray-800 text-textSecondary rounded-2xl">Cancel</button>
+                                    )}
+                                </div>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Add/Edit Vehicle Modal */}
+            <AnimatePresence>
+                {showAddModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="w-full max-w-2xl bg-surface border border-gray-800 rounded-[2.5rem] p-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
+                        >
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-3xl font-serif font-bold text-primary">{editingVehicle ? 'Edit Experience' : 'List New Experience'}</h2>
+                                <button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-white/5 rounded-full"><X className="w-6 h-6" /></button>
+                            </div>
+
+                            <form onSubmit={handleVehicleSubmit} className="grid grid-cols-2 gap-6">
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Title</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: BMW X5 M-Sport" value={vehicleFormData.title} onChange={(e) => setVehicleFormData({ ...vehicleFormData, title: e.target.value })} />
+                                </div>
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Base Brand</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: BMW" value={vehicleFormData.brand} onChange={(e) => setVehicleFormData({ ...vehicleFormData, brand: e.target.value })} />
+                                </div>
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Model Name</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: X5" value={vehicleFormData.model} onChange={(e) => setVehicleFormData({ ...vehicleFormData, model: e.target.value })} />
+                                </div>
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Year of Manufacture</label>
+                                    <input type="number" required className="input-field" placeholder="2023" value={vehicleFormData.year} onChange={(e) => setVehicleFormData({ ...vehicleFormData, year: e.target.value })} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Category</label>
+                                    <select className="input-field" value={vehicleFormData.category} onChange={(e) => setVehicleFormData({ ...vehicleFormData, category: e.target.value })}>
+                                        <option value="normal">Standard</option>
+                                        <option value="luxury">Luxury Elite</option>
+                                        <option value="premium">Premium</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fair (₹) Per Day</label>
+                                    <input type="number" required className="input-field" placeholder="5000" value={vehicleFormData.pricePerDay} onChange={(e) => setVehicleFormData({ ...vehicleFormData, pricePerDay: e.target.value })} />
+                                </div>
+
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Listing City</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: Hyderabad" value={vehicleFormData.city} onChange={(e) => setVehicleFormData({ ...vehicleFormData, city: e.target.value })} />
+                                </div>
+                                <div className="col-span-2 md:col-span-1 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Station/Area</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: Jubilee Hills" value={vehicleFormData.location} onChange={(e) => setVehicleFormData({ ...vehicleFormData, location: e.target.value })} />
+                                </div>
+
+                                <div className="col-span-2 space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Image URLs (comma separated)</label>
+                                    <textarea className="input-field h-24" placeholder="https://image1.jpg, https://image2.jpg" value={vehicleFormData.images} onChange={(e) => setVehicleFormData({ ...vehicleFormData, images: e.target.value })} />
+                                </div>
+
+                                <button type="submit" className="col-span-2 btn-primary py-4 rounded-xl mt-4">
+                                    {editingVehicle ? 'Update Listing' : 'Publish to Marketplace'}
+                                </button>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+export default DealerDashboard;

@@ -13,6 +13,7 @@ import {
 import axios from '../utils/api';
 import { useCity } from '../context/CityContext';
 import { MOCK_DEALERS } from '../data/staticData';
+import CarRequestModal from '../components/CarRequestModal';
 
 const CITY_COORDINATES = {
     'Delhi': { lat: 28.6139, lng: 77.2090 },
@@ -31,6 +32,7 @@ const VehicleListingPage = () => {
     const [loading, setLoading] = useState(true);
     const [locating, setLocating] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const fetchDealers = async () => {
@@ -232,14 +234,27 @@ const VehicleListingPage = () => {
                                 <p className="text-textSecondary">Try search for a different city or broaden your criteria.</p>
                                 <button
                                     onClick={() => setCity('')}
-                                    className="text-primary font-bold mt-4 hover:underline"
+                                    className="text-primary font-bold mt-4 hover:underline block mx-auto"
                                 >
                                     Show all locations
+                                </button>
+                                <p className="text-textSecondary mt-10">Still can't find what you need?</p>
+                                <button
+                                    onClick={() => setIsRequestModalOpen(true)}
+                                    className="btn-outline mt-4 px-10 py-3 rounded-full font-bold hover:bg-primary hover:text-background transition-all"
+                                >
+                                    Submit A Custom Request
                                 </button>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 )}
+
+                <CarRequestModal
+                    isOpen={isRequestModalOpen}
+                    onClose={() => setIsRequestModalOpen(false)}
+                    initialCity={city}
+                />
             </div>
         </div>
     );

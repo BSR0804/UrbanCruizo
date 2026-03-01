@@ -16,6 +16,7 @@ import CaravanListingPage from './pages/CaravanListingPage';
 import CaravanDetailsPage from './pages/CaravanDetailsPage';
 import DealerVehiclesPage from './pages/DealerVehiclesPage';
 import DashboardPage from './pages/DashboardPage';
+import DealerDashboard from './pages/DealerDashboard';
 import AdminPage from './pages/AdminPage';
 import HelpCenterPage from './pages/HelpCenterPage';
 import RentalPolicyPage from './pages/RentalPolicyPage';
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/caravans" element={<CaravanListingPage />} />
                 <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/dealer/dashboard" element={<DealerDashboard />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/help-center" element={<HelpCenterPage />} />
                 <Route path="/rental-policy" element={<RentalPolicyPage />} />
