@@ -44,16 +44,7 @@ const Header = () => {
                             <a href="#benefits" className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Benefits</a>
                             <a href="#stats" className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Performance</a>
 
-                            {user ? (
-                                <div className="flex items-center space-x-4 ml-4">
-                                    <Link to="/dealer/dashboard" className="btn-primary px-8 py-2.5 text-xs rounded-xl font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">Dashboard →</Link>
-                                    <button onClick={handleLogout} className="btn-outline px-4 py-2 text-xs rounded-xl">Logout</button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center space-x-4 ml-4">
-                                    <Link to="/dealer/dashboard" className="btn-primary px-8 py-2.5 text-xs rounded-xl font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">Get Started →</Link>
-                                </div>
-                            )}
+
                         </>
                     ) : (
                         <>
