@@ -18,21 +18,14 @@ const RegisterPage = () => {
 
     const handleGoogleSuccess = async (tokenResponse) => {
         if (tokenResponse?.access_token) {
-<<<<<<< HEAD
-=======
             // Tell backend whether this is a dealer or normal user registration
->>>>>>> 4c48cf9 (Fixed some issues)
             const result = await googleLogin(tokenResponse.access_token, role);
             if (result.success) {
                 // Use the selected role to decide the landing page so that
                 // partners coming from the partner flow don't get sent to
                 // the regular user dashboard by mistake.
                 toast.success('Account created successfully!');
-<<<<<<< HEAD
-                navigate(role === 'dealer' ? '/dealerdashboard' : '/dashboard');
-=======
                 navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
->>>>>>> 4c48cf9 (Fixed some issues)
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -52,12 +45,8 @@ const RegisterPage = () => {
             // Redirect purely based on the intended registration role
             // instead of whatever role might be returned initially.
             toast.success('Account created successfully!');
-<<<<<<< HEAD
-            navigate(role === 'dealer' ? '/dealerdashboard' : '/dashboard');
-=======
             // Dealer → Dealer Dashboard, everyone else → User Dashboard
             navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
->>>>>>> 4c48cf9 (Fixed some issues)
         } else {
             setError(result.message);
             toast.error(result.message);
