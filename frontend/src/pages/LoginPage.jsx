@@ -30,7 +30,7 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Welcome back!');
-                navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                navigate(userInfo.role === 'dealer' ? '/dealerdashboard' : '/dashboard');
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -68,7 +68,7 @@ const LoginPage = () => {
             if (userInfo.role === 'admin') {
                 navigate('/admin');
             } else if (userInfo.role === 'dealer') {
-                navigate('/dealer/dashboard');
+                navigate('/dealerdashboard');
             } else {
                 navigate('/dashboard');
             }

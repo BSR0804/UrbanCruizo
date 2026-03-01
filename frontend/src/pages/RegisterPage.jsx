@@ -22,7 +22,7 @@ const RegisterPage = () => {
             if (result.success) {
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 toast.success('Account created successfully!');
-                navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                navigate(userInfo.role === 'dealer' ? '/dealerdashboard' : '/dashboard');
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -41,7 +41,7 @@ const RegisterPage = () => {
         if (result.success) {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             toast.success('Account created successfully!');
-            navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+            navigate(userInfo.role === 'dealer' ? '/dealerdashboard' : '/dashboard');
         } else {
             setError(result.message);
             toast.error(result.message);

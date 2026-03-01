@@ -46,7 +46,7 @@ function App() {
                 <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/partner" element={<PartnerLanding />} />
-                <Route path="/dealer/dashboard" element={<DealerDashboard />} />
+                <Route path="/dealerdashboard" element={<DealerDashboard />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/help-center" element={<HelpCenterPage />} />
                 <Route path="/rental-policy" element={<RentalPolicyPage />} />
