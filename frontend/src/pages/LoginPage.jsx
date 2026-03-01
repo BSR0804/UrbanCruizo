@@ -24,8 +24,8 @@ const LoginPage = () => {
                 // Check role if loginType is dealer
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 if (loginType === 'dealer' && userInfo.role !== 'dealer') {
-                    setError('This account is not registered as a customer.');
-                    toast.error('This account is not registered as a customer.');
+                    setError('This account is not registered as a partner.');
+                    toast.error('This account is not registered as a partner.');
                     // Optionally logout if we want to force them out
                     return;
                 }
@@ -58,8 +58,8 @@ const LoginPage = () => {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
             if (loginType === 'dealer' && userInfo.role !== 'dealer' && userInfo.role !== 'admin') {
-                setError('Access denied. This is a customer-only login.');
-                toast.error('Invalid customer credentials');
+                setError('Access denied. This is a partner-only login.');
+                toast.error('Invalid partner credentials');
                 return;
             }
 
@@ -111,7 +111,7 @@ const LoginPage = () => {
                                 onClick={() => setLoginType('dealer')}
                                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Customer
+                                Partner
                             </button>
                         </div>
                     </div>
@@ -191,7 +191,7 @@ const LoginPage = () => {
 
                 <div className="mt-8 text-center text-sm text-textSecondary">
                     {loginType === 'dealer' ? (
-                        <>Want to partner with us? <a href="/register?role=dealer" className="text-primary font-bold hover:underline">Register as Customer</a></>
+                        <>Want to partner with us? <a href="/register?role=dealer" className="text-primary font-bold hover:underline">Register</a></>
                     ) : (
                         <>Don't have an account? <a href={queryRole === 'user' ? "/register?role=user" : "/register"} className="text-primary font-bold hover:underline">Register</a></>
                     )}
