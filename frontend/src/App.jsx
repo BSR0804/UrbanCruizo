@@ -22,6 +22,7 @@ import HelpCenterPage from './pages/HelpCenterPage';
 import RentalPolicyPage from './pages/RentalPolicyPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import PartnerLanding from './pages/PartnerLanding';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/caravans" element={<CaravanListingPage />} />
                 <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/partner" element={<PartnerLanding />} />
                 <Route path="/dealer/dashboard" element={<DealerDashboard />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/help-center" element={<HelpCenterPage />} />
