@@ -30,12 +30,8 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Welcome back!');
-<<<<<<< HEAD
-                navigate(userInfo.role === 'dealer' ? '/dealerdashboard' : '/dashboard');
-=======
                 // Dealer → Dealer Dashboard, everyone else → User Dashboard
                 navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
->>>>>>> 4c48cf9 (Fixed some issues)
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -58,17 +54,8 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-<<<<<<< HEAD
-        console.log('=== LOGIN DEBUG ===');
-        console.log('loginType:', loginType);
-        console.log('queryRole:', queryRole);
-        console.log('email:', email);
-        const result = await login(email, password, loginType);
-        console.log('login result:', result);
-=======
         // Pass the intended loginType so backend can optionally react to dealer intent
         const result = await login(email, password, loginType);
->>>>>>> 4c48cf9 (Fixed some issues)
         if (result.success) {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             console.log('userInfo from localStorage:', userInfo);
