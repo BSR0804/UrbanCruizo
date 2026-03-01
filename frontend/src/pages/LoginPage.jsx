@@ -67,8 +67,8 @@ const LoginPage = () => {
                 console.log('Redirecting to /admin');
                 navigate('/admin');
             } else if (userInfo.role === 'dealer') {
-                console.log('Redirecting to /dealerdashboard');
-                navigate('/dealerdashboard');
+                console.log('Redirecting to /dealer/dashboard');
+                navigate('/dealer/dashboard');
             } else {
                 console.log('Redirecting to /dashboard, role was:', userInfo.role);
                 navigate('/dashboard');

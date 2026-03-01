@@ -46,7 +46,7 @@ const Header = () => {
 
                             {user ? (
                                 <div className="flex items-center space-x-4 ml-4">
-                                    <Link to="/dealerdashboard" className="btn-primary px-5 py-2 text-xs rounded-xl">Dashboard →</Link>
+                                    <Link to="/dealer/dashboard" className="btn-primary px-5 py-2 text-xs rounded-xl">Dashboard →</Link>
                                     <button onClick={handleLogout} className="btn-outline px-4 py-2 text-xs rounded-xl">Logout</button>
                                 </div>
                             ) : (
@@ -71,7 +71,7 @@ const Header = () => {
                             {user ? (
                                 <>
                                     <NavLink
-                                        to={user.role === 'dealer' ? "/dealerdashboard" : "/dashboard"}
+                                        to={user.role === 'dealer' ? "/dealer/dashboard" : "/dashboard"}
                                         className={navLinkClass}
                                     >
                                         {user.role === 'dealer' ? 'Dealer Panel' : 'Dashboard'}
