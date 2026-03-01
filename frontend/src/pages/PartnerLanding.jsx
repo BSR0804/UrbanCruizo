@@ -33,20 +33,9 @@ const PartnerLanding = () => {
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }} className="flex flex-col sm:flex-row gap-4 justify-center">
-                        {isDealer ? (
-                            <Link to="/dealer/dashboard" className="bg-primary text-background px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl shadow-primary/30 flex items-center gap-2 justify-center">
-                                Open Dashboard <ChevronRight className="w-4 h-4" />
-                            </Link>
-                        ) : (
-                            <>
-                                <Link to="/login?role=dealer" className="bg-primary text-background px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl shadow-primary/30 flex items-center gap-2 justify-center">
-                                    Partner Login <ArrowRight className="w-4 h-4" />
-                                </Link>
-                                <Link to="/register?role=dealer" className="border border-gray-800 text-white px-10 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest hover:border-primary/50 transition-all flex items-center gap-2 justify-center">
-                                    Register Now
-                                </Link>
-                            </>
-                        )}
+                        <Link to="/dealer/dashboard" className="bg-primary text-background px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl shadow-primary/40 flex items-center gap-3 justify-center">
+                            Get Started Now <ChevronRight className="w-5 h-5" />
+                        </Link>
                     </motion.div>
 
                     {/* Trust Badges */}
@@ -174,20 +163,9 @@ const PartnerLanding = () => {
                             <h2 className="text-4xl md:text-5xl font-serif font-black text-background mb-6">Ready to Grow<br />Your Fleet Business?</h2>
                             <p className="text-background/80 max-w-xl mx-auto mb-10 text-lg">Join hundreds of partners already earning on UrbanCruizo. List your first vehicle in under 5 minutes.</p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                {isDealer ? (
-                                    <Link to="/dealer/dashboard" className="bg-background text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform">
-                                        Go to Dashboard
-                                    </Link>
-                                ) : (
-                                    <>
-                                        <Link to="/login?role=dealer" className="bg-background text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform">
-                                            Partner Login
-                                        </Link>
-                                        <Link to="/register?role=dealer" className="border-2 border-background/30 text-background px-10 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-background/10 transition-all">
-                                            Create Account
-                                        </Link>
-                                    </>
-                                )}
+                                <Link to="/dealer/dashboard" className="bg-background text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform border border-white/10 shadow-2xl">
+                                    Get Started Free
+                                </Link>
                             </div>
                         </div>
                     </div>

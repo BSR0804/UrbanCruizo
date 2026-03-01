@@ -90,16 +90,40 @@ const DealerDashboard = () => {
         }
     };
 
-    useEffect(() => {
-        if (!user || user.role !== 'dealer') {
-            navigate('/login');
-            return;
-        }
-        fetchData();
+    const isAuthenticated = !!user;
 
-        // Real-time updates: Polling every 60 seconds
-        const interval = setInterval(fetchData, 60000);
-        return () => clearInterval(interval);
+    useEffect(() => {
+        if (isAuthenticated && user.role === 'dealer') {
+            fetchData();
+            const interval = setInterval(fetchData, 60000);
+            return () => clearInterval(interval);
+        } else if (!isAuthenticated) {
+            // Set demo data for unauthenticated users
+            setStats({
+                totalVehicles: 8,
+                activeVehicles: 5,
+                bookedVehicles: 3,
+                totalBookings: 12,
+                totalEarnings: 285400,
+                recentActivity: [
+                    { vehicle: { title: 'Range Rover Vogue' }, bookingName: 'Aman Sharma', createdAt: new Date().toISOString() },
+                    { vehicle: { title: 'Mercedes G-Wagon' }, bookingName: 'Priya Verma', createdAt: new Date(Date.now() - 3600000).toISOString() }
+                ]
+            });
+            setVehicles([
+                { _id: 'd1', title: 'Range Rover Vogue', brand: 'Land Rover', model: 'Vogue', pricePerDay: 45000, location: 'Jubilee Hills', city: 'Hyderabad', availability: true, images: ['https://images.unsplash.com/photo-1606611013016-969c19ba27bb?q=80&w=2000'] },
+                { _id: 'd2', title: 'Mercedes G-Wagon', brand: 'Mercedes', model: 'G63', pricePerDay: 65000, location: 'Worli', city: 'Mumbai', availability: false, images: ['https://images.unsplash.com/photo-1520050206274-a1af44640bb6?q=80&w=2000'] }
+            ]);
+            setBookings([
+                { _id: 'b1', vehicle: { title: 'Range Rover Vogue' }, bookingName: 'Rahul Singh', startDate: new Date(), endDate: new Date(Date.now() + 86400000 * 3), finalAmount: 135000, status: 'pending_approval' }
+            ]);
+            setCarRequests([
+                { _id: 'r1', requirements: 'Need a white Rolls Royce for a wedding', vehicleType: 'Luxury', name: 'Alok Gupta', city: 'Delhi', phone: '9876543210', email: 'alok@example.com', createdAt: new Date().toISOString() }
+            ]);
+            setLoading(false);
+        } else if (user.role !== 'dealer') {
+            navigate('/dashboard'); // Regular users go to their own dashboard
+        }
     }, [user]);
 
     const handleProfileSubmit = async (e) => {
@@ -196,11 +220,11 @@ const DealerDashboard = () => {
                         <div className="h-10 w-[1px] bg-gray-800" />
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-bold text-white leading-none">{user.name}</p>
-                                <p className="text-[10px] text-primary uppercase tracking-widest mt-1">Authorized Dealer</p>
+                                <p className="text-sm font-bold text-white leading-none">{isAuthenticated ? user.name : 'Partner Guest'}</p>
+                                <p className="text-[10px] text-primary uppercase tracking-widest mt-1">{isAuthenticated ? 'Authorized Dealer' : 'Demo Account'}</p>
                             </div>
                             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20">
-                                {user.name[0]}
+                                {isAuthenticated ? user.name[0] : 'G'}
                             </div>
                         </div>
                     </div>
@@ -232,12 +256,14 @@ const DealerDashboard = () => {
                             </button>
                         ))}
                         <div className="pt-10">
-                            <button
-                                onClick={logout}
-                                className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"
-                            >
-                                <X className="w-5 h-5" /> Logout
-                            </button>
+                            {isAuthenticated && (
+                                <button
+                                    onClick={logout}
+                                    className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"
+                                >
+                                    <X className="w-5 h-5" /> Logout
+                                </button>
+                            )}
                         </div>
                     </nav>
 
@@ -260,7 +286,7 @@ const DealerDashboard = () => {
                                         <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
                                         <div className="relative z-10">
                                             <h2 className="text-3xl md:text-5xl font-serif font-black text-background mb-4">
-                                                Welcome back, <span className="italic">{user.name.split(' ')[0]}</span>
+                                                Welcome back, <span className="italic">{isAuthenticated ? user.name.split(' ')[0] : 'Partner'}</span>
                                             </h2>
                                             <p className="text-background/80 max-w-lg leading-relaxed font-medium">
                                                 Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
@@ -528,7 +554,7 @@ const DealerDashboard = () => {
                                     <div className="space-y-6">
                                         {carRequests.length > 0 ? carRequests.map(req => (
                                             <div key={req._id} className={`bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 transition-all ${req.city.toLowerCase() === user.city?.toLowerCase() ? 'border-l-primary shadow-xl shadow-primary/5' : 'border-l-gray-800 opacity-80 hover:opacity-100'}`}>
-                                                {req.city.toLowerCase() === user.city?.toLowerCase() && (
+                                                {req.city.toLowerCase() === user?.city?.toLowerCase() && (
                                                     <div className="absolute top-4 right-16 bg-primary/20 text-primary border border-primary/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic animate-pulse">
                                                         City Match
                                                     </div>
