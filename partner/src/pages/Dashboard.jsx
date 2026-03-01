@@ -150,13 +150,7 @@ const Dashboard = () => {
         <div className="min-h-screen bg-background pt-8 pb-20 px-4 md:px-8">
             <div className="container mx-auto max-w-7xl">
 
-                {/* Demo Banner */}
-                {!isAuthenticated && (
-                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 bg-primary/10 border border-primary/20 rounded-2xl px-6 py-3 flex justify-between items-center">
-                        <p className="text-sm text-primary font-medium">🔒 You're viewing a <span className="font-black">demo preview</span>. Login to access your real dashboard.</p>
-                        <Link to="/login" className="bg-primary text-background px-4 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">Login Now</Link>
-                    </motion.div>
-                )}
+
 
                 {/* Header */}
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
@@ -193,10 +187,8 @@ const Dashboard = () => {
                             <button key={item.id} onClick={() => setActiveTab(item.id)} className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 font-medium ${activeTab === item.id ? 'bg-primary text-background shadow-xl shadow-primary/20 scale-105' : 'text-textSecondary hover:bg-surface hover:text-white'}`}>{item.icon}{item.label}</button>
                         ))}
                         <div className="pt-10">
-                            {isAuthenticated ? (
+                            {isAuthenticated && (
                                 <button onClick={logout} className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"><X className="w-5 h-5" /> Logout</button>
-                            ) : (
-                                <Link to="/login" className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-primary hover:bg-primary/10 transition-all font-bold"><ChevronRight className="w-5 h-5" /> Login to Access</Link>
                             )}
                         </div>
                     </nav>

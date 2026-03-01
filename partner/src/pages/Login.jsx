@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
-import { Car, Truck, LogIn, Chrome, ArrowRight, Shield, Sparkles } from 'lucide-react';
+import { Car, LogIn, Chrome, ArrowRight, Shield, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Login = () => {
@@ -14,8 +14,8 @@ const Login = () => {
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
 
-    const getRedirectPath = (role) => {
-        return role === 'fleet' ? '/fleet-dashboard' : '/dashboard';
+    const getRedirectPath = () => {
+        return '/dashboard';
     };
 
     const handleSubmit = async (e) => {
@@ -24,9 +24,7 @@ const Login = () => {
         const res = await login(email, password, selectedRole);
         setIsLoading(false);
         if (res.success) {
-            toast.success(`Welcome back, ${selectedRole === 'fleet' ? 'Fleet Manager' : 'Partner'}!`);
-            // Always redirect to dashboard — the dashboard handles profile completion check
-            navigate(getRedirectPath(res.role || selectedRole));
+            navigate(getRedirectPath());
         } else {
             toast.error(res.message);
         }
@@ -43,8 +41,7 @@ const Login = () => {
                 } else {
                     toast.success('Authenticated with Google');
                 }
-                // Redirect to dashboard — it will auto-show the profile form if not complete
-                navigate(getRedirectPath(res.role || selectedRole));
+                navigate(getRedirectPath());
             } else {
                 toast.error(res.message);
             }
@@ -93,36 +90,7 @@ const Login = () => {
                         <p className="text-textSecondary text-sm">Authorize & manage your premium fleet.</p>
                     </div>
 
-                    {/* Role Selector */}
-                    <div className="mb-8">
-                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-black pl-1 mb-3 block">Select Your Role</label>
-                        <div className="grid grid-cols-2 gap-3">
-                            <button
-                                type="button"
-                                onClick={() => setSelectedRole('dealer')}
-                                className={`flex items-center justify-center gap-2.5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border relative overflow-hidden group ${selectedRole === 'dealer'
-                                    ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
-                                    : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
-                                    }`}
-                            >
-                                {selectedRole === 'dealer' && <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent" />}
-                                <Car className="w-4 h-4 relative z-10" />
-                                <span className="relative z-10">Dealer</span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setSelectedRole('fleet')}
-                                className={`flex items-center justify-center gap-2.5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border relative overflow-hidden group ${selectedRole === 'fleet'
-                                    ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
-                                    : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
-                                    }`}
-                            >
-                                {selectedRole === 'fleet' && <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent" />}
-                                <Truck className="w-4 h-4 relative z-10" />
-                                <span className="relative z-10">Fleet Manager</span>
-                            </button>
-                        </div>
-                    </div>
+
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="space-y-2">

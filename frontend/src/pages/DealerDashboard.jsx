@@ -70,7 +70,7 @@ const DealerDashboard = () => {
                 axios.get('dealers/dashboard/stats'),
                 axios.get('dealers/dashboard/vehicles'),
                 axios.get('dealers/dashboard/bookings'),
-                axios.get('dealers/dashboard/car-requests') // This will be created soon
+                axios.get('dealers/dashboard/car-requests')
             ]);
 
             setStats(statsRes.data);
@@ -107,10 +107,10 @@ const DealerDashboard = () => {
         try {
             const { data } = await axios.put('dealers/profile', profileData);
             const updatedUser = { ...user, ...data, isProfileComplete: true };
-            localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            updateUser(updatedUser);
             toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
             setShowProfileForm(false);
-            window.location.reload();
+            fetchData();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Update failed');
         }
@@ -308,12 +308,12 @@ const DealerDashboard = () => {
                                         <div className="bg-background border border-gray-800 p-8 rounded-[2.5rem] flex flex-col justify-center">
                                             <div className="flex justify-between items-center mb-4">
                                                 <span className="text-xs uppercase tracking-widest text-textSecondary font-bold">Fleet Health</span>
-                                                <span className="text-xs text-primary font-bold">{(stats?.activeVehicles / stats?.totalVehicles * 100).toFixed(0)}% Utilization</span>
+                                                <span className="text-xs text-primary font-bold">{stats?.totalVehicles > 0 ? ((stats?.activeVehicles / stats?.totalVehicles * 100) || 0).toFixed(0) : 0}% Utilization</span>
                                             </div>
                                             <div className="w-full h-3 bg-surface rounded-full overflow-hidden">
                                                 <motion.div
                                                     initial={{ width: 0 }}
-                                                    animate={{ width: `${(stats?.activeVehicles / stats?.totalVehicles * 100) || 0}%` }}
+                                                    animate={{ width: `${stats?.totalVehicles > 0 ? (stats?.activeVehicles / stats?.totalVehicles * 100) : 0}%` }}
                                                     className="h-full bg-primary"
                                                 />
                                             </div>
@@ -701,8 +701,8 @@ const DealerDashboard = () => {
                                         <input type="text" required className="input-field" placeholder="Ex: Delhi" value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Core Area / Location</label>
-                                        <input type="text" required className="input-field" placeholder="Ex: Gachibowli" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Operating Location (Specific Area)</label>
+                                        <input type="text" required className="input-field" placeholder="Ex: Gachibowli, Jubilee Hills" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
                                     </div>
                                 </div>
 

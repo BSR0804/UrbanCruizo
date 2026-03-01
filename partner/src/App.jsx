@@ -5,7 +5,6 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import FleetDashboard from './pages/FleetDashboard';
 
 function App() {
     return (
@@ -19,7 +18,6 @@ function App() {
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/fleet-dashboard" element={<FleetDashboard />} />
                         </Routes>
                     </main>
                 </div>
