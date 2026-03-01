@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
             const { data } = await axios.post('auth/login', { email, password, role });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
-            return { success: true, role: data.role };
+            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
         } catch (error) {
             return {
                 success: false,
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
             const { data } = await axios.post('auth/google', { token, role });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
-            return { success: true };
+            return { success: true, isProfileComplete: data.isProfileComplete, role: data.role };
         } catch (error) {
             return {
                 success: false,
@@ -63,13 +63,19 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateUser = (updatedData) => {
+        const newUser = { ...user, ...updatedData };
+        setUser(newUser);
+        localStorage.setItem('userInfo', JSON.stringify(newUser));
+    };
+
     const logout = () => {
         localStorage.removeItem('userInfo');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, googleLogin, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, register, googleLogin, logout, updateUser, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

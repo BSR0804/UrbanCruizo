@@ -11,13 +11,7 @@ const RegisterPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState(queryRole === 'dealer' ? 'dealer' : queryRole === 'fleet' ? 'fleet' : 'user');
-
-    const getRedirectPath = (userRole) => {
-        if (userRole === 'dealer') return '/dealerdashboard';
-        if (userRole === 'fleet') return '/dealerdashboard';
-        return '/dashboard';
-    };
+    const [role, setRole] = useState(queryRole === 'dealer' ? 'dealer' : 'user');
     const [error, setError] = useState('');
     const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
@@ -26,9 +20,11 @@ const RegisterPage = () => {
         if (tokenResponse?.access_token) {
             const result = await googleLogin(tokenResponse.access_token, role);
             if (result.success) {
-                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                // Use the selected role to decide the landing page so that
+                // partners coming from the partner flow don't get sent to
+                // the regular user dashboard by mistake.
                 toast.success('Account created successfully!');
-                navigate(getRedirectPath(userInfo.role));
+                navigate(role === 'dealer' ? '/dealerdashboard' : '/dashboard');
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -45,9 +41,10 @@ const RegisterPage = () => {
         e.preventDefault();
         const result = await register(name, email, password, role);
         if (result.success) {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            // Redirect purely based on the intended registration role
+            // instead of whatever role might be returned initially.
             toast.success('Account created successfully!');
-            navigate(getRedirectPath(userInfo.role));
+            navigate(role === 'dealer' ? '/dealerdashboard' : '/dashboard');
         } else {
             setError(result.message);
             toast.error(result.message);
@@ -79,21 +76,15 @@ const RegisterPage = () => {
                         <div className="bg-background/50 p-1.5 rounded-2xl flex border border-gray-800">
                             <button
                                 onClick={() => setRole('user')}
-                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
                                 Individual
                             </button>
                             <button
                                 onClick={() => setRole('dealer')}
-                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Dealer
-                            </button>
-                            <button
-                                onClick={() => setRole('fleet')}
-                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'fleet' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
-                            >
-                                Fleet
+                                Partner
                             </button>
                         </div>
                     </div>
@@ -101,14 +92,12 @@ const RegisterPage = () => {
 
                 <div className="text-center mb-10">
                     <h2 className="text-4xl font-serif font-bold text-white mb-3 tracking-tight">
-                        {role === 'dealer' ? 'Become a Dealer' : role === 'fleet' ? 'Fleet Registration' : 'Join UrbanCruizo'}
+                        {role === 'dealer' ? 'Become a Partner' : 'Join UrbanCruizo'}
                     </h2>
                     <p className="text-textSecondary text-xs italic">
                         {role === 'dealer'
-                            ? "Register to start listing your vehicles and earning."
-                            : role === 'fleet'
-                                ? "Register to manage your fleet operations and maximize revenue."
-                                : "Create an account to browse, book, and rent elite vehicles."}
+                            ? "Register to start listing your premium fleet and earning."
+                            : "Create an account to browse, book, and rent elite vehicles."}
                     </p>
                 </div>
 
@@ -149,7 +138,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <button type="submit" className="w-full btn-primary py-4 rounded-xl text-sm font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 group transition-all shadow-xl shadow-primary/20">
-                        {role === 'dealer' ? 'Register as Dealer' : role === 'fleet' ? 'Register as Fleet Manager' : 'Create My Account'}
+                        {role === 'dealer' ? 'Register as Partner' : 'Create My Account'}
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>

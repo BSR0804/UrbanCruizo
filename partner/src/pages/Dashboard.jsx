@@ -9,7 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Dashboard = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, updateUser } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('overview');
     const [stats, setStats] = useState(null);
@@ -102,12 +102,14 @@ const Dashboard = () => {
         e.preventDefault();
         if (!isAuthenticated) { toast.error('Please login first'); return; }
         try {
-            const { data } = await axios.put('dealers/profile', profileData);
+            // Also submit name update
+            const submitData = { ...profileData };
+            const { data } = await axios.put('dealers/profile', submitData);
             const updatedUser = { ...user, ...data, isProfileComplete: true };
-            localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            updateUser(updatedUser);
             toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
             setShowProfileForm(false);
-            window.location.reload();
+            fetchData();
         } catch (error) { toast.error(error.response?.data?.message || 'Update failed'); }
     };
 
@@ -428,14 +430,50 @@ const Dashboard = () => {
                 {showProfileForm && isAuthenticated && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl">
                         <motion.div initial={{ scale: 0.9, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 20 }} className="w-full max-w-xl bg-surface border border-gray-800 rounded-[3rem] p-10 shadow-2xl relative">
-                            {!user?.isProfileComplete && (<div className="absolute -top-4 -right-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce">Action Required</div>)}
-                            <h2 className="text-3xl font-serif font-bold text-primary mb-2">Partner Profile</h2>
-                            <p className="text-textSecondary mb-8 text-sm italic">{!user?.isProfileComplete ? "Before you can start listing, we need a few details." : "Keep your details updated."}</p>
+                            {!user?.isProfileComplete && (<div className="absolute -top-4 -right-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce shadow-lg shadow-primary/30">Action Required</div>)}
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary"><Users className="w-5 h-5" /></div>
+                                <h2 className="text-3xl font-serif font-bold text-primary">Partner Profile</h2>
+                            </div>
+                            <p className="text-textSecondary mb-8 text-sm italic">{!user?.isProfileComplete ? "Complete your profile to unlock the full Dealer Dashboard and start listing your vehicles." : "Keep your details updated for seamless operations."}</p>
                             <form onSubmit={handleProfileSubmit} className="space-y-6">
-                                <div className="grid md:grid-cols-2 gap-6"><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Full Identity</label><input type="text" required className="input-field" value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} /></div><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Contact Number</label><input type="tel" required className="input-field" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} /></div></div>
-                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Business Name</label><input type="text" required className="input-field" value={profileData.businessName} onChange={(e) => setProfileData({ ...profileData, businessName: e.target.value })} /></div>
-                                <div className="grid md:grid-cols-2 gap-6"><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">City</label><input type="text" required className="input-field" value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} /></div><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Location</label><input type="text" required className="input-field" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} /></div></div>
-                                <div className="pt-6 flex gap-4"><button type="submit" className="flex-1 btn-primary py-4 rounded-2xl shadow-xl shadow-primary/20">Save & Continue</button>{user?.isProfileComplete && (<button type="button" onClick={() => setShowProfileForm(false)} className="px-6 border border-gray-800 text-textSecondary rounded-2xl">Cancel</button>)}</div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Full Name</label>
+                                        <input type="text" required className="input-field rounded-xl py-3" placeholder="John Doe" value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Contact Number</label>
+                                        <input type="tel" required className="input-field rounded-xl py-3" placeholder="+91 98765 43210" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Business / Dealer Name</label>
+                                    <input type="text" required className="input-field rounded-xl py-3" placeholder="e.g. Elite Motors Pvt Ltd" value={profileData.businessName} onChange={(e) => setProfileData({ ...profileData, businessName: e.target.value })} />
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Operating City</label>
+                                        <input type="text" required className="input-field rounded-xl py-3" placeholder="e.g. Hyderabad" value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Operating Location</label>
+                                        <input type="text" required className="input-field rounded-xl py-3" placeholder="e.g. Gachibowli, Madhapur" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
+                                    </div>
+                                </div>
+                                {!user?.isProfileComplete && (
+                                    <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 text-xs text-textSecondary italic">
+                                        <span className="text-primary font-bold not-italic">Note:</span> After completing your profile, you'll have full access to the Dealer Dashboard — list vehicles, manage bookings, track earnings, and more.
+                                    </div>
+                                )}
+                                <div className="pt-4 flex gap-4">
+                                    <button type="submit" className="flex-1 btn-primary py-4 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-sm">
+                                        {!user?.isProfileComplete ? '✨ Complete Profile & Enter Dashboard' : 'Save & Continue'}
+                                    </button>
+                                    {user?.isProfileComplete && (
+                                        <button type="button" onClick={() => setShowProfileForm(false)} className="px-6 border border-gray-800 text-textSecondary rounded-2xl hover:border-primary/30 transition-colors">Cancel</button>
+                                    )}
+                                </div>
                             </form>
                         </motion.div>
                     </motion.div>

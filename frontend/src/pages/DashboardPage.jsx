@@ -1,24 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from '../utils/api';
 import { Clock, CheckCircle2, IndianRupee, History, AlertCircle, CreditCard, XCircle } from 'lucide-react';
 import PaymentModal from '../components/PaymentModal';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
-    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-
-    // Redirect dealer/fleet users to their correct dashboard
-    useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-        if (userInfo.role === 'dealer' || userInfo.role === 'fleet') {
-            navigate('/dealerdashboard', { replace: true });
-        }
-    }, [navigate]);
 
     const fetchBookings = async () => {
         try {

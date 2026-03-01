@@ -75,6 +75,7 @@ const updateDealerProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
+        user.name = req.body.name || user.name;
         user.phone = req.body.phone || user.phone;
         user.businessName = req.body.businessName || user.businessName;
         user.city = req.body.city || user.city;
@@ -96,6 +97,7 @@ const updateDealerProfile = asyncHandler(async (req, res) => {
             role: updatedUser.role,
             isProfileComplete: updatedUser.isProfileComplete,
             phone: updatedUser.phone,
+            businessName: updatedUser.businessName,
             city: updatedUser.city,
             location: updatedUser.location
         });
