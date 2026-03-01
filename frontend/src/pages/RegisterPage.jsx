@@ -48,36 +48,36 @@ const RegisterPage = () => {
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
-            <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20 transition-all">
+            <div className="bg-surface p-8 rounded-[2.5rem] shadow-2xl w-full max-w-md border border-gray-800 transition-all">
                 {queryRole ? (
-                    <div className="flex justify-center mb-8">
-                        <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                    <div className="flex justify-center mb-10">
+                        <div className="bg-background/50 p-1.5 rounded-2xl flex border border-gray-800">
                             <button
                                 onClick={() => navigate(`/login?role=${queryRole}`)}
-                                className="px-6 py-2 rounded-lg text-sm font-bold transition-all text-textSecondary hover:text-white"
+                                className="px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-textSecondary hover:text-white"
                             >
                                 Login
                             </button>
                             <button
                                 onClick={() => navigate(`/register?role=${queryRole}`)}
-                                className="px-6 py-2 rounded-lg text-sm font-bold transition-all bg-primary text-background shadow-lg"
+                                className="px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-primary text-background shadow-lg"
                             >
                                 Register
                             </button>
                         </div>
                     </div>
                 ) : (
-                    <div className="flex justify-center mb-8">
-                        <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                    <div className="flex justify-center mb-10">
+                        <div className="bg-background/50 p-1.5 rounded-2xl flex border border-gray-800">
                             <button
                                 onClick={() => setRole('user')}
-                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
                                 Individual
                             </button>
                             <button
                                 onClick={() => setRole('dealer')}
-                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
                                 Partner
                             </button>
@@ -85,37 +85,44 @@ const RegisterPage = () => {
                     </div>
                 )}
 
-                <h2 className="text-3xl font-serif text-center mb-8 text-primary">
-                    {role === 'dealer' ? (queryRole === 'dealer' ? 'Partner Registration' : 'Become a Partner') : 'Join UrbanCruizo'}
-                </h2>
+                <div className="text-center mb-10">
+                    <h2 className="text-4xl font-serif font-bold text-white mb-3 tracking-tight">
+                        {role === 'dealer' ? 'Become a Partner' : 'Join UrbanCruizo'}
+                    </h2>
+                    <p className="text-textSecondary text-xs italic">
+                        {role === 'dealer'
+                            ? "Register to start listing your premium fleet and earning."
+                            : "Create an account to browse, book, and rent elite vehicles."}
+                    </p>
+                </div>
 
-                {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
+                {error && <div className="bg-red-500/10 text-red-500 p-4 mb-8 rounded-xl text-xs font-bold text-center border border-red-500/20 uppercase tracking-widest leading-relaxed">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-textSecondary mb-2 font-medium">Full Name</label>
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-textSecondary font-black pl-1">Full Identity</label>
                         <input
                             type="text"
                             className="input-field"
-                            placeholder="John Doe"
+                            placeholder="John Doe / Dealership Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
                         />
                     </div>
-                    <div>
-                        <label className="block text-textSecondary mb-2 font-medium">Email Address</label>
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-textSecondary font-black pl-1">Primary Email</label>
                         <input
                             type="email"
                             className="input-field"
-                            placeholder="your@email.com"
+                            placeholder="authorized@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
-                    <div>
-                        <label className="block text-textSecondary mb-2 font-medium">Password</label>
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-textSecondary font-black pl-1">Account Secret</label>
                         <input
                             type="password"
                             className="input-field"
@@ -125,29 +132,29 @@ const RegisterPage = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2 group transition-all">
-                        Create Account
+                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-sm font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 group transition-all shadow-xl shadow-primary/20">
+                        {role === 'dealer' ? 'Register as Partner' : 'Create My Account'}
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </button>
                 </form>
 
-                <div className="relative my-8">
+                <div className="relative my-10">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-800"></div>
+                        <div className="w-full border-t border-gray-800/50"></div>
                     </div>
-                    <div className="relative flex justify-center text-xs uppercase tracking-widest text-textSecondary">
-                        <span className="px-4 bg-surface">Or join with</span>
+                    <div className="relative flex justify-center text-[10px] uppercase tracking-widest text-textSecondary font-bold">
+                        <span className="px-4 bg-surface italic">Institutional Entry</span>
                     </div>
                 </div>
 
                 <button
                     type="button"
                     onClick={() => loginGoogle()}
-                    className="w-full bg-white text-gray-900 py-3 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition-all font-bold border border-gray-200"
+                    className="w-full bg-white text-gray-900 py-3.5 rounded-xl flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all font-bold font-black uppercase tracking-widest text-[10px] border border-gray-200 shadow-lg"
                 >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                             fill="#4285F4"
@@ -165,11 +172,11 @@ const RegisterPage = () => {
                             fill="#EA4335"
                         />
                     </svg>
-                    Google Account
+                    Google Workspace
                 </button>
 
-                <div className="mt-8 text-center text-sm text-textSecondary">
-                    Already have an account? <a href={queryRole ? `/login?role=${queryRole}` : "/login"} className="text-primary font-bold hover:underline">Login</a>
+                <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
+                    Already have an account? <a href={queryRole ? `/login?role=${queryRole}` : "/login"} className="text-primary hover:underline">Login</a>
                 </div>
             </div>
         </div>
