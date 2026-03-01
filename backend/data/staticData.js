@@ -804,6 +804,62 @@ const MOCK_VEHICLES_DATA = [
         airbags: 10,
         availability: true,
         rating: 5.0
+    },
+    {
+        title: 'Mahindra XUV300',
+        type: 'car',
+        category: 'suv',
+        brand: 'Mahindra',
+        model: 'XUV300 W8',
+        year: 2023,
+        transmission: 'Automatic',
+        fuelType: 'Diesel',
+        seats: 5,
+        pricePerHour: 280,
+        pricePerDay: 3200,
+        securityDeposit: 4500,
+        city: 'Chennai',
+        images: [
+            '/images/mahindra-xuv300.avif',
+            '/images/mahindra-xuv300-interior-1.jpg',
+            '/images/mahindra-xuv300-interior-2.jpg',
+            '/images/mahindra-xuv300-interior-3.webp'
+        ],
+        location: 'Marina Beach, Chennai',
+        kmsLimitPerDay: 240,
+        extraKmCharge: 12,
+        description1: 'The Mahindra XUV300 sets a high bar for safety and performance in the compact SUV segment. Its powerful Turbo-Diesel engine and disc brakes on all four wheels provide a confident and spirited driving experience.',
+        description2: 'Boasting 7 airbags—including a driver knee airbag—and a 5-star safety rating, it offers best-in-class protection. The spacious cabin features dual-zone climate control for personalized comfort on every trip.',
+        airbags: 7,
+        availability: true,
+        rating: 4.6
+    },
+    {
+        title: 'Skoda Slavia',
+        type: 'car',
+        category: 'sedan',
+        brand: 'Skoda',
+        model: 'Slavia Monte Carlo',
+        year: 2023,
+        transmission: 'Automatic',
+        fuelType: 'Petrol',
+        seats: 5,
+        pricePerHour: 220,
+        pricePerDay: 2600,
+        securityDeposit: 3800,
+        city: 'Chennai',
+        images: [
+            '/images/skoda-slavia.webp',
+            '/images/skoda-slavia-interior-1.avif',
+            '/images/skoda-slavia-interior-2.avif'
+        ],
+        location: 'Guindy, Chennai',
+        kmsLimitPerDay: 240,
+        description1: 'The Skoda Slavia is a tribute to pure driving pleasure, blending European elegance with robust performance. Its 1.5 TSI engine and smooth DSG gearbox provide a spirited drive that is second to none in its segment.',
+        description2: 'With a 5-star safety rating and 6 standard airbags, this sedan offers uncompromising protection. The spacious, well-built cabin and large boot make it the perfect companion for both city life and long highway journeys.',
+        airbags: 6,
+        availability: true,
+        rating: 4.6
     }
 ];
 

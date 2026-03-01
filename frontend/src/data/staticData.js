@@ -505,7 +505,12 @@ export const MOCK_VEHICLES = [
         pricePerDay: 3200,
         securityDeposit: 4500,
         city: 'Chennai',
-        images: ['https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/mahindra-xuv300.avif',
+            '/images/mahindra-xuv300-interior-1.jpg',
+            '/images/mahindra-xuv300-interior-2.jpg',
+            '/images/mahindra-xuv300-interior-3.webp'
+        ],
         location: 'Marina Beach, Chennai',
         kmsLimitPerDay: 240,
         extraKmCharge: 12,
@@ -559,7 +564,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 2600,
         securityDeposit: 3800,
         city: 'Chennai',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/skoda-slavia.webp',
+            '/images/skoda-slavia-interior-1.avif',
+            '/images/skoda-slavia-interior-2.avif'
+        ],
         location: 'Guindy, Chennai',
         kmsLimitPerDay: 240,
         description1: 'The Skoda Slavia is a tribute to pure driving pleasure, blending European elegance with robust performance. Its 1.5 TSI engine and smooth DSG gearbox provide a spirited drive that is second to none in its segment.',
