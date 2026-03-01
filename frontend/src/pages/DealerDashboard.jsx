@@ -17,7 +17,8 @@ import {
     X,
     Eye,
     MessageSquare,
-    RefreshCw
+    RefreshCw,
+    Lock
 } from 'lucide-react';
 import axios from '../utils/api';
 import toast from 'react-hot-toast';
@@ -25,7 +26,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const DealerDashboard = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, updateUser } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('overview');
     const [stats, setStats] = useState(null);
@@ -78,7 +79,7 @@ const DealerDashboard = () => {
             setBookings(bookingsRes.data);
             setCarRequests(requestsRes.data);
 
-            if (!user.isProfileComplete) {
+            if (user && !user.isProfileComplete) {
                 setShowProfileForm(true);
             }
             setLoading(false);
@@ -398,7 +399,11 @@ const DealerDashboard = () => {
                                             </div>
                                             <button
                                                 onClick={() => {
-                                                    if (!user.isProfileComplete) {
+                                                    if (!isAuthenticated) {
+                                                        toast.error('Demo Mode: Please login to add vehicles');
+                                                        return;
+                                                    }
+                                                    if (!user?.isProfileComplete) {
                                                         toast.error('Complete your profile before listing!');
                                                         setShowProfileForm(true);
                                                         return;
@@ -693,7 +698,7 @@ const DealerDashboard = () => {
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             className="w-full max-w-xl bg-surface border border-gray-800 rounded-[3rem] p-10 shadow-2xl relative"
                         >
-                            {!user.isProfileComplete && (
+                            {user && !user.isProfileComplete && (
                                 <div className="absolute -top-4 -right-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce">
                                     Action Required
                                 </div>
@@ -701,7 +706,7 @@ const DealerDashboard = () => {
 
                             <h2 className="text-3xl font-serif font-bold text-primary mb-2">Partner Profile</h2>
                             <p className="text-textSecondary mb-8 text-sm italic">
-                                {!user.isProfileComplete
+                                {user && !user.isProfileComplete
                                     ? "Before you can start listing your premium fleet, we need a few details to verify your identity and dealership."
                                     : "Keep your dealership details updated for better trust scores."}
                             </p>
@@ -736,7 +741,7 @@ const DealerDashboard = () => {
                                     <button type="submit" className="flex-1 btn-primary py-4 rounded-2xl shadow-xl shadow-primary/20">
                                         Save & Continue
                                     </button>
-                                    {user.isProfileComplete && (
+                                    {user?.isProfileComplete && (
                                         <button type="button" onClick={() => setShowProfileForm(false)} className="px-6 border border-gray-800 text-textSecondary rounded-2xl">Cancel</button>
                                     )}
                                 </div>
