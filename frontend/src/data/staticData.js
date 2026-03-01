@@ -622,7 +622,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1700,
         securityDeposit: 2800,
         city: 'Pune',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/swift-sport.jpg',
+            '/images/swift-sport-interior-1.avif',
+            '/images/swift-sport-interior-2.jpg'
+        ],
         location: 'Koregaon Park, Pune',
         kmsLimitPerDay: 240,
         description1: 'Experience the thrill of the Suzuki Swift Sport, a hot hatch designed to deliver maximum driving engagement. Its lightweight chassis and punchy Boosterjet engine provide an agile and reactive performance that is pure fun.',
@@ -646,7 +650,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 3000,
         securityDeposit: 4000,
         city: 'Pune',
-        images: ['https://images.unsplash.com/photo-1605559424843-9e4c3ca4b7f7?q=80&w=1200&auto=format&fit=crop'],
+        images: [
+            '/images/tata-nexon.avif',
+            '/images/tata-nexon-interior-1.avif',
+            '/images/tata-nexon-interior-2.avif'
+        ],
         location: 'Viman Nagar, Pune',
         kmsLimitPerDay: 240,
         description1: 'The Tata Nexon 2023 combines muscular SUV styling with a 5-star safety heritage. Its refined Revotorq engine and high ground clearance make it a versatile choice for navigating both urban streets and rugged rural roads.',
@@ -670,7 +678,10 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1300,
         securityDeposit: 2200,
         city: 'Pune',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/meteor-350.avif',
+            '/images/meteor-350-interior-1.avif'
+        ],
         location: 'Camp, Pune',
         kmsLimitPerDay: 160,
         description1: 'The Royal Enfield Meteor 350 is a quintessential cruiser, designed to offer a relaxed and supportive riding experience. Its smooth 350cc engine delivers gentle low-end torque, perfect for effortless city gliding.',

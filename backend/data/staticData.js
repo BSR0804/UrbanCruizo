@@ -860,6 +860,85 @@ const MOCK_VEHICLES_DATA = [
         airbags: 6,
         availability: true,
         rating: 4.6
+    },
+    {
+        title: 'Maruti Swift Sport',
+        type: 'car',
+        category: 'hatchback',
+        brand: 'Maruti Suzuki',
+        model: 'Swift Sport',
+        year: 2023,
+        transmission: 'Manual',
+        fuelType: 'Petrol',
+        seats: 5,
+        pricePerHour: 140,
+        pricePerDay: 1700,
+        securityDeposit: 2800,
+        city: 'Pune',
+        images: [
+            '/images/swift-sport.jpg',
+            '/images/swift-sport-interior-1.avif',
+            '/images/swift-sport-interior-2.jpg'
+        ],
+        location: 'Koregaon Park, Pune',
+        kmsLimitPerDay: 240,
+        description1: 'Experience the thrill of the Suzuki Swift Sport, a hot hatch designed to deliver maximum driving engagement. Its lightweight chassis and punchy Boosterjet engine provide an agile and reactive performance that is pure fun.',
+        description2: 'Equipped with 6 SRS airbags and a driver-focused digital cockpit, it balances excitement with safety. The sport-tuned suspension and sharp steering make every corner an opportunity for an unparalleled driving experience.',
+        airbags: 6,
+        availability: true,
+        rating: 4.8
+    },
+    {
+        title: 'Tata Nexon',
+        type: 'car',
+        category: 'suv',
+        brand: 'Tata',
+        model: 'Nexon Creative',
+        year: 2023,
+        transmission: 'Automatic',
+        fuelType: 'Diesel',
+        seats: 5,
+        pricePerHour: 260,
+        pricePerDay: 3000,
+        securityDeposit: 4000,
+        city: 'Pune',
+        images: [
+            '/images/tata-nexon.avif',
+            '/images/tata-nexon-interior-1.avif',
+            '/images/tata-nexon-interior-2.avif'
+        ],
+        location: 'Viman Nagar, Pune',
+        kmsLimitPerDay: 240,
+        description1: 'The Tata Nexon 2023 combines muscular SUV styling with a 5-star safety heritage. Its refined Revotorq engine and high ground clearance make it a versatile choice for navigating both urban streets and rugged rural roads.',
+        description2: 'Prioritizing your well-being with 6 standard airbags and a reinforced structure, this 2023 edition is built to protect. Enjoy a premium, feature-rich interior that offers exceptional comfort for all occupants.',
+        airbags: 6,
+        availability: true,
+        rating: 4.6
+    },
+    {
+        title: 'Royal Enfield Meteor 350',
+        type: 'bike',
+        category: 'royal-enfield',
+        brand: 'Royal Enfield',
+        model: 'Meteor 350',
+        year: 2023,
+        transmission: 'Manual',
+        fuelType: 'Petrol',
+        seats: 2,
+        pricePerHour: 85,
+        pricePerDay: 1300,
+        securityDeposit: 2200,
+        city: 'Pune',
+        images: [
+            '/images/meteor-350.avif',
+            '/images/meteor-350-interior-1.avif'
+        ],
+        location: 'Camp, Pune',
+        kmsLimitPerDay: 160,
+        description1: 'The Royal Enfield Meteor 350 is a quintessential cruiser, designed to offer a relaxed and supportive riding experience. Its smooth 350cc engine delivers gentle low-end torque, perfect for effortless city gliding.',
+        description2: 'With its plush seating and planted stance, the Meteor encourages long, scenic explorations. Experience a blend of classic aesthetics and modern mechanical refinement for a truly serene journey.',
+        availability: true,
+        rating: 4.8
     }
 ];
 
