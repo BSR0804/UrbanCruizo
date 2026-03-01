@@ -73,26 +73,38 @@ const createVehicle = asyncHandler(async (req, res) => {
 // @desc    Update Vehicle
 const updateVehicle = asyncHandler(async (req, res) => {
     const vehicle = await Vehicle.findById(req.params.id);
-    if (vehicle) {
-        Object.assign(vehicle, req.body);
-        const updatedVehicle = await vehicle.save();
-        res.json(updatedVehicle);
-    } else {
+    if (!vehicle) {
         res.status(404);
         throw new Error('Vehicle not found');
     }
+
+    // Authorization: Owner or Admin
+    if (req.user.role !== 'admin' && vehicle.owner?.toString() !== req.user._id.toString()) {
+        res.status(401);
+        throw new Error('Not authorized to update this vehicle');
+    }
+
+    Object.assign(vehicle, req.body);
+    const updatedVehicle = await vehicle.save();
+    res.json(updatedVehicle);
 });
 
 // @desc    Delete Vehicle
 const deleteVehicle = asyncHandler(async (req, res) => {
     const vehicle = await Vehicle.findById(req.params.id);
-    if (vehicle) {
-        await vehicle.deleteOne();
-        res.json({ message: 'Vehicle removed' });
-    } else {
+    if (!vehicle) {
         res.status(404);
         throw new Error('Vehicle not found');
     }
+
+    // Authorization: Owner or Admin
+    if (req.user.role !== 'admin' && vehicle.owner?.toString() !== req.user._id.toString()) {
+        res.status(401);
+        throw new Error('Not authorized to remove this vehicle');
+    }
+
+    await vehicle.deleteOne();
+    res.json({ message: 'Vehicle removed' });
 });
 
 // @desc    Get Stats

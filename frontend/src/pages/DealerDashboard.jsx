@@ -95,6 +95,10 @@ const DealerDashboard = () => {
             return;
         }
         fetchData();
+
+        // Real-time updates: Polling every 60 seconds
+        const interval = setInterval(fetchData, 60000);
+        return () => clearInterval(interval);
     }, [user]);
 
     const handleProfileSubmit = async (e) => {
@@ -486,6 +490,45 @@ const DealerDashboard = () => {
                                         <p className="text-5xl font-serif font-bold text-primary">₹{stats?.totalEarnings?.toLocaleString()}</p>
                                         <p className="text-sm text-textSecondary italic">Commission of 10% already deducted. Next payout scheduled for 5th of next month.</p>
                                     </div>
+
+                                    <div className="bg-background border border-gray-800 rounded-[2.5rem] overflow-hidden">
+                                        <div className="p-8 border-b border-gray-800">
+                                            <h3 className="text-xl font-bold text-white">Earnings History</h3>
+                                            <p className="text-xs text-textSecondary mt-1 uppercase tracking-widest font-black italic">Recent Confirmed Bookings</p>
+                                        </div>
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left">
+                                                <thead className="bg-surface/50 text-[10px] uppercase font-black tracking-[0.2em] text-textSecondary">
+                                                    <tr>
+                                                        <th className="px-8 py-4">Ref ID</th>
+                                                        <th className="px-8 py-4">Date</th>
+                                                        <th className="px-8 py-4">Vehicle</th>
+                                                        <th className="px-8 py-4">Net Amount</th>
+                                                        <th className="px-8 py-4">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-gray-800/50">
+                                                    {bookings.filter(b => b.status === 'approved' || b.status === 'confirmed').length > 0 ? (
+                                                        bookings.filter(b => b.status === 'approved' || b.status === 'confirmed').slice(0, 10).map(b => (
+                                                            <tr key={b._id} className="hover:bg-primary/5 transition-colors group">
+                                                                <td className="px-8 py-6 text-xs font-mono text-gray-500">#{b._id.slice(-6).toUpperCase()}</td>
+                                                                <td className="px-8 py-6 text-sm text-white font-medium">{new Date(b.createdAt).toLocaleDateString()}</td>
+                                                                <td className="px-8 py-6 text-sm text-textSecondary">{b.vehicle?.brand} {b.vehicle?.model}</td>
+                                                                <td className="px-8 py-6 text-sm text-primary font-bold">₹{(b.totalPrice * 0.9).toLocaleString()}</td>
+                                                                <td className="px-8 py-6">
+                                                                    <span className="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-500/20 italic">Disbursed</span>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="5" className="px-8 py-20 text-center text-textSecondary italic">No earnings records found yet.</td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             )}
 
@@ -639,6 +682,14 @@ const DealerDashboard = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fair (₹) Per Day</label>
                                     <input type="number" required className="input-field" placeholder="5000" value={vehicleFormData.pricePerDay} onChange={(e) => setVehicleFormData({ ...vehicleFormData, pricePerDay: e.target.value })} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Initial Status</label>
+                                    <select className="input-field" value={vehicleFormData.availability} onChange={(e) => setVehicleFormData({ ...vehicleFormData, availability: e.target.value === 'true' })}>
+                                        <option value="true">Available</option>
+                                        <option value="false">Booked / Maintenance</option>
+                                    </select>
                                 </div>
 
                                 <div className="col-span-2 md:col-span-1 space-y-2">
