@@ -39,7 +39,7 @@ const RegisterPage = () => {
         const result = await register(name, email, password, role);
         if (result.success) {
             toast.success(role === 'dealer' ? 'Customer account created! Welcome partner.' : 'Account created successfully!');
-            navigate(role === 'dealer' ? '/admin' : '/');
+            navigate(role === 'dealer' ? '/dealer/dashboard' : '/');
         } else {
             setError(result.message);
             toast.error(result.message);

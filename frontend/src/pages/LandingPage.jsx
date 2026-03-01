@@ -20,7 +20,8 @@ import {
     LifeBuoy,
     UserCheck,
     Sparkles,
-    FileSearch
+    FileSearch,
+    Users
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -169,6 +170,100 @@ const LandingPage = () => {
                             </motion.div>
                         ))}
                     </motion.div>
+                </div>
+            </section>
+
+            {/* Authentication Portals Section */}
+            <section className="py-24 bg-background relative overflow-hidden">
+                <div className="container mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="text-4xl md:text-6xl font-serif font-bold text-white mb-6"
+                        >
+                            Select Your <span className="text-primary italic">Experience</span>
+                        </motion.h2>
+                        <p className="text-textSecondary text-lg max-w-2xl mx-auto italic">
+                            Dedicated portals for our luxury fleet providers and elite travelers.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                        {/* Partner Portal Card */}
+                        <motion.div
+                            initial={{ x: -50, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            className="group relative bg-surface border border-gray-800 p-12 rounded-[3.5rem] overflow-hidden hover:border-primary/40 transition-all duration-500"
+                        >
+                            <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+                            <div className="relative z-10 flex flex-col h-full">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="p-4 bg-primary/10 rounded-2xl text-primary transform group-hover:rotate-12 transition-transform">
+                                        <Users className="w-10 h-10" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-3xl font-serif font-bold text-white">Partner With Us</h3>
+                                        <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-black mt-1 italic">For Vehicle Owners</p>
+                                    </div>
+                                </div>
+                                <p className="text-textSecondary mb-10 leading-relaxed text-lg">
+                                    List your premium Cars, Bikes, or Caravans and reach India's most elite travelers. Manage your fleet and earnings from a powerful dashboard.
+                                </p>
+                                <div className="mt-auto flex flex-col sm:flex-row gap-4">
+                                    <button
+                                        onClick={() => navigate('/login?role=dealer')}
+                                        className="flex-1 bg-surface border border-primary text-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-primary hover:text-background transition-all shadow-lg shadow-primary/5"
+                                    >
+                                        Log In
+                                    </button>
+                                    <button
+                                        onClick={() => navigate('/register?role=dealer')}
+                                        className="flex-1 bg-primary text-background py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition-transform shadow-xl shadow-primary/20"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Customer Portal Card */}
+                        <motion.div
+                            initial={{ x: 50, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            className="group relative bg-primary p-12 rounded-[3.5rem] overflow-hidden shadow-2xl hover:scale-[1.02] transition-all duration-500"
+                        >
+                            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
+                            <div className="relative z-10 flex flex-col h-full text-background">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="p-4 bg-background/10 rounded-2xl text-background">
+                                        <Sparkles className="w-10 h-10" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-3xl font-serif font-bold">Join UrbanCruizo</h3>
+                                        <p className="text-[10px] uppercase tracking-[0.3em] font-black mt-1 italic opacity-80">For Luxury Travelers</p>
+                                    </div>
+                                </div>
+                                <p className="opacity-90 mb-10 leading-relaxed text-lg font-medium">
+                                    Experience the thrill of the open road. Browse verified premium listings, book in minutes, and embark on your next great adventure.
+                                </p>
+                                <div className="mt-auto flex flex-col sm:flex-row gap-4">
+                                    <button
+                                        onClick={() => navigate('/login?role=user')}
+                                        className="flex-1 bg-background text-primary py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:opacity-90 transition-all shadow-2xl"
+                                    >
+                                        Log In
+                                    </button>
+                                    <button
+                                        onClick={() => navigate('/register?role=user')}
+                                        className="flex-1 bg-transparent border-2 border-background text-background py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-background hover:text-primary transition-all"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
