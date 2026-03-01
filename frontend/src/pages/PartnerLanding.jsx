@@ -1,7 +1,8 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { Car, TrendingUp, MapPin, Shield, ChevronRight, Star, Zap, BarChart3, Users, ArrowRight } from 'lucide-react';
 import FeaturesPage from './FeaturesPage';
 import BenefitsPage from './BenefitsPage';
 import PerformancePage from './PerformancePage';
