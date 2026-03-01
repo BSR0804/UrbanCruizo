@@ -16,7 +16,7 @@ const Header = () => {
         `hover:text-primary transition font-medium relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 ${isActive ? 'text-primary after:w-full' : 'after:w-0 hover:after:w-full'
         }`;
 
-    const isPartnerRoute = location.pathname === '/partner';
+    const isPartnerRoute = location.pathname === '/partner' || location.pathname === '/dealer/dashboard';
 
     return (
         <header className="bg-surface shadow-md sticky top-0 z-50 border-b border-secondary/20">
@@ -40,11 +40,21 @@ const Header = () => {
                 <nav className="hidden md:flex md:space-x-8 lg:space-x-10 items-center">
                     {isPartnerRoute ? (
                         <>
-                            <a href="#features" className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Features</a>
-                            <a href="#benefits" className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Benefits</a>
-                            <a href="#stats" className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Performance</a>
-
-
+                            {location.pathname === '/partner' && (
+                                <>
+                                    <button onClick={() => window.location.hash = '#features'} className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Features</button>
+                                    <button onClick={() => window.location.hash = '#benefits'} className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Benefits</button>
+                                    <button onClick={() => window.location.hash = '#stats'} className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Performance</button>
+                                </>
+                            )}
+                            {location.pathname === '/dealer/dashboard' && (
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold"
+                                >
+                                    Logout
+                                </button>
+                            )}
                         </>
                     ) : (
                         <>
