@@ -86,23 +86,7 @@ const PartnerLanding = () => {
             </section>
 
 
-            {/* CTA */}
-            <section className="py-32 px-6">
-                <div className="container mx-auto max-w-4xl">
-                    <div className="relative bg-gradient-to-br from-primary to-yellow-700 rounded-[3rem] p-16 text-center overflow-hidden">
-                        <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
-                        <div className="relative z-10">
-                            <h2 className="text-4xl md:text-5xl font-serif font-black text-background mb-6">Ready to Grow<br />Your Fleet Business?</h2>
-                            <p className="text-background/80 max-w-xl mx-auto mb-10 text-lg">Join hundreds of partners already earning on UrbanCruizo. List your first vehicle in under 5 minutes.</p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link to="/dealer/dashboard" className="bg-background text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform border border-white/10 shadow-2xl">
-                                    Get Started Free
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
         </div>
     );
 };
