@@ -27,6 +27,7 @@ import { useAuth } from '../context/AuthContext';
 import { MOCK_VEHICLES } from '../data/staticData';
 import PaymentModal from '../components/PaymentModal';
 import BookingFormModal from '../components/BookingFormModal';
+import TripPlanner from '../components/TripPlanner';
 
 const VehicleDetailsPage = () => {
     const { id } = useParams();
@@ -548,6 +549,11 @@ const VehicleDetailsPage = () => {
                             </button>
                             {!user && <p className="text-xs text-center text-red-500 font-bold">Login required to book.</p>}
                         </form>
+
+                        {/* Trip Planner Feature */}
+                        <div className="mt-8">
+                            <TripPlanner vehicle={vehicle} />
+                        </div>
 
                         {/* Map Section */}
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl overflow-hidden">

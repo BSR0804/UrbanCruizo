@@ -80,6 +80,7 @@ export const MOCK_VEHICLES = [
         description1: 'The Maruti Swift 2023 offers a nimble, light-footed driving experience that is perfect for city navigation. Its 1.2L DualJet engine provides responsive acceleration with class-leading fuel efficiency.',
         description2: 'Equipped with a 5-star build and 6 SRS airbags, this hatchback ensures you are protected on every turn. The cabin is designed for daily practicality with intuitive controls and a smooth manual shift.',
         airbags: 6,
+        mileage: 22.3,
         owner: 'dealer_delhi_1',
         dealerId: 'dealer_delhi_1'
     },
@@ -98,6 +99,7 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4500,
         securityDeposit: 5000,
         city: 'Delhi',
+        mileage: 18.5,
         images: [
             '/images/thar.jpg',
             '/images/thar-interior-1.jpg',
@@ -109,6 +111,7 @@ export const MOCK_VEHICLES = [
         description1: 'The Mahindra Thar 4x4 is a rugged icon built for those who seek adventure beyond the pavement. With exceptional off-road geometry and high ground clearance, it conquers trails and city bumps with equal authority.',
         description2: 'Experience the raw power of the mStallion engine paired with an advanced 4WD system. This 2024 edition prioritizes durability and visibility, making it the perfect companion for exploring challenging terrains.',
         airbags: 6,
+        mileage: 18.5,
         owner: 'dealer_delhi_1',
         dealerId: 'dealer_delhi_1'
     },
@@ -127,6 +130,7 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1600,
         securityDeposit: 2500,
         city: 'Delhi',
+        mileage: 21.0,
         images: [
             '/images/i20.jpg',
             '/images/i20-interior-1.avif',
@@ -168,6 +172,7 @@ export const MOCK_VEHICLES = [
         description1: 'Embrace the future with the Tata Nexon EV, offering a silent yet thrilling electric performance. The Gen II motor provides instant torque for swift overtaking and effortless cruising.',
         description2: 'Boasting a 5-star GNCAP rating and 6 airbags, this electric SUV is as safe as it is efficient. Enjoy the convenience of Vehicle-to-Load charging and a feature-packed digital cockpit.',
         airbags: 6,
+        mileage: 16.2,
         owner: 'dealer2',
         dealerId: 'dealer2'
     },
@@ -186,6 +191,7 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1500,
         securityDeposit: 2500,
         city: 'Mumbai',
+        mileage: 23.2,
         images: [
             '/images/dzire.webp',
             '/images/dzire-interior-1.avif',
@@ -202,6 +208,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '6',
+        mileage: 45,
         title: 'Royal Enfield Classic 350',
         type: 'bike',
         category: 'royal-enfield',
@@ -230,6 +237,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '7',
+        mileage: 45,
         title: 'Honda CB350H',
         type: 'bike',
         category: 'standard',
@@ -258,6 +266,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '8',
+        mileage: 8.5,
         title: 'Mercedes Sprinter Caravan',
         type: 'caravan',
         category: 'premium',
@@ -288,6 +297,7 @@ export const MOCK_VEHICLES = [
     // Bangalore Fleet - dealer3
     {
         _id: '9',
+        mileage: 14.8,
         title: 'Hyundai Creta',
         type: 'car',
         category: 'suv',
@@ -316,6 +326,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '10',
+        mileage: 20.5,
         title: 'Volkswagen Polo',
         type: 'car',
         category: 'hatchback',
@@ -345,6 +356,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '11',
+        mileage: 10.5,
         title: 'BMW X5',
         type: 'car',
         category: 'luxury',
@@ -374,6 +386,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '12',
+        mileage: 10.5,
         title: 'Mercedes-Benz C-Class',
         type: 'car',
         category: 'luxury',
@@ -403,6 +416,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '13',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -433,6 +447,7 @@ export const MOCK_VEHICLES = [
     // Hyderabad Fleet - dealer4
     {
         _id: '14',
+        mileage: 14.8,
         title: 'Toyota Innova Crysta',
         type: 'car',
         category: 'suv',
@@ -461,6 +476,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '15',
+        mileage: 14.8,
         title: 'Kia Seltos',
         type: 'car',
         category: 'suv',
@@ -492,6 +508,7 @@ export const MOCK_VEHICLES = [
     // Chennai Fleet - dealer5
     {
         _id: '17',
+        mileage: 14.8,
         title: 'Mahindra XUV300',
         type: 'car',
         category: 'suv',
@@ -522,6 +539,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '18',
+        mileage: 18.2,
         title: 'Honda City',
         type: 'car',
         category: 'sedan',
@@ -551,6 +569,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '19',
+        mileage: 18.2,
         title: 'Skoda Slavia',
         type: 'car',
         category: 'sedan',
@@ -579,6 +598,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '37',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -609,6 +629,7 @@ export const MOCK_VEHICLES = [
     // Pune Fleet - dealer6
     {
         _id: '20',
+        mileage: 20.5,
         title: 'Maruti Swift Sport',
         type: 'car',
         category: 'hatchback',
@@ -637,6 +658,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '21',
+        mileage: 14.8,
         title: 'Tata Nexon',
         type: 'car',
         category: 'suv',
@@ -665,6 +687,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '22',
+        mileage: 45,
         title: 'Royal Enfield Meteor 350',
         type: 'bike',
         category: 'royal-enfield',
@@ -691,6 +714,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '38',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -721,6 +745,7 @@ export const MOCK_VEHICLES = [
     // Kolkata Fleet - dealer7
     {
         _id: '23',
+        mileage: 20.5,
         title: 'Renault Kwid',
         type: 'car',
         category: 'hatchback',
@@ -745,6 +770,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '24',
+        mileage: 20.5,
         title: 'Datsun redi-GO',
         type: 'car',
         category: 'hatchback',
@@ -769,6 +795,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '25',
+        mileage: 20.5,
         title: 'Chevrolet Beat',
         type: 'car',
         category: 'hatchback',
@@ -793,6 +820,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '39',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -823,6 +851,7 @@ export const MOCK_VEHICLES = [
     // Jaipur Fleet - dealer8
     {
         _id: '26',
+        mileage: 14.8,
         title: 'Mahindra XUV700',
         type: 'car',
         category: 'suv',
@@ -847,6 +876,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '27',
+        mileage: 14.8,
         title: 'Citroen C5 Aircross',
         type: 'car',
         category: 'suv',
@@ -871,6 +901,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '28',
+        mileage: 14.8,
         title: 'MG Hector Plus',
         type: 'car',
         category: 'suv',
@@ -895,6 +926,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '29',
+        mileage: 10.5,
         title: 'Audi A4 Max',
         type: 'car',
         category: 'luxury',
@@ -919,6 +951,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '36',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -949,6 +982,7 @@ export const MOCK_VEHICLES = [
     // Capital City Wheels - dealer_delhi_2
     {
         _id: '30',
+        mileage: 18.2,
         title: 'Honda City',
         type: 'car',
         category: 'sedan',
@@ -978,6 +1012,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '31',
+        mileage: 14.8,
         title: 'Toyota Fortuner',
         type: 'car',
         category: 'suv',
@@ -1007,6 +1042,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '32',
+        mileage: 10.5,
         title: 'Mercedes-Benz A-Class',
         type: 'car',
         category: 'luxury',
@@ -1037,6 +1073,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '33',
+        mileage: 45,
         title: 'RE Interceptor 650',
         type: 'bike',
         category: 'royal-enfield',
@@ -1065,6 +1102,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '34',
+        mileage: 10.5,
         title: 'Audi A6',
         type: 'car',
         category: 'luxury',
@@ -1094,6 +1132,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '35',
+        mileage: 8.5,
         title: 'Force Traveler Caravan',
         type: 'caravan',
         category: 'standard',
@@ -1123,6 +1162,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '40',
+        mileage: 10.5,
         title: 'BMW 7 Series',
         type: 'car',
         category: 'luxury',
@@ -1152,6 +1192,7 @@ export const MOCK_VEHICLES = [
     },
     {
         _id: '41',
+        mileage: 10.5,
         title: 'Mercedes-Benz S-Class',
         type: 'car',
         category: 'luxury',

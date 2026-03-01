@@ -16,6 +16,7 @@ const MOCK_VEHICLES_DATA = [
     // Delhi Fleet
     {
         title: 'Maruti Suzuki Swift',
+        mileage: 20.5,
         type: 'car',
         category: 'hatchback',
         brand: 'Maruti Suzuki',
@@ -40,6 +41,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Hyundai i20',
+        mileage: 20.5,
         type: 'car',
         category: 'hatchback',
         brand: 'Hyundai',
@@ -68,6 +70,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mahindra Thar 4x4',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Mahindra',
@@ -96,6 +99,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Kia Seltos',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Kia',
@@ -125,6 +129,7 @@ const MOCK_VEHICLES_DATA = [
     // Mumbai Fleet
     {
         title: 'Tata Nexon EV',
+        mileage: 180,
         type: 'car',
         category: 'suv',
         brand: 'Tata',
@@ -153,6 +158,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Maruti Suzuki Dzire',
+        mileage: 18.2,
         type: 'car',
         category: 'sedan',
         brand: 'Maruti Suzuki',
@@ -181,6 +187,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Royal Enfield Classic 350',
+        mileage: 45,
         type: 'bike',
         category: 'royal-enfield',
         brand: 'Royal Enfield',
@@ -208,6 +215,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Honda CB350H',
+        mileage: 45,
         type: 'bike',
         category: 'standard',
         brand: 'Honda',
@@ -236,6 +244,7 @@ const MOCK_VEHICLES_DATA = [
     // Bangalore Fleet
     {
         title: 'Hyundai Creta',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Hyundai',
@@ -264,6 +273,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Volkswagen Polo',
+        mileage: 20.5,
         type: 'car',
         category: 'hatchback',
         brand: 'Volkswagen',
@@ -292,6 +302,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'BMW X5',
+        mileage: 10.5,
         type: 'car',
         category: 'luxury',
         brand: 'BMW',
@@ -320,6 +331,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mercedes-Benz C-Class',
+        mileage: 10.5,
         type: 'car',
         category: 'luxury',
         brand: 'Mercedes-Benz',
@@ -349,6 +361,7 @@ const MOCK_VEHICLES_DATA = [
     // Hyderabad Fleet
     {
         title: 'Toyota Innova Crysta',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Toyota',
@@ -378,6 +391,7 @@ const MOCK_VEHICLES_DATA = [
     // Caravans (Pan-India available)
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -406,6 +420,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mercedes Sprinter Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'premium',
         brand: 'Mercedes-Benz',
@@ -434,6 +449,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Eco-Friendly Solar Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Solar Innovations',
@@ -458,6 +474,7 @@ const MOCK_VEHICLES_DATA = [
     // Capital City Wheels - Delhi
     {
         title: 'Honda City',
+        mileage: 18.2,
         type: 'car',
         category: 'sedan',
         brand: 'Honda',
@@ -487,6 +504,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Toyota Fortuner',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Toyota',
@@ -516,6 +534,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mercedes-Benz A-Class',
+        mileage: 10.5,
         type: 'car',
         category: 'luxury',
         brand: 'Mercedes-Benz',
@@ -546,6 +565,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'RE Interceptor 650',
+        mileage: 45,
         type: 'bike',
         category: 'royal-enfield',
         brand: 'Royal Enfield',
@@ -604,6 +624,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -633,6 +654,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -662,6 +684,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -691,6 +714,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -720,6 +744,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Force Traveler Caravan',
+        mileage: 8.5,
         type: 'caravan',
         category: 'standard',
         brand: 'Force Motors',
@@ -749,6 +774,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'BMW 7 Series',
+        mileage: 10.5,
         type: 'car',
         category: 'luxury',
         brand: 'BMW',
@@ -778,6 +804,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mercedes-Benz S-Class',
+        mileage: 10.5,
         type: 'car',
         category: 'luxury',
         brand: 'Mercedes-Benz',
@@ -807,6 +834,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Mahindra XUV300',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Mahindra',
@@ -836,6 +864,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Skoda Slavia',
+        mileage: 18.2,
         type: 'car',
         category: 'sedan',
         brand: 'Skoda',
@@ -863,6 +892,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Maruti Swift Sport',
+        mileage: 20.5,
         type: 'car',
         category: 'hatchback',
         brand: 'Maruti Suzuki',
@@ -890,6 +920,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Tata Nexon',
+        mileage: 14.8,
         type: 'car',
         category: 'suv',
         brand: 'Tata',
@@ -917,6 +948,7 @@ const MOCK_VEHICLES_DATA = [
     },
     {
         title: 'Royal Enfield Meteor 350',
+        mileage: 45,
         type: 'bike',
         category: 'royal-enfield',
         brand: 'Royal Enfield',
