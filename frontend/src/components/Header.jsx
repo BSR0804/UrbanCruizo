@@ -51,7 +51,11 @@ const Header = () => {
                             </button>
                         </>
                     ) : (
-                        <div className="flex items-center space-x-4 ml-4">
+                        <div className="flex items-center space-x-6 ml-4">
+                            <NavLink to="/register?role=dealer" className="text-secondary hover:text-primary transition text-sm font-bold uppercase tracking-wider">
+                                Partner with us
+                            </NavLink>
+                            <div className="h-4 w-[1px] bg-secondary/30"></div>
                             <NavLink to="/login" className={navLinkClass}>
                                 Login
                             </NavLink>

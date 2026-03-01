@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
+    const location = useLocation();
+    const queryRole = new URLSearchParams(location.search).get('role');
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginType, setLoginType] = useState(queryRole === 'dealer' ? 'dealer' : 'user');
     const [error, setError] = useState('');
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
@@ -17,8 +21,16 @@ const LoginPage = () => {
             console.log("Attempting backend authentication with access token...");
             const result = await googleLogin(tokenResponse.access_token);
             if (result.success) {
+                // Check role if loginType is dealer
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                if (loginType === 'dealer' && userInfo.role !== 'dealer') {
+                    setError('This account is not registered as a dealer.');
+                    toast.error('This account is not registered as a dealer.');
+                    // Optionally logout if we want to force them out
+                    return;
+                }
                 toast.success('Welcome back!');
-                navigate('/');
+                navigate(userInfo.role === 'dealer' ? '/admin' : '/');
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -43,8 +55,21 @@ const LoginPage = () => {
         e.preventDefault();
         const result = await login(email, password);
         if (result.success) {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+            if (loginType === 'dealer' && userInfo.role !== 'dealer' && userInfo.role !== 'admin') {
+                setError('Access denied. This is a dealer-only login.');
+                toast.error('Invalid dealer credentials');
+                return;
+            }
+
             toast.success('Welcome back!');
-            navigate('/');
+            // Redirect based on role
+            if (userInfo.role === 'admin' || userInfo.role === 'dealer') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } else {
             setError(result.message);
             toast.error(result.message);
@@ -52,49 +77,75 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-background px-4">
-            <div className="bg-surface p-8 rounded-lg shadow-2xl w-full max-w-md border border-secondary/20">
-                <h2 className="text-3xl font-serif text-center mb-8 text-primary">Welcome Back</h2>
-                {error && <div className="bg-red-500/10 text-red-500 p-3 mb-4 rounded text-center">{error}</div>}
+        <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
+            <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20">
+                <div className="flex justify-center mb-8">
+                    <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                        <button
+                            onClick={() => setLoginType('user')}
+                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                        >
+                            Customer
+                        </button>
+                        <button
+                            onClick={() => setLoginType('dealer')}
+                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                        >
+                            Dealer
+                        </button>
+                    </div>
+                </div>
+
+                <h2 className="text-3xl font-serif text-center mb-8 text-primary">
+                    {loginType === 'dealer' ? 'Dealer Login' : 'Welcome Back'}
+                </h2>
+
+                {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-textSecondary mb-2">Email Address</label>
+                        <label className="block text-textSecondary mb-2 font-medium">Email Address</label>
                         <input
                             type="email"
                             className="input-field"
+                            placeholder="your@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-textSecondary mb-2">Password</label>
+                        <label className="block text-textSecondary mb-2 font-medium">Password</label>
                         <input
                             type="password"
                             className="input-field"
+                            placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full btn-primary py-3">
+                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2 group">
                         Sign In
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
                     </button>
                 </form>
 
-                <div className="relative my-6">
+                <div className="relative my-8">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300/30"></div>
+                        <div className="w-full border-t border-gray-800"></div>
                     </div>
-                    <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-surface text-textSecondary">Or continue with</span>
+                    <div className="relative flex justify-center text-xs uppercase tracking-widest text-textSecondary">
+                        <span className="px-4 bg-surface">Or continue with</span>
                     </div>
                 </div>
 
                 <button
                     type="button"
                     onClick={() => loginGoogle()}
-                    className="w-full bg-white border border-gray-300 text-gray-700 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors font-medium"
+                    className="w-full bg-white text-gray-900 py-3 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition-all font-bold border border-gray-200"
                 >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
                         <path
@@ -116,8 +167,13 @@ const LoginPage = () => {
                     </svg>
                     Google Account
                 </button>
-                <div className="mt-6 text-center text-textSecondary">
-                    Don't have an account? <a href="/register" className="text-primary hover:underline">Register</a>
+
+                <div className="mt-8 text-center text-sm text-textSecondary">
+                    {loginType === 'dealer' ? (
+                        <>Want to partner with us? <a href="/register" className="text-primary font-bold hover:underline">Register as Dealer</a></>
+                    ) : (
+                        <>Don't have an account? <a href="/register" className="text-primary font-bold hover:underline">Register</a></>
+                    )}
                 </div>
             </div>
         </div>

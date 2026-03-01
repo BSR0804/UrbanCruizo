@@ -1,13 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
 
 const RegisterPage = () => {
+    const location = useLocation();
+    const queryRole = new URLSearchParams(location.search).get('role');
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState(queryRole === 'dealer' ? 'dealer' : 'user');
     const [error, setError] = useState('');
     const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
@@ -32,10 +36,10 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await register(name, email, password);
+        const result = await register(name, email, password, role);
         if (result.success) {
-            toast.success('Account created successfully!');
-            navigate('/');
+            toast.success(role === 'dealer' ? 'Dealer account created! Welcome partner.' : 'Account created successfully!');
+            navigate(role === 'dealer' ? '/admin' : '/');
         } else {
             setError(result.message);
             toast.error(result.message);
@@ -43,59 +47,86 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-background px-4">
-            <div className="bg-surface p-8 rounded-lg shadow-2xl w-full max-w-md border border-secondary/20">
-                <h2 className="text-3xl font-serif text-center mb-8 text-primary">Join CarawINN</h2>
-                {error && <div className="bg-red-500/10 text-red-500 p-3 mb-4 rounded text-center">{error}</div>}
+        <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
+            <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20 transition-all">
+                <div className="flex justify-center mb-8">
+                    <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                        <button
+                            onClick={() => setRole('user')}
+                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                        >
+                            Customer
+                        </button>
+                        <button
+                            onClick={() => setRole('dealer')}
+                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                        >
+                            Dealer
+                        </button>
+                    </div>
+                </div>
+
+                <h2 className="text-3xl font-serif text-center mb-8 text-primary">
+                    {role === 'dealer' ? 'Become a Partner' : 'Join CarawINN'}
+                </h2>
+
+                {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-textSecondary mb-2">Full Name</label>
+                        <label className="block text-textSecondary mb-2 font-medium">Full Name</label>
                         <input
                             type="text"
                             className="input-field"
+                            placeholder="John Doe"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-textSecondary mb-2">Email Address</label>
+                        <label className="block text-textSecondary mb-2 font-medium">Email Address</label>
                         <input
                             type="email"
                             className="input-field"
+                            placeholder="your@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
                     <div>
-                        <label className="block text-textSecondary mb-2">Password</label>
+                        <label className="block text-textSecondary mb-2 font-medium">Password</label>
                         <input
                             type="password"
                             className="input-field"
+                            placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full btn-primary py-3">
-                        Create Account
+                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2 group transition-all">
+                        {role === 'dealer' ? 'Create Partner Account' : 'Create Account'}
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
                     </button>
                 </form>
 
-                <div className="relative my-6">
+                <div className="relative my-8">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300/30"></div>
+                        <div className="w-full border-t border-gray-800"></div>
                     </div>
-                    <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-surface text-textSecondary">Or continue with</span>
+                    <div className="relative flex justify-center text-xs uppercase tracking-widest text-textSecondary">
+                        <span className="px-4 bg-surface">Or join with</span>
                     </div>
                 </div>
 
                 <button
                     type="button"
                     onClick={() => loginGoogle()}
-                    className="w-full bg-white border border-gray-300 text-gray-700 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors font-medium"
+                    className="w-full bg-white text-gray-900 py-3 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition-all font-bold border border-gray-200"
                 >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
                         <path
@@ -117,8 +148,9 @@ const RegisterPage = () => {
                     </svg>
                     Google Account
                 </button>
-                <div className="mt-6 text-center text-textSecondary">
-                    Already have an account? <a href="/login" className="text-primary hover:underline">Login</a>
+
+                <div className="mt-8 text-center text-sm text-textSecondary">
+                    Already have an account? <a href="/login" className="text-primary font-bold hover:underline">Login</a>
                 </div>
             </div>
         </div>
