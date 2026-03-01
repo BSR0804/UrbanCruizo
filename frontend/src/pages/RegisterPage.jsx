@@ -38,7 +38,7 @@ const RegisterPage = () => {
         e.preventDefault();
         const result = await register(name, email, password, role);
         if (result.success) {
-            toast.success(role === 'dealer' ? 'Dealer account created! Welcome partner.' : 'Account created successfully!');
+            toast.success(role === 'dealer' ? 'Customer account created! Welcome partner.' : 'Account created successfully!');
             navigate(role === 'dealer' ? '/admin' : '/');
         } else {
             setError(result.message);
@@ -73,13 +73,13 @@ const RegisterPage = () => {
                                 onClick={() => setRole('user')}
                                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Customer
+                                Individual
                             </button>
                             <button
                                 onClick={() => setRole('dealer')}
                                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Dealer
+                                Customer
                             </button>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <button type="submit" className="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2 group transition-all">
-                        {role === 'dealer' ? 'Create Partner Account' : 'Create Account'}
+                        {role === 'dealer' ? 'Create Customer Account' : 'Create Account'}
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>

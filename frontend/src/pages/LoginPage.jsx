@@ -24,8 +24,8 @@ const LoginPage = () => {
                 // Check role if loginType is dealer
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 if (loginType === 'dealer' && userInfo.role !== 'dealer') {
-                    setError('This account is not registered as a dealer.');
-                    toast.error('This account is not registered as a dealer.');
+                    setError('This account is not registered as a customer.');
+                    toast.error('This account is not registered as a customer.');
                     // Optionally logout if we want to force them out
                     return;
                 }
@@ -58,8 +58,8 @@ const LoginPage = () => {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
             if (loginType === 'dealer' && userInfo.role !== 'dealer' && userInfo.role !== 'admin') {
-                setError('Access denied. This is a dealer-only login.');
-                toast.error('Invalid dealer credentials');
+                setError('Access denied. This is a customer-only login.');
+                toast.error('Invalid customer credentials');
                 return;
             }
 
@@ -103,20 +103,20 @@ const LoginPage = () => {
                                 onClick={() => setLoginType('user')}
                                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Customer
+                                Individual
                             </button>
                             <button
                                 onClick={() => setLoginType('dealer')}
                                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Dealer
+                                Customer
                             </button>
                         </div>
                     </div>
                 )}
 
                 <h2 className="text-3xl font-serif text-center mb-8 text-primary">
-                    {loginType === 'dealer' ? (queryRole === 'dealer' ? 'Partner Login' : 'Dealer Login') : 'Welcome Back'}
+                    {loginType === 'dealer' ? (queryRole === 'dealer' ? 'Partner Login' : 'Customer Login') : 'Individual Login'}
                 </h2>
 
                 {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
@@ -189,7 +189,7 @@ const LoginPage = () => {
 
                 <div className="mt-8 text-center text-sm text-textSecondary">
                     {loginType === 'dealer' ? (
-                        <>Want to partner with us? <a href="/register?role=dealer" className="text-primary font-bold hover:underline">Register as Dealer</a></>
+                        <>Want to partner with us? <a href="/register?role=dealer" className="text-primary font-bold hover:underline">Register as Customer</a></>
                     ) : (
                         <>Don't have an account? <a href={queryRole === 'user' ? "/register?role=user" : "/register"} className="text-primary font-bold hover:underline">Register</a></>
                     )}
