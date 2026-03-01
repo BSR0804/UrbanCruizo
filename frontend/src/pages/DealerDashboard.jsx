@@ -36,11 +36,11 @@ const DealerDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showProfileForm, setShowProfileForm] = useState(false);
     const [profileData, setProfileData] = useState({
+        name: user?.name || '',
         phone: user?.phone || '',
+        businessName: user?.businessName || '',
         city: user?.city || '',
         location: user?.location || '',
-        aadhaarNumber: user?.aadhaarNumber || '',
-        licenseNumber: user?.licenseNumber || ''
     });
 
     // Vehicle Form State
@@ -106,12 +106,11 @@ const DealerDashboard = () => {
         e.preventDefault();
         try {
             const { data } = await axios.put('dealers/profile', profileData);
-            // Update local storage/context
             const updatedUser = { ...user, ...data, isProfileComplete: true };
             localStorage.setItem('userInfo', JSON.stringify(updatedUser));
-            toast.success('Profile updated successfully! You can now list vehicles.');
+            toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
             setShowProfileForm(false);
-            window.location.reload(); // Quick way to update everything
+            window.location.reload();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Update failed');
         }
@@ -281,9 +280,9 @@ const DealerDashboard = () => {
                                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         {[
                                             { label: 'Total Fleet', value: stats?.totalVehicles, icon: <Car />, color: 'primary' },
-                                            { label: 'Active/Available', value: `${stats?.activeVehicles} / ${stats?.totalVehicles}`, icon: <Check />, color: 'green' },
-                                            { label: 'Total Bookings', value: stats?.totalBookings, icon: <Users />, color: 'blue' },
-                                            { label: 'Pending Approval', value: stats?.pendingBookings, icon: <Bell />, color: 'orange' }
+                                            { label: 'Available', value: stats?.activeVehicles, icon: <Check />, color: 'green' },
+                                            { label: 'Booked', value: stats?.bookedVehicles, icon: <Lock />, color: 'red' },
+                                            { label: 'Active Bookings', value: stats?.totalBookings, icon: <Users />, color: 'blue' }
                                         ].map((stat, idx) => (
                                             <div key={idx} className="bg-background border border-gray-800 p-6 rounded-[2rem] hover:shadow-2xl hover:shadow-primary/5 transition-all">
                                                 <div className="flex justify-between items-start mb-4">
@@ -528,22 +527,30 @@ const DealerDashboard = () => {
                                     </p>
                                     <div className="space-y-6">
                                         {carRequests.length > 0 ? carRequests.map(req => (
-                                            <div key={req._id} className="bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 border-l-primary/50">
+                                            <div key={req._id} className={`bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 transition-all ${req.city.toLowerCase() === user.city?.toLowerCase() ? 'border-l-primary shadow-xl shadow-primary/5' : 'border-l-gray-800 opacity-80 hover:opacity-100'}`}>
+                                                {req.city.toLowerCase() === user.city?.toLowerCase() && (
+                                                    <div className="absolute top-4 right-16 bg-primary/20 text-primary border border-primary/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic animate-pulse">
+                                                        City Match
+                                                    </div>
+                                                )}
                                                 <div className="flex justify-between items-start mb-4">
                                                     <div>
-                                                        <h3 className="text-lg font-bold text-white">{req.requirements}</h3>
-                                                        <p className="text-xs text-primary uppercase tracking-widest font-bold mt-1">FOR {req.vehicleType}</p>
+                                                        <h3 className="text-lg font-serif font-black text-white italic">{req.requirements}</h3>
+                                                        <p className="text-[10px] text-primary uppercase tracking-widest font-black mt-1 italic">Type: {req.vehicleType}</p>
                                                     </div>
-                                                    <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase">{new Date(req.createdAt).toLocaleDateString()}</span>
+                                                    <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase tracking-widest font-bold">{new Date(req.createdAt).toLocaleDateString()}</span>
                                                 </div>
-                                                <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800">
-                                                    <p><span className="text-white">User:</span> {req.name}</p>
-                                                    <p><span className="text-white">City:</span> {req.city}</p>
-                                                    <p><span className="text-white">Phone:</span> {req.phone}</p>
-                                                    <p><span className="text-white">Email:</span> {req.email}</p>
+                                                <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800 font-medium">
+                                                    <p><span className="text-white opacity-60">Customer:</span> {req.name}</p>
+                                                    <p><span className="text-white opacity-60">City:</span> {req.city}</p>
+                                                    <p><span className="text-white opacity-60">Contact:</span> {req.phone}</p>
+                                                    <p><span className="text-white opacity-60">Email:</span> {req.email}</p>
                                                 </div>
-                                                <button className="w-full mt-6 py-2 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-                                                    Contact User <MessageSquare className="w-3 h-3" />
+                                                <button
+                                                    onClick={() => window.open(`tel:${req.phone}`)}
+                                                    className="w-full mt-6 py-3 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2"
+                                                >
+                                                    Contact Lead <MessageSquare className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         )) : (
@@ -676,26 +683,26 @@ const DealerDashboard = () => {
                             <form onSubmit={handleProfileSubmit} className="space-y-6">
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Phone Number</label>
-                                        <input type="tel" required className="input-field" placeholder="+91 XXXX XXX XXX" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Full Identity (Legal Name)</label>
+                                        <input type="text" required className="input-field" placeholder="Full Name" value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">City</label>
-                                        <input type="text" required className="input-field" placeholder="Delhi, Mumbai, etc." value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} />
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Direct Contact Number</label>
+                                        <input type="tel" required className="input-field" placeholder="+91 XXXX XXX XXX" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Detailed Address / Point of Contact</label>
-                                    <input type="text" required className="input-field" placeholder="Sec-10 Dwarka Metro Station" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Business / Dealer Name (Display name on portal)</label>
+                                    <input type="text" required className="input-field" placeholder="Ex: Elite Motors Pvt Ltd" value={profileData.businessName} onChange={(e) => setProfileData({ ...profileData, businessName: e.target.value })} />
                                 </div>
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Aadhaar Card Number</label>
-                                        <input type="text" required className="input-field" placeholder="XXXX XXXX XXXX" value={profileData.aadhaarNumber} onChange={(e) => setProfileData({ ...profileData, aadhaarNumber: e.target.value })} />
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Operating City</label>
+                                        <input type="text" required className="input-field" placeholder="Ex: Delhi" value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Dealership License No.</label>
-                                        <input type="text" required className="input-field" placeholder="DL-XXXX-XXXX" value={profileData.licenseNumber} onChange={(e) => setProfileData({ ...profileData, licenseNumber: e.target.value })} />
+                                        <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold pl-1">Core Area / Location</label>
+                                        <input type="text" required className="input-field" placeholder="Ex: Gachibowli" value={profileData.location} onChange={(e) => setProfileData({ ...profileData, location: e.target.value })} />
                                     </div>
                                 </div>
 

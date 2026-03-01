@@ -24,7 +24,8 @@ const getDashboardStats = asyncHandler(async (req, res) => {
 
     // Calculate total earnings (confirmed/completed bookings)
     const confirmedBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'ongoing' || b.status === 'completed');
-    const totalEarnings = confirmedBookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+    const totalRevenue = confirmedBookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+    const totalEarnings = totalRevenue * 0.9; // 10% platform fee
 
     // Recent bookings for notifications/updates
     const recentActivity = await Booking.find({ vehicle: { $in: vehicleIds } })
@@ -36,6 +37,7 @@ const getDashboardStats = asyncHandler(async (req, res) => {
     res.json({
         totalVehicles,
         activeVehicles,
+        bookedVehicles: totalVehicles - activeVehicles,
         totalBookings,
         pendingBookings,
         totalEarnings,
@@ -74,13 +76,14 @@ const updateDealerProfile = asyncHandler(async (req, res) => {
 
     if (user) {
         user.phone = req.body.phone || user.phone;
+        user.businessName = req.body.businessName || user.businessName;
         user.city = req.body.city || user.city;
         user.location = req.body.location || user.location;
         user.aadhaarNumber = req.body.aadhaarNumber || user.aadhaarNumber;
         user.licenseNumber = req.body.licenseNumber || user.licenseNumber;
 
-        // If they provided the required fields, mark profile as complete
-        if (req.body.phone && req.body.city && req.body.location) {
+        // Mark profile as complete if required fields are provided
+        if (req.body.phone && req.body.city && req.body.location && req.body.businessName) {
             user.isProfileComplete = true;
         }
 
