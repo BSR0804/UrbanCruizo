@@ -79,25 +79,27 @@ const LoginPage = () => {
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
             <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20">
-                <div className="flex justify-center mb-8">
-                    <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
-                        <button
-                            onClick={() => setLoginType('user')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
-                        >
-                            Customer
-                        </button>
-                        <button
-                            onClick={() => setLoginType('dealer')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
-                        >
-                            Dealer
-                        </button>
+                {!queryRole && (
+                    <div className="flex justify-center mb-8">
+                        <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                            <button
+                                onClick={() => setLoginType('user')}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                            >
+                                Customer
+                            </button>
+                            <button
+                                onClick={() => setLoginType('dealer')}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                            >
+                                Dealer
+                            </button>
+                        </div>
                     </div>
-                </div>
+                )}
 
                 <h2 className="text-3xl font-serif text-center mb-8 text-primary">
-                    {loginType === 'dealer' ? 'Dealer Login' : 'Welcome Back'}
+                    {loginType === 'dealer' ? (queryRole === 'dealer' ? 'Partner Login' : 'Dealer Login') : 'Welcome Back'}
                 </h2>
 
                 {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
@@ -170,7 +172,7 @@ const LoginPage = () => {
 
                 <div className="mt-8 text-center text-sm text-textSecondary">
                     {loginType === 'dealer' ? (
-                        <>Want to partner with us? <a href="/register" className="text-primary font-bold hover:underline">Register as Dealer</a></>
+                        <>Want to partner with us? <a href="/register?role=dealer" className="text-primary font-bold hover:underline">Register as Dealer</a></>
                     ) : (
                         <>Don't have an account? <a href="/register" className="text-primary font-bold hover:underline">Register</a></>
                     )}

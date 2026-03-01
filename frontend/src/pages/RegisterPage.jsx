@@ -49,25 +49,27 @@ const RegisterPage = () => {
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background px-4 py-12">
             <div className="bg-surface p-8 rounded-2xl shadow-2xl w-full max-w-md border border-secondary/20 transition-all">
-                <div className="flex justify-center mb-8">
-                    <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
-                        <button
-                            onClick={() => setRole('user')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
-                        >
-                            Customer
-                        </button>
-                        <button
-                            onClick={() => setRole('dealer')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
-                        >
-                            Dealer
-                        </button>
+                {!queryRole && (
+                    <div className="flex justify-center mb-8">
+                        <div className="bg-background/50 p-1 rounded-xl flex border border-gray-800">
+                            <button
+                                onClick={() => setRole('user')}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                            >
+                                Customer
+                            </button>
+                            <button
+                                onClick={() => setRole('dealer')}
+                                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${role === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                            >
+                                Dealer
+                            </button>
+                        </div>
                     </div>
-                </div>
+                )}
 
                 <h2 className="text-3xl font-serif text-center mb-8 text-primary">
-                    {role === 'dealer' ? 'Become a Partner' : 'Join CarawINN'}
+                    {role === 'dealer' ? (queryRole === 'dealer' ? 'Partner Registration' : 'Become a Partner') : 'Join CarawINN'}
                 </h2>
 
                 {error && <div className="bg-red-500/10 text-red-500 p-3 mb-6 rounded-lg text-sm text-center border border-red-500/20">{error}</div>}
@@ -150,7 +152,7 @@ const RegisterPage = () => {
                 </button>
 
                 <div className="mt-8 text-center text-sm text-textSecondary">
-                    Already have an account? <a href="/login" className="text-primary font-bold hover:underline">Login</a>
+                    Already have an account? <a href={role === 'dealer' ? "/login?role=dealer" : "/login"} className="text-primary font-bold hover:underline">Login</a>
                 </div>
             </div>
         </div>
