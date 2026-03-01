@@ -15,6 +15,10 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
+<<<<<<< HEAD
+=======
+    // Optional role allows partner logins to explicitly indicate dealer intent
+>>>>>>> 4c48cf9 (Fixed some issues)
     const login = async (email, password, role) => {
         try {
             const { data } = await axios.post('auth/login', { email, password, role });
