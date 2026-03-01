@@ -33,6 +33,7 @@ const DealerDashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [carRequests, setCarRequests] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
     const [showProfileForm, setShowProfileForm] = useState(false);
     const [profileData, setProfileData] = useState({
         phone: user?.phone || '',
@@ -256,25 +257,69 @@ const DealerDashboard = () => {
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-8"
                                 >
-                                    <h2 className="text-2xl font-serif font-bold text-white mb-6">Performance Insights</h2>
+                                    <div className="relative p-10 rounded-[3rem] bg-gradient-to-br from-primary to-primary-dark overflow-hidden shadow-2xl shadow-primary/20">
+                                        <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
+                                        <div className="relative z-10">
+                                            <h2 className="text-3xl md:text-5xl font-serif font-black text-background mb-4">
+                                                Welcome back, <span className="italic">{user.name.split(' ')[0]}</span>
+                                            </h2>
+                                            <p className="text-background/80 max-w-lg leading-relaxed font-medium">
+                                                Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-between items-center bg-background/30 backdrop-blur-md border border-white/5 p-6 rounded-3xl">
+                                        <div>
+                                            <h3 className="text-lg font-serif font-bold text-white tracking-tight">Performance Insights</h3>
+                                            <p className="text-[10px] text-textSecondary uppercase tracking-widest font-black italic">Last updated: {new Date().toLocaleTimeString()}</p>
+                                        </div>
+                                        <button onClick={fetchData} className="btn-outline px-4 py-2 text-xs">Sync Data</button>
+                                    </div>
 
                                     {/* Stats Grid */}
                                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         {[
                                             { label: 'Total Fleet', value: stats?.totalVehicles, icon: <Car />, color: 'primary' },
-                                            { label: 'Earnings', value: `₹${stats?.totalEarnings?.toLocaleString()}`, icon: <Wallet />, color: 'green' },
-                                            { label: 'Avg Requests', value: stats?.totalBookings, icon: <Users />, color: 'blue' },
-                                            { label: 'Pending', value: stats?.pendingBookings, icon: <Bell />, color: 'orange' }
+                                            { label: 'Active/Available', value: `${stats?.activeVehicles} / ${stats?.totalVehicles}`, icon: <Check />, color: 'green' },
+                                            { label: 'Total Bookings', value: stats?.totalBookings, icon: <Users />, color: 'blue' },
+                                            { label: 'Pending Approval', value: stats?.pendingBookings, icon: <Bell />, color: 'orange' }
                                         ].map((stat, idx) => (
-                                            <div key={idx} className="bg-background border border-gray-800 p-6 rounded-[2rem] hover:scale-105 transition-all">
+                                            <div key={idx} className="bg-background border border-gray-800 p-6 rounded-[2rem] hover:shadow-2xl hover:shadow-primary/5 transition-all">
                                                 <div className="flex justify-between items-start mb-4">
                                                     <div className="p-3 bg-surface rounded-xl text-primary">{stat.icon}</div>
-                                                    <TrendingUp className="w-4 h-4 text-green-500" />
+                                                    <div className="h-6 w-6 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+                                                        <TrendingUp className="w-3 h-3" />
+                                                    </div>
                                                 </div>
-                                                <p className="text-sm text-textSecondary uppercase tracking-widest font-bold mb-1">{stat.label}</p>
-                                                <p className="text-3xl font-serif font-bold text-white">{stat.value || 0}</p>
+                                                <p className="text-[10px] text-textSecondary uppercase tracking-[0.2em] font-black mb-1 italic">{stat.label}</p>
+                                                <p className="text-3xl font-serif font-bold text-white tracking-tight">{stat.value || 0}</p>
                                             </div>
                                         ))}
+                                    </div>
+
+                                    {/* Monthly Performance Card */}
+                                    <div className="grid md:grid-cols-2 gap-8">
+                                        <div className="bg-background border border-gray-800 p-8 rounded-[2.5rem] relative overflow-hidden group">
+                                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all" />
+                                            <h3 className="text-xl font-bold text-white mb-2 italic">Total Payouts</h3>
+                                            <p className="text-5xl font-serif font-bold text-primary mb-2 tracking-tighter">₹{stats?.totalEarnings?.toLocaleString()}</p>
+                                            <p className="text-sm text-textSecondary font-medium">After 10% Platform Commission</p>
+                                        </div>
+                                        <div className="bg-background border border-gray-800 p-8 rounded-[2.5rem] flex flex-col justify-center">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <span className="text-xs uppercase tracking-widest text-textSecondary font-bold">Fleet Health</span>
+                                                <span className="text-xs text-primary font-bold">{(stats?.activeVehicles / stats?.totalVehicles * 100).toFixed(0)}% Utilization</span>
+                                            </div>
+                                            <div className="w-full h-3 bg-surface rounded-full overflow-hidden">
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${(stats?.activeVehicles / stats?.totalVehicles * 100) || 0}%` }}
+                                                    className="h-full bg-primary"
+                                                />
+                                            </div>
+                                            <p className="text-[10px] text-textSecondary mt-4 italic">Performance is calculated based on vehicle availability vs total listings.</p>
+                                        </div>
                                     </div>
 
                                     {/* Recent Activity */}
@@ -310,67 +355,102 @@ const DealerDashboard = () => {
                                     animate={{ opacity: 1 }}
                                     className="space-y-8"
                                 >
-                                    <div className="flex justify-between items-center">
-                                        <h2 className="text-2xl font-serif font-bold text-white">Your Premium Fleet</h2>
-                                        <button
-                                            onClick={() => {
-                                                if (!user.isProfileComplete) {
-                                                    toast.error('Complete your profile before listing!');
-                                                    setShowProfileForm(true);
-                                                    return;
-                                                }
-                                                setEditingVehicle(null);
-                                                setVehicleFormData({
-                                                    title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
-                                                });
-                                                setShowAddModal(true);
-                                            }}
-                                            className="bg-primary text-background px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"
-                                        >
-                                            <Plus className="w-5 h-5" /> Add Vehicle
-                                        </button>
+                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-4">
+                                        <div>
+                                            <h2 className="text-2xl font-serif font-bold text-white">Your Premium Fleet</h2>
+                                            <p className="text-xs text-textSecondary italic mt-1 uppercase tracking-widest">Manage your listings location-wise</p>
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                                            <div className="relative flex-1 md:w-64">
+                                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/60" />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search by city/area..."
+                                                    className="w-full bg-background border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-sm text-white focus:border-primary/50 outline-none transition-all font-medium"
+                                                    value={searchTerm}
+                                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                                />
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    if (!user.isProfileComplete) {
+                                                        toast.error('Complete your profile before listing!');
+                                                        setShowProfileForm(true);
+                                                        return;
+                                                    }
+                                                    setEditingVehicle(null);
+                                                    setVehicleFormData({
+                                                        title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
+                                                    });
+                                                    setShowAddModal(true);
+                                                }}
+                                                className="bg-primary text-background px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"
+                                            >
+                                                <Plus className="w-5 h-5" /> Add Vehicle
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div className="grid md:grid-cols-2 gap-6">
-                                        {vehicles.map(vehicle => (
-                                            <div key={vehicle._id} className="bg-background border border-gray-800 rounded-3xl p-6 group">
-                                                <div className="relative h-48 mb-6 rounded-2xl overflow-hidden flex items-center justify-center bg-surface">
-                                                    {vehicle.images?.[0] ? (
-                                                        <img src={vehicle.images[0]} alt={vehicle.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                                    ) : (
-                                                        <Car className="w-16 h-16 text-gray-800" />
-                                                    )}
-                                                    <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase border border-primary/20">
-                                                        {vehicle.availability ? 'Available' : 'Booked'}
+                                        {vehicles
+                                            .filter(v =>
+                                                v.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                v.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                v.location.toLowerCase().includes(searchTerm.toLowerCase())
+                                            ).map(vehicle => (
+                                                <div key={vehicle._id} className="bg-background border border-gray-800 rounded-3xl p-6 group">
+                                                    <div className="relative h-48 mb-6 rounded-2xl overflow-hidden flex items-center justify-center bg-surface">
+                                                        {vehicle.images?.[0] ? (
+                                                            <img src={vehicle.images[0]} alt={vehicle.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                                        ) : (
+                                                            <Car className="w-16 h-16 text-gray-800" />
+                                                        )}
+                                                        <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase border border-primary/20">
+                                                            {vehicle.availability ? 'Available' : 'Booked'}
+                                                        </div>
+                                                    </div>
+                                                    <h3 className="text-xl font-bold text-white mb-1">{vehicle.title}</h3>
+                                                    <p className="text-sm text-textSecondary flex items-center gap-2 mb-6">
+                                                        <MapPin className="w-4 h-4 text-primary/60" /> {vehicle.location}, {vehicle.city}
+                                                    </p>
+                                                    <div className="flex justify-between items-center bg-surface/50 p-4 rounded-xl border border-gray-800/50">
+                                                        <span className="text-primary font-bold">₹{vehicle.pricePerDay}/day</span>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={() => {
+                                                                    setEditingVehicle(vehicle);
+                                                                    setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
+                                                                    setShowAddModal(true);
+                                                                }}
+                                                                className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
+                                                                title="Edit Vehicle"
+                                                            >
+                                                                <Edit className="w-4 h-4" />
+                                                            </button>
+                                                            <button
+                                                                onClick={async () => {
+                                                                    try {
+                                                                        await axios.put(`vehicles/${vehicle._id}`, { availability: !vehicle.availability });
+                                                                        toast.success(`Status updated to ${!vehicle.availability ? 'Available' : 'Booked'}`);
+                                                                        fetchData();
+                                                                    } catch (e) { toast.error('Failed to update status'); }
+                                                                }}
+                                                                className={`p-2 rounded-lg transition-colors ${vehicle.availability ? 'text-green-500 hover:bg-green-500/10' : 'text-orange-500 hover:bg-orange-500/10'}`}
+                                                                title={vehicle.availability ? 'Mark as Booked' : 'Mark as Available'}
+                                                            >
+                                                                <Eye className="w-4 h-4" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDeleteVehicle(vehicle._id)}
+                                                                className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                                title="Delete Listing"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <h3 className="text-xl font-bold text-white mb-1">{vehicle.title}</h3>
-                                                <p className="text-sm text-textSecondary flex items-center gap-2 mb-6">
-                                                    <MapPin className="w-4 h-4 text-primary/60" /> {vehicle.location}, {vehicle.city}
-                                                </p>
-                                                <div className="flex justify-between items-center bg-surface/50 p-4 rounded-xl border border-gray-800/50">
-                                                    <span className="text-primary font-bold">₹{vehicle.pricePerDay}/day</span>
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            onClick={() => {
-                                                                setEditingVehicle(vehicle);
-                                                                setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
-                                                                setShowAddModal(true);
-                                                            }}
-                                                            className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg"
-                                                        >
-                                                            <Edit className="w-4 h-4" />
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDeleteVehicle(vehicle._id)}
-                                                            className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"
-                                                        >
-                                                            <Trash2 className="w-4 h-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
+                                            ))}
                                     </div>
                                 </motion.div>
                             )}
@@ -714,7 +794,7 @@ const DealerDashboard = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 };
 
