@@ -1,9 +1,10 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogout = () => {
         logout();
@@ -52,7 +53,15 @@ const Header = () => {
                         </>
                     ) : (
                         <div className="flex items-center space-x-6 ml-4">
-                            <NavLink to="/login?role=dealer" className="text-secondary hover:text-primary transition text-sm font-bold uppercase tracking-wider">
+                            <NavLink
+                                to="/login?role=dealer"
+                                className={({ isActive }) =>
+                                    `transition text-sm font-bold uppercase tracking-wider relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:bg-primary after:transition-all after:duration-300 ${location.pathname === '/login' && location.search === '?role=dealer'
+                                        ? 'text-primary after:w-full'
+                                        : 'text-secondary hover:text-primary after:w-0 hover:after:w-full'
+                                    }`
+                                }
+                            >
                                 Partner with us
                             </NavLink>
                             <div className="h-4 w-[1px] bg-secondary/30"></div>
