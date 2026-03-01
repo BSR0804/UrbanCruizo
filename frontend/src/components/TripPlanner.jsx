@@ -87,6 +87,10 @@ const mapOptions = {
 };
 
 const TripPlanner = ({ vehicle }) => {
+    // Note: To enable Autocomplete and Directions, a valid Google Maps API Key is required.
+    // Please add VITE_GOOGLE_MAPS_API_KEY to your frontend/.env file.
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
     const [origin, setOrigin] = useState('');
     const [destination, setDestination] = useState('');
     const [response, setResponse] = useState(null);
@@ -99,7 +103,7 @@ const TripPlanner = ({ vehicle }) => {
     const destRef = useRef();
 
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
+        googleMapsApiKey: apiKey || '',
         libraries
     });
 
@@ -134,12 +138,22 @@ const TripPlanner = ({ vehicle }) => {
         setDestination(destRef.current.value);
     };
 
-    if (loadError) {
+    if (loadError || !apiKey) {
         return (
-            <div className="bg-surface p-8 rounded-3xl border border-red-500/20 text-center">
-                <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Maps Failed to Load</h3>
-                <p className="text-textSecondary text-sm">Please ensure you have a valid Google Maps API Key configured in your environment.</p>
+            <div className="bg-surface p-10 rounded-3xl border border-primary/20 text-center shadow-2xl">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <AlertCircle className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold text-white mb-3">Maps Integration Required</h3>
+                <p className="text-textSecondary text-sm mb-6 max-w-md mx-auto">
+                    To enable real-time route planning and fuel estimation, please configure your
+                    <span className="text-primary font-bold"> Google Maps API Key </span>
+                    in the environment variables.
+                </p>
+                <div className="inline-block p-4 bg-background rounded-2xl border border-gray-800 text-left">
+                    <code className="text-[10px] text-primary block mb-1">Step 1: Create API Key in Google Cloud Console</code>
+                    <code className="text-textSecondary text-[10px]">Step 2: Add VITE_GOOGLE_MAPS_API_KEY to frontend/.env</code>
+                </div>
             </div>
         );
     }
