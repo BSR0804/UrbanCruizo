@@ -221,11 +221,11 @@ const DealerDashboard = () => {
                         <div className="h-10 w-[1px] bg-gray-800" />
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-bold text-white leading-none">{isAuthenticated ? user.name : 'Partner Guest'}</p>
+                                <p className="text-sm font-bold text-white leading-none">{isAuthenticated ? (user?.name || 'Partner') : 'Partner Guest'}</p>
                                 <p className="text-[10px] text-primary uppercase tracking-widest mt-1">{isAuthenticated ? 'Authorized Dealer' : 'Demo Account'}</p>
                             </div>
                             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20">
-                                {isAuthenticated ? user.name[0] : 'G'}
+                                {isAuthenticated ? (user?.name ? user.name[0] : 'P') : 'G'}
                             </div>
                         </div>
                     </div>
@@ -287,7 +287,7 @@ const DealerDashboard = () => {
                                         <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
                                         <div className="relative z-10">
                                             <h2 className="text-3xl md:text-5xl font-serif font-black text-background mb-4">
-                                                Welcome back, <span className="italic">{isAuthenticated ? user.name.split(' ')[0] : 'Partner'}</span>
+                                                Welcome back, <span className="italic">{isAuthenticated ? (user?.name?.split(' ')[0] || 'Partner') : 'Partner'}</span>
                                             </h2>
                                             <p className="text-background/80 max-w-lg leading-relaxed font-medium">
                                                 Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
@@ -558,32 +558,34 @@ const DealerDashboard = () => {
                                     </p>
                                     <div className="space-y-6">
                                         {carRequests.length > 0 ? carRequests.map(req => (
-                                            <div key={req._id} className={`bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 transition-all ${req.city.toLowerCase() === user.city?.toLowerCase() ? 'border-l-primary shadow-xl shadow-primary/5' : 'border-l-gray-800 opacity-80 hover:opacity-100'}`}>
-                                                {req.city.toLowerCase() === user?.city?.toLowerCase() && (
-                                                    <div className="absolute top-4 right-16 bg-primary/20 text-primary border border-primary/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic animate-pulse">
-                                                        City Match
+                                            req && (
+                                                <div key={req._id} className={`bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 transition-all ${req.city?.toLowerCase() === user?.city?.toLowerCase() ? 'border-l-primary shadow-xl shadow-primary/5' : 'border-l-gray-800 opacity-80 hover:opacity-100'}`}>
+                                                    {req.city?.toLowerCase() === user?.city?.toLowerCase() && (
+                                                        <div className="absolute top-4 right-16 bg-primary/20 text-primary border border-primary/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic animate-pulse">
+                                                            City Match
+                                                        </div>
+                                                    )}
+                                                    <div className="flex justify-between items-start mb-4">
+                                                        <div>
+                                                            <h3 className="text-lg font-serif font-black text-white italic">{req.requirements}</h3>
+                                                            <p className="text-[10px] text-primary uppercase tracking-widest font-black mt-1 italic">Type: {req.vehicleType}</p>
+                                                        </div>
+                                                        <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase tracking-widest font-bold">{new Date(req.createdAt).toLocaleDateString()}</span>
                                                     </div>
-                                                )}
-                                                <div className="flex justify-between items-start mb-4">
-                                                    <div>
-                                                        <h3 className="text-lg font-serif font-black text-white italic">{req.requirements}</h3>
-                                                        <p className="text-[10px] text-primary uppercase tracking-widest font-black mt-1 italic">Type: {req.vehicleType}</p>
+                                                    <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800 font-medium">
+                                                        <p><span className="text-white opacity-60">Customer:</span> {req.name}</p>
+                                                        <p><span className="text-white opacity-60">City:</span> {req.city}</p>
+                                                        <p><span className="text-white opacity-60">Contact:</span> {req.phone}</p>
+                                                        <p><span className="text-white opacity-60">Email:</span> {req.email}</p>
                                                     </div>
-                                                    <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase tracking-widest font-bold">{new Date(req.createdAt).toLocaleDateString()}</span>
+                                                    <button
+                                                        onClick={() => window.open(`tel:${req.phone}`)}
+                                                        className="w-full mt-6 py-3 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2"
+                                                    >
+                                                        Contact Lead <MessageSquare className="w-4 h-4" />
+                                                    </button>
                                                 </div>
-                                                <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800 font-medium">
-                                                    <p><span className="text-white opacity-60">Customer:</span> {req.name}</p>
-                                                    <p><span className="text-white opacity-60">City:</span> {req.city}</p>
-                                                    <p><span className="text-white opacity-60">Contact:</span> {req.phone}</p>
-                                                    <p><span className="text-white opacity-60">Email:</span> {req.email}</p>
-                                                </div>
-                                                <button
-                                                    onClick={() => window.open(`tel:${req.phone}`)}
-                                                    className="w-full mt-6 py-3 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2"
-                                                >
-                                                    Contact Lead <MessageSquare className="w-4 h-4" />
-                                                </button>
-                                            </div>
+                                            )
                                         )) : (
                                             <div className="text-center py-20 bg-background/50 rounded-3xl border border-dashed border-gray-800">
                                                 <MessageSquare className="w-12 h-12 text-gray-800 mx-auto mb-4" />
@@ -662,10 +664,10 @@ const DealerDashboard = () => {
                                         <div className="space-y-2">
                                             <p className="text-xs uppercase tracking-widest text-primary font-bold">Profile Identity</p>
                                             <div className="flex items-center gap-4 bg-surface p-4 rounded-2xl border border-gray-800">
-                                                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">{user.name[0]}</div>
+                                                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">{user?.name ? user.name[0] : 'G'}</div>
                                                 <div>
-                                                    <p className="text-white font-bold">{user.name}</p>
-                                                    <p className="text-xs text-textSecondary">{user.email}</p>
+                                                    <p className="text-white font-bold">{user?.name || 'Partner Guest'}</p>
+                                                    <p className="text-xs text-textSecondary">{user?.email || 'demo@urbancruizo.com'}</p>
                                                 </div>
                                             </div>
                                         </div>
