@@ -53,15 +53,9 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await login(email, password);
+        const result = await login(email, password, loginType);
         if (result.success) {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
-            if (loginType === 'dealer' && userInfo.role !== 'dealer' && userInfo.role !== 'admin') {
-                setError('Access denied. This is a partner-only login.');
-                toast.error('Invalid partner credentials');
-                return;
-            }
 
             toast.success('Welcome back!');
             // Redirect based on role

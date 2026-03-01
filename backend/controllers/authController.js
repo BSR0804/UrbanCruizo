@@ -12,10 +12,18 @@ const generateToken = (id) => {
 // @access  Public
 const authUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, role } = req.body;
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
+            // If logging in through partner portal and user is currently 'user', upgrade to 'dealer'
+            if (role === 'dealer' && user.role === 'user') {
+                user.role = 'dealer';
+                user.isProfileComplete = false;
+                await user.save();
+                console.log('User role upgraded to dealer via login:', user.email);
+            }
+
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -99,8 +107,14 @@ const googleAuth = async (req, res) => {
 
         if (user) {
             console.log('Existing user found:', user.email);
-            // If logging in as dealer, but user is not a dealer, send error if it was a create request
-            // or just allow login if they exist. Usually, we want to allow existing user to log in.
+            // If the user is logging in through the partner portal (role=dealer)
+            // and their current role is 'user', upgrade them to 'dealer'
+            if (role === 'dealer' && user.role === 'user') {
+                user.role = 'dealer';
+                user.isProfileComplete = false;
+                await user.save();
+                console.log('User role upgraded to dealer:', user.email);
+            }
 
             return res.json({
                 _id: user._id,
