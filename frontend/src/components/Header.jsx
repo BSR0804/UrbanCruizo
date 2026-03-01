@@ -31,9 +31,7 @@ const Header = () => {
                     <NavLink to="/caravans" className={navLinkClass}>
                         Luxury Caravans
                     </NavLink>
-                    <NavLink to="/vehicles" className={navLinkClass}>
-                        Find Dealers
-                    </NavLink>
+
                     {user ? (
                         <>
                             <NavLink
