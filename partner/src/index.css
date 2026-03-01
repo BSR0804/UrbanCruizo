@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #C6A87D;
+  --color-secondary: #9E8357;
+  --color-background: #121212;
+  --color-surface: #1E1E1E;
+  --color-textPrimary: #F2F2F2;
+  --color-textSecondary: #A0A0A0;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Outfit", sans-serif;
+}
+
+@utility btn-primary {
+  @apply px-6 py-2 bg-primary text-background font-bold rounded hover:bg-secondary transition duration-300;
+}
+
+@utility btn-outline {
+  @apply px-6 py-2 border border-primary text-primary font-bold rounded hover:bg-primary hover:text-background transition duration-300;
+}
+
+@utility input-field {
+  @apply w-full px-4 py-2 bg-surface border border-gray-700 rounded focus:outline-none focus:border-primary text-textPrimary;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-textPrimary antialiased font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #121212;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #C6A87D;
+    border-radius: 10px;
+  }
+}

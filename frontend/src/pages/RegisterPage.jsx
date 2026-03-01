@@ -18,10 +18,11 @@ const RegisterPage = () => {
 
     const handleGoogleSuccess = async (tokenResponse) => {
         if (tokenResponse?.access_token) {
-            const result = await googleLogin(tokenResponse.access_token);
+            const result = await googleLogin(tokenResponse.access_token, role);
             if (result.success) {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 toast.success('Account created successfully!');
-                navigate('/');
+                navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
             } else {
                 setError(result.message);
                 toast.error(result.message);
