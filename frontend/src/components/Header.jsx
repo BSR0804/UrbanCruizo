@@ -56,12 +56,9 @@ const Header = () => {
                                 Partner with us
                             </NavLink>
                             <div className="h-4 w-[1px] bg-secondary/30"></div>
-                            <NavLink to="/login" className={navLinkClass}>
-                                Login
+                            <NavLink to="/login?role=user" className="btn-primary">
+                                Join UrbanCruizo
                             </NavLink>
-                            <Link to="/register" className="btn-primary">
-                                Register
-                            </Link>
                         </div>
                     )}
                 </nav>
