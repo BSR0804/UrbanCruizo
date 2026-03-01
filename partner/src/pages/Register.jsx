@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
+import { Car, Truck } from 'lucide-react';
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [selectedRole, setSelectedRole] = useState('dealer');
     const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
 
+    const getRedirectPath = (role) => {
+        return role === 'fleet' ? '/fleet-dashboard' : '/dashboard';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await register(name, email, password, 'dealer');
+        const res = await register(name, email, password, selectedRole);
         if (res.success) {
-            toast.success('Registration successful! Welcome Partner.');
-            navigate('/dashboard');
+            toast.success(`Registration successful! Welcome ${selectedRole === 'fleet' ? 'Fleet Manager' : 'Partner'}.`);
+            navigate(getRedirectPath(selectedRole));
         } else {
             toast.error(res.message);
         }
@@ -24,10 +30,10 @@ const Register = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-            const res = await googleLogin(tokenResponse.access_token, 'dealer');
+            const res = await googleLogin(tokenResponse.access_token, selectedRole);
             if (res.success) {
                 toast.success('Authenticated with Google');
-                navigate('/dashboard');
+                navigate(getRedirectPath(selectedRole));
             } else {
                 toast.error(res.message);
             }
@@ -43,6 +49,35 @@ const Register = () => {
                     <p className="text-textSecondary text-sm italic">Join our premium partner network.</p>
                 </div>
 
+                {/* Role Selector */}
+                <div className="mb-8">
+                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-black pl-1 mb-3 block">Register As</label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setSelectedRole('dealer')}
+                            className={`flex items-center justify-center gap-2 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${selectedRole === 'dealer'
+                                ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
+                                : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
+                                }`}
+                        >
+                            <Car className="w-4 h-4" />
+                            Dealer
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setSelectedRole('fleet')}
+                            className={`flex items-center justify-center gap-2 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${selectedRole === 'fleet'
+                                ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
+                                : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
+                                }`}
+                        >
+                            <Truck className="w-4 h-4" />
+                            Fleet Manager
+                        </button>
+                    </div>
+                </div>
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-textSecondary font-black pl-1">Full Identity</label>
@@ -56,7 +91,7 @@ const Register = () => {
                         <label className="text-[10px] uppercase tracking-widest text-textSecondary font-black pl-1">Access Secret</label>
                         <input type="password" className="input-field" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
-                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/20">Create Partner Account</button>
+                    <button type="submit" className="w-full btn-primary py-4 rounded-xl text-sm font-black uppercase tracking-widest shadow-xl shadow-primary/20">Create {selectedRole === 'fleet' ? 'Fleet' : 'Partner'} Account</button>
                 </form>
 
                 <div className="relative my-10">
@@ -69,7 +104,7 @@ const Register = () => {
                 </button>
 
                 <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
-                    Already registered? <a href="/login" className="text-primary hover:underline">Authorize Access</a>
+                    Already registered? <Link to="/login" className="text-primary hover:underline">Authorize Access</Link>
                 </div>
             </div>
         </div>

@@ -24,13 +24,13 @@ const authUser = async (req, res) => {
 
         if (user && (await user.matchPassword(password))) {
             console.log('password matched');
-            // If logging in through partner portal and user is currently 'user', upgrade to 'dealer'
+            // If logging in through partner portal and user is currently 'user', upgrade to requested role
             console.log('Checking upgrade: role ===', role, ', user.role ===', user.role);
-            if (role === 'dealer' && user.role === 'user') {
-                user.role = 'dealer';
+            if ((role === 'dealer' || role === 'fleet') && user.role === 'user') {
+                user.role = role;
                 user.isProfileComplete = false;
                 await user.save();
-                console.log('>>> ROLE UPGRADED TO DEALER:', user.email);
+                console.log(`>>> ROLE UPGRADED TO ${role.toUpperCase()}:`, user.email);
             }
 
             console.log('Sending response with role:', user.role);
@@ -119,13 +119,13 @@ const googleAuth = async (req, res) => {
 
         if (user) {
             console.log('Existing user found:', user.email);
-            // If the user is logging in through the partner portal (role=dealer)
-            // and their current role is 'user', upgrade them to 'dealer'
-            if (role === 'dealer' && user.role === 'user') {
-                user.role = 'dealer';
+            // If the user is logging in through the partner portal
+            // and their current role is 'user', upgrade them to the requested role
+            if ((role === 'dealer' || role === 'fleet') && user.role === 'user') {
+                user.role = role;
                 user.isProfileComplete = false;
                 await user.save();
-                console.log('User role upgraded to dealer:', user.email);
+                console.log(`User role upgraded to ${role}:`, user.email);
             }
 
             return res.json({
@@ -141,7 +141,7 @@ const googleAuth = async (req, res) => {
             user = await User.create({
                 name,
                 email,
-                role: role || 'user', // Set role to dealer if specified
+                role: role || 'user', // Set role to dealer/fleet if specified
                 isProfileComplete: false
             });
 

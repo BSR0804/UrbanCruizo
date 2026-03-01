@@ -1,22 +1,27 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { useNavigate, Link } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
+import { Car, Truck } from 'lucide-react';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [selectedRole, setSelectedRole] = useState('dealer');
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
+
+    const getRedirectPath = (role) => {
+        return role === 'fleet' ? '/fleet-dashboard' : '/dashboard';
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await login(email, password);
+        const res = await login(email, password, selectedRole);
         if (res.success) {
-            toast.success('Welcome back, Partner!');
-            navigate('/dashboard');
+            toast.success(`Welcome back, ${selectedRole === 'fleet' ? 'Fleet Manager' : 'Partner'}!`);
+            navigate(getRedirectPath(res.role || selectedRole));
         } else {
             toast.error(res.message);
         }
@@ -24,10 +29,10 @@ const Login = () => {
 
     const loginGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-            const res = await googleLogin(tokenResponse.access_token, 'dealer');
+            const res = await googleLogin(tokenResponse.access_token, selectedRole);
             if (res.success) {
                 toast.success('Authenticated with Google');
-                navigate('/dashboard');
+                navigate(getRedirectPath(selectedRole));
             } else {
                 toast.error(res.message);
             }
@@ -41,6 +46,35 @@ const Login = () => {
                 <div className="text-center mb-10">
                     <h2 className="text-4xl font-serif font-bold text-white mb-2">Partner Portal</h2>
                     <p className="text-textSecondary text-sm italic">Authorize & manage your premium fleet.</p>
+                </div>
+
+                {/* Role Selector */}
+                <div className="mb-8">
+                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-black pl-1 mb-3 block">Select Your Role</label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setSelectedRole('dealer')}
+                            className={`flex items-center justify-center gap-2 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${selectedRole === 'dealer'
+                                ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
+                                : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
+                                }`}
+                        >
+                            <Car className="w-4 h-4" />
+                            Dealer
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setSelectedRole('fleet')}
+                            className={`flex items-center justify-center gap-2 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${selectedRole === 'fleet'
+                                ? 'bg-primary text-background border-primary shadow-lg shadow-primary/20 scale-[1.02]'
+                                : 'bg-background text-textSecondary border-gray-800 hover:border-primary/30 hover:text-white'
+                                }`}
+                        >
+                            <Truck className="w-4 h-4" />
+                            Fleet Manager
+                        </button>
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -65,7 +99,7 @@ const Login = () => {
                 </button>
 
                 <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
-                    New Partner? <a href="/register" className="text-primary hover:underline">Register Fleet</a>
+                    New Partner? <Link to="/register" className="text-primary hover:underline">Register Fleet</Link>
                 </div>
             </div>
         </div>

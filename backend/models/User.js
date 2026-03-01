@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     phone: { type: String }, // For India +91
     password: { type: String }, // Optional for Google Auth users
-    role: { type: String, default: 'user', enum: ['user', 'admin', 'dealer'] },
+    role: { type: String, default: 'user', enum: ['user', 'admin', 'dealer', 'fleet'] },
     businessName: { type: String }, // For dealership branding
     city: { type: String }, // For dealers/users location
     location: { type: String }, // For specific dealer address (e.g., Dwarka Sec-10)

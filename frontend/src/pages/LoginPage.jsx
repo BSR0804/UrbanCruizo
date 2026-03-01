@@ -10,7 +10,14 @@ const LoginPage = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginType, setLoginType] = useState(queryRole === 'dealer' ? 'dealer' : 'user');
+    const [loginType, setLoginType] = useState(queryRole === 'dealer' ? 'dealer' : queryRole === 'fleet' ? 'fleet' : 'user');
+
+    const getRedirectPath = (role) => {
+        if (role === 'admin') return '/admin';
+        if (role === 'dealer') return '/dealerdashboard';
+        if (role === 'fleet') return '/dealerdashboard';
+        return '/dashboard';
+    };
     const [error, setError] = useState('');
     const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
@@ -21,16 +28,14 @@ const LoginPage = () => {
             console.log("Attempting backend authentication with access token...");
             const result = await googleLogin(tokenResponse.access_token, loginType);
             if (result.success) {
-                // Check role if loginType is dealer
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                if (loginType === 'dealer' && userInfo.role !== 'dealer') {
+                if ((loginType === 'dealer' || loginType === 'fleet') && userInfo.role !== 'dealer' && userInfo.role !== 'fleet') {
                     setError('This account is not registered as a partner.');
                     toast.error('This account is not registered as a partner.');
-                    // Optionally logout if we want to force them out
                     return;
                 }
                 toast.success('Welcome back!');
-                navigate(userInfo.role === 'dealer' ? '/dealerdashboard' : '/dashboard');
+                navigate(getRedirectPath(userInfo.role));
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -65,17 +70,8 @@ const LoginPage = () => {
             console.log('userInfo.role:', userInfo.role);
 
             toast.success('Welcome back!');
-            // Redirect based on role
-            if (userInfo.role === 'admin') {
-                console.log('Redirecting to /admin');
-                navigate('/admin');
-            } else if (userInfo.role === 'dealer') {
-                console.log('Redirecting to /dealerdashboard');
-                navigate('/dealerdashboard');
-            } else {
-                console.log('Redirecting to /dashboard, role was:', userInfo.role);
-                navigate('/dashboard');
-            }
+            console.log('Redirecting to', getRedirectPath(userInfo.role));
+            navigate(getRedirectPath(userInfo.role));
         } else {
             setError(result.message);
             toast.error(result.message);
@@ -107,15 +103,21 @@ const LoginPage = () => {
                         <div className="bg-background/50 p-1.5 rounded-2xl flex border border-gray-800">
                             <button
                                 onClick={() => setLoginType('user')}
-                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${loginType === 'user' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
                                 Individual
                             </button>
                             <button
                                 onClick={() => setLoginType('dealer')}
-                                className={`px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${loginType === 'dealer' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
                             >
-                                Partner
+                                Dealer
+                            </button>
+                            <button
+                                onClick={() => setLoginType('fleet')}
+                                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${loginType === 'fleet' ? 'bg-primary text-background shadow-lg' : 'text-textSecondary hover:text-white'}`}
+                            >
+                                Fleet
                             </button>
                         </div>
                     </div>
@@ -123,12 +125,14 @@ const LoginPage = () => {
 
                 <div className="text-center mb-10">
                     <h2 className="text-4xl font-serif font-bold text-white mb-3">
-                        {loginType === 'dealer' ? 'Partner Portal' : 'Join UrbanCruizo'}
+                        {loginType === 'dealer' ? 'Dealer Portal' : loginType === 'fleet' ? 'Fleet Portal' : 'Join UrbanCruizo'}
                     </h2>
                     <p className="text-textSecondary text-sm italic">
                         {loginType === 'dealer'
-                            ? "Access your Dealer Dashboard to manage fleet and earnings."
-                            : "Login to discover and book premium rentals across India."}
+                            ? "Access your Dealer Dashboard to manage vehicles and earnings."
+                            : loginType === 'fleet'
+                                ? "Access your Fleet Dashboard to manage your fleet operations."
+                                : "Login to discover and book premium rentals across India."}
                     </p>
                 </div>
 
@@ -160,7 +164,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <button type="submit" className="w-full btn-primary py-4 rounded-xl text-sm font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 group transition-all shadow-xl shadow-primary/20">
-                        {loginType === 'dealer' ? 'Authorize & Enter' : 'Sign In Now'}
+                        {loginType === 'dealer' ? 'Authorize & Enter' : loginType === 'fleet' ? 'Fleet Login' : 'Sign In Now'}
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
