@@ -53,17 +53,27 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('=== LOGIN DEBUG ===');
+        console.log('loginType:', loginType);
+        console.log('queryRole:', queryRole);
+        console.log('email:', email);
         const result = await login(email, password, loginType);
+        console.log('login result:', result);
         if (result.success) {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            console.log('userInfo from localStorage:', userInfo);
+            console.log('userInfo.role:', userInfo.role);
 
             toast.success('Welcome back!');
             // Redirect based on role
             if (userInfo.role === 'admin') {
+                console.log('Redirecting to /admin');
                 navigate('/admin');
             } else if (userInfo.role === 'dealer') {
+                console.log('Redirecting to /dealerdashboard');
                 navigate('/dealerdashboard');
             } else {
+                console.log('Redirecting to /dashboard, role was:', userInfo.role);
                 navigate('/dashboard');
             }
         } else {

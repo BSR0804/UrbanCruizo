@@ -13,17 +13,27 @@ const generateToken = (id) => {
 const authUser = async (req, res) => {
     try {
         const { email, password, role } = req.body;
+        console.log('=== BACKEND LOGIN DEBUG ===');
+        console.log('email:', email);
+        console.log('role received from frontend:', role);
+        console.log('typeof role:', typeof role);
+
         const user = await User.findOne({ email });
+        console.log('user found:', !!user);
+        if (user) console.log('user.role in DB:', user.role);
 
         if (user && (await user.matchPassword(password))) {
+            console.log('password matched');
             // If logging in through partner portal and user is currently 'user', upgrade to 'dealer'
+            console.log('Checking upgrade: role ===', role, ', user.role ===', user.role);
             if (role === 'dealer' && user.role === 'user') {
                 user.role = 'dealer';
                 user.isProfileComplete = false;
                 await user.save();
-                console.log('User role upgraded to dealer via login:', user.email);
+                console.log('>>> ROLE UPGRADED TO DEALER:', user.email);
             }
 
+            console.log('Sending response with role:', user.role);
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -33,9 +43,11 @@ const authUser = async (req, res) => {
                 token: generateToken(user._id),
             });
         } else {
+            console.log('password mismatch or user not found');
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({ message: error.message });
     }
 };
