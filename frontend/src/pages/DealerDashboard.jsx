@@ -281,16 +281,7 @@ const DealerDashboard = () => {
                                 {item.label}
                             </button>
                         ))}
-                        <div className="pt-10">
-                            {isAuthenticated && (
-                                <button
-                                    onClick={logout}
-                                    className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"
-                                >
-                                    <X className="w-5 h-5" /> Logout
-                                </button>
-                            )}
-                        </div>
+
                     </nav>
 
                     {/* Content Section */}
