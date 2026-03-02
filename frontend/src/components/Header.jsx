@@ -58,10 +58,13 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <NavLink to="/" end className={navLinkClass}>
+                            <NavLink to="/home" className={navLinkClass}>
                                 Home
                             </NavLink>
-                            <NavLink to="/home" className={navLinkClass}>
+                            <NavLink
+                                to={user ? "/home" : "/destination-gateway"}
+                                className={navLinkClass}
+                            >
                                 Destinations
                             </NavLink>
                             <NavLink to="/caravans" className={navLinkClass}>

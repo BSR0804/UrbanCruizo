@@ -6,7 +6,9 @@ import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
     const location = useLocation();
-    const queryRole = new URLSearchParams(location.search).get('role');
+    const queryParams = new URLSearchParams(location.search);
+    const queryRole = queryParams.get('role');
+    const redirectPath = queryParams.get('redirect');
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -30,8 +32,13 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Welcome back!');
-                // Dealer → Dealer Dashboard, everyone else → User Dashboard
-                navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                // Prioritize explicit redirect if provided from gateway/deep-link
+                if (redirectPath) {
+                    navigate(redirectPath);
+                } else {
+                    // Dealer → Dealer Dashboard, everyone else → User Dashboard
+                    navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                }
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -62,8 +69,11 @@ const LoginPage = () => {
             console.log('userInfo.role:', userInfo.role);
 
             toast.success('Welcome back!');
-            // Redirect based on role
-            if (userInfo.role === 'admin') {
+            // Prioritize explicit redirect
+            if (redirectPath) {
+                console.log('Redirecting to provided path:', redirectPath);
+                navigate(redirectPath);
+            } else if (userInfo.role === 'admin') {
                 console.log('Redirecting to /admin');
                 navigate('/admin');
             } else if (userInfo.role === 'dealer') {
