@@ -144,19 +144,20 @@ const DealerDashboard = () => {
         e.preventDefault();
         try {
             if (isAuthenticated) {
-                const { data } = await axios.put('/api/v1/dealers/profile', profileData);
+                const { data } = await axios.put('dealers/profile', profileData);
                 const updatedUser = { ...user, ...data, isProfileComplete: true };
                 updateUser(updatedUser);
-                toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
+                toast.success('Official Profile Updated!');
+                fetchData();
             } else {
                 // Demo Mode: Update context locally so changes appear immediately
                 const demoUser = { ...profileData, role: 'dealer', isProfileComplete: true };
                 updateUser(demoUser);
-                toast.success('Demo Profile Updated! (Changes visible locally)');
+                toast.success('Demo Profile Updated Locally!');
             }
             setShowProfileForm(false);
-            if (isAuthenticated) fetchData();
         } catch (error) {
+            console.error('Update Error:', error);
             toast.error(error.response?.data?.message || 'Update failed');
         }
     };
