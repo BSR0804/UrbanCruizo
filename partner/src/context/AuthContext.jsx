@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem('userInfo');
         setUser(null);
+        window.location.replace('https://caraw-inn.vercel.app/');
     };
 
     return (

@@ -139,6 +139,11 @@ const Dashboard = () => {
         catch (error) { toast.error('Failed to update status'); }
     };
 
+    const handleLogout = () => {
+        logout();
+        window.location.href = 'https://caraw-inn.vercel.app/';
+    };
+
     if (loading) return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center">
             <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 2, ease: "linear" }} className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full" />
@@ -188,7 +193,7 @@ const Dashboard = () => {
                         ))}
                         <div className="pt-10">
                             {isAuthenticated && (
-                                <button onClick={logout} className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"><X className="w-5 h-5" /> Logout</button>
+                                <button onClick={handleLogout} className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-bold"><X className="w-5 h-5" /> Logout</button>
                             )}
                         </div>
                     </nav>

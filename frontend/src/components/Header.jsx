@@ -9,7 +9,7 @@ const Header = () => {
 
     const handleLogout = () => {
         logout();
-        navigate('/login');
+        window.location.href = 'https://caraw-inn.vercel.app/';
     };
 
     const navLinkClass = ({ isActive }) =>
