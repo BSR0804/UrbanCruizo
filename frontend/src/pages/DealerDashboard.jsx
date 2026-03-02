@@ -249,9 +249,13 @@ const DealerDashboard = () => {
                                 <p className="text-sm font-bold text-white leading-none">{user?.name || (isAuthenticated ? 'Partner' : 'Partner Guest')}</p>
                                 <p className="text-[10px] text-primary uppercase tracking-widest mt-1">{isAuthenticated ? 'Authorized Dealer' : 'Demo Account'}</p>
                             </div>
-                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20">
-                                {user?.name ? user.name[0].toUpperCase() : (isAuthenticated ? 'P' : 'G')}
-                            </div>
+                            <button
+                                onClick={() => setShowProfileForm(true)}
+                                className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20 relative group overflow-hidden"
+                            >
+                                <span className="group-hover:opacity-0 transition-opacity">{user?.name ? user.name[0].toUpperCase() : (isAuthenticated ? 'P' : 'G')}</span>
+                                <Edit className="w-4 h-4 absolute opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
                         </div>
                     </div>
                 </header>
@@ -308,6 +312,12 @@ const DealerDashboard = () => {
                                             <p className="text-background/80 max-w-lg leading-relaxed font-medium">
                                                 Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
                                             </p>
+                                            <button
+                                                onClick={() => setShowProfileForm(true)}
+                                                className="mt-6 px-6 py-3 bg-background text-primary rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl"
+                                            >
+                                                <Edit className="w-4 h-4" /> Manage Profile
+                                            </button>
                                         </div>
                                     </div>
 
@@ -670,12 +680,20 @@ const DealerDashboard = () => {
                                     <div className="bg-background border border-gray-800 p-8 rounded-[2rem] space-y-6">
                                         <div className="space-y-2">
                                             <p className="text-xs uppercase tracking-widest text-primary font-bold">Profile Identity</p>
-                                            <div className="flex items-center gap-4 bg-surface p-4 rounded-2xl border border-gray-800">
-                                                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">{user?.name ? user.name[0] : 'G'}</div>
-                                                <div>
-                                                    <p className="text-white font-bold">{user?.name || 'Partner Guest'}</p>
-                                                    <p className="text-xs text-textSecondary">{user?.email || 'demo@urbancruizo.com'}</p>
+                                            <div className="flex items-center justify-between gap-4 bg-surface p-6 rounded-2xl border border-gray-800 group">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold text-xl">{user?.name ? user.name[0] : 'G'}</div>
+                                                    <div>
+                                                        <p className="text-white font-bold text-lg">{user?.name || 'Partner Guest'}</p>
+                                                        <p className="text-xs text-textSecondary">{user?.email || 'demo@urbancruizo.com'}</p>
+                                                    </div>
                                                 </div>
+                                                <button
+                                                    onClick={() => setShowProfileForm(true)}
+                                                    className="p-3 bg-background hover:bg-primary hover:text-background rounded-xl border border-gray-800 transition-all"
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                </button>
                                             </div>
                                         </div>
                                         <button
