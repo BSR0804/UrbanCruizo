@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 import { Car, LogIn, Chrome, ArrowRight, Shield, Sparkles } from 'lucide-react';
@@ -18,7 +18,8 @@ const Login = () => {
 
     const getRedirectPath = () => {
         if (redirectPath) return redirectPath;
-        return selectedRole === 'dealer' ? '/dashboard' : '/dashboard';
+        // Direct to the main dealer dashboard if no redirect path is given
+        return 'https://caraw-inn.vercel.app/dealer/dashboard';
     };
 
     const handleSubmit = async (e) => {

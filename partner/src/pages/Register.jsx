@@ -17,7 +17,8 @@ const Register = () => {
 
     const getRedirectPath = () => {
         if (redirectPath) return redirectPath;
-        return '/dashboard';
+        // All registrations from this portal are for dealers/partners
+        return 'https://caraw-inn.vercel.app/dealer/dashboard';
     };
 
     const handleSubmit = async (e) => {

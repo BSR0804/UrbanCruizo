@@ -50,7 +50,7 @@ const Landing = () => {
                         >
                             Performance
                         </button>
-                        <Link to="/dashboard" className="btn-primary px-8 py-2.5 text-xs rounded-xl font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">Get Started →</Link>
+                        <a href="https://caraw-inn.vercel.app/dealer/dashboard" className="btn-primary px-8 py-2.5 text-xs rounded-xl font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all transition-all">Get Started →</a>
 
                     </nav>
                 </div>
@@ -78,9 +78,9 @@ const Landing = () => {
 
                     {/* Hero CTA */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }} className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link to="/dashboard" className="bg-primary text-background px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl shadow-primary/40 flex items-center gap-3 justify-center">
+                        <a href="https://caraw-inn.vercel.app/dealer/dashboard" className="bg-primary text-background px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl shadow-primary/40 flex items-center gap-3 justify-center">
                             Get Started Now <ChevronRight className="w-5 h-5" />
-                        </Link>
+                        </a>
                     </motion.div>
                 </div>
             </section>
@@ -97,9 +97,9 @@ const Landing = () => {
                             <h2 className="text-4xl md:text-5xl font-serif font-black text-background mb-6">Ready to Grow<br />Your Fleet Business?</h2>
                             <p className="text-background/80 max-w-xl mx-auto mb-10 text-lg">Join hundreds of partners already earning on UrbanCruizo. List your first vehicle in under 5 minutes.</p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link to="/dashboard" className="bg-background text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform border border-white/10 shadow-2xl">
+                                <a href="https://caraw-inn.vercel.app/dealer/dashboard" className="bg-background text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform border border-white/10 shadow-2xl transition-all">
                                     Get Started Free
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </div>
