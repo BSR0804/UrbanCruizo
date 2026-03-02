@@ -111,8 +111,9 @@ const DealerDashboard = () => {
             fetchData();
             const interval = setInterval(fetchData, 60000);
             return () => clearInterval(interval);
-        } else if (!isAuthenticated) {
-            // Set demo data for unauthenticated users
+        } else if (!isAuthenticated || user.role !== 'dealer') {
+            // Set demo data for unauthenticated or non-dealer users
+            // This allows anyone coming from the PartnerLanding to see the dashboard experience
             setStats({
                 totalVehicles: 8,
                 activeVehicles: 5,
@@ -135,10 +136,8 @@ const DealerDashboard = () => {
                 { _id: 'r1', requirements: 'Need a white Rolls Royce for a wedding', vehicleType: 'Luxury', name: 'Alok Gupta', city: 'Delhi', phone: '9876543210', email: 'alok@example.com', createdAt: new Date().toISOString() }
             ]);
             setLoading(false);
-        } else if (user.role !== 'dealer') {
-            navigate('/dashboard'); // Regular users go to their own dashboard
         }
-    }, [user]);
+    }, [user, isAuthenticated]);
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
