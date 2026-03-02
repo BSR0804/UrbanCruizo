@@ -47,7 +47,7 @@ const Header = () => {
                                     <button onClick={() => window.location.hash = '#stats'} className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold">Performance</button>
                                 </>
                             )}
-                            {location.pathname === '/dealer/dashboard' && (
+                            {location.pathname === '/dealer/dashboard' && user && (
                                 <button
                                     onClick={handleLogout}
                                     className="text-xs uppercase tracking-widest text-textSecondary hover:text-primary transition font-bold"
