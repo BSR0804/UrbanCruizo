@@ -93,25 +93,7 @@ const Header = () => {
                                 </>
                             ) : (
                                 <div className="flex items-center space-x-8 ml-4">
-                                    {/* Partner Link */}
-                                    <NavLink to="/partner" className={navLinkClass}>
-                                        Partner With Us
-                                    </NavLink>
-
-                                    {/* Divider */}
-                                    <div className="h-6 w-[1px] bg-gray-800"></div>
-
-                                    {/* User Dropdown */}
-                                    <div className="relative group">
-                                        <button className="btn-primary px-6 py-2 text-sm flex items-center gap-2">
-                                            Join UrbanCruizo
-                                            <svg className="w-3 h-3 group-hover:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
-                                        </button>
-                                        <div className="absolute top-full left-0 mt-2 w-48 bg-surface border border-gray-800 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
-                                            <Link to="/login?role=user" className="block px-6 py-4 text-sm font-bold text-textSecondary hover:bg-primary hover:text-background transition-all">Login</Link>
-                                            <Link to="/register?role=user" className="block px-6 py-4 text-sm font-bold text-textSecondary hover:bg-primary hover:text-background border-t border-gray-800/50 transition-all">Register</Link>
-                                        </div>
-                                    </div>
+                                    {/* Authorization handled via protected routes and individual login pages */}
                                 </div>
                             )}
                         </>
