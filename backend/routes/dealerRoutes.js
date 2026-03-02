@@ -17,8 +17,8 @@ const {
 router.get('/dashboard/stats', protect, dealer, getDashboardStats);
 router.get('/dashboard/vehicles', protect, dealer, getDealerVehicles);
 router.get('/dashboard/bookings', protect, dealer, getDealerBookings);
-router.put('/dashboard/profile', protect, dealer, updateDealerProfile);
-router.put('/profile', protect, dealer, updateDealerProfile); // Legacy alias
+router.put('/profile', protect, dealer, updateDealerProfile); // Match this first
+router.put('/dashboard/profile', protect, dealer, updateDealerProfile); // Backup alias
 
 // Car Request Lead Routes
 router.post('/dashboard/car-requests', createCarRequest); // Public
