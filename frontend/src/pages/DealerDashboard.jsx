@@ -700,8 +700,15 @@ const DealerDashboard = () => {
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             className="w-full max-w-xl bg-surface border border-gray-800 rounded-[3rem] p-10 shadow-2xl relative"
                         >
+                            <button
+                                onClick={() => setShowProfileForm(false)}
+                                className="absolute top-6 right-6 p-2 bg-background rounded-full border border-gray-800 text-textSecondary hover:text-primary transition-all z-10"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
                             {user && !user.isProfileComplete && (
-                                <div className="absolute -top-4 -right-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce">
+                                <div className="absolute -top-4 -left-4 bg-primary text-background px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest animate-bounce">
                                     Action Required
                                 </div>
                             )}
