@@ -44,6 +44,19 @@ const DealerDashboard = () => {
         location: user?.location || '',
     });
 
+    // Keep profile form in sync with user context
+    useEffect(() => {
+        if (user) {
+            setProfileData({
+                name: user.name || '',
+                phone: user.phone || '',
+                businessName: user.businessName || '',
+                city: user.city || '',
+                location: user.location || '',
+            });
+        }
+    }, [user]);
+
     // Vehicle Form State
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingVehicle, setEditingVehicle] = useState(null);
@@ -130,12 +143,19 @@ const DealerDashboard = () => {
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.put('dealers/profile', profileData);
-            const updatedUser = { ...user, ...data, isProfileComplete: true };
-            updateUser(updatedUser);
-            toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
+            if (isAuthenticated) {
+                const { data } = await axios.put('dealers/profile', profileData);
+                const updatedUser = { ...user, ...data, isProfileComplete: true };
+                updateUser(updatedUser);
+                toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
+            } else {
+                // Demo Mode: Update context locally so changes appear immediately
+                const demoUser = { ...profileData, role: 'dealer', isProfileComplete: true };
+                updateUser(demoUser);
+                toast.success('Demo Profile Updated! (Changes visible locally)');
+            }
             setShowProfileForm(false);
-            fetchData();
+            if (isAuthenticated) fetchData();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Update failed');
         }
@@ -226,11 +246,11 @@ const DealerDashboard = () => {
                         <div className="h-10 w-[1px] bg-gray-800" />
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-bold text-white leading-none">{isAuthenticated ? (user?.name || 'Partner') : 'Partner Guest'}</p>
+                                <p className="text-sm font-bold text-white leading-none">{user?.name || (isAuthenticated ? 'Partner' : 'Partner Guest')}</p>
                                 <p className="text-[10px] text-primary uppercase tracking-widest mt-1">{isAuthenticated ? 'Authorized Dealer' : 'Demo Account'}</p>
                             </div>
                             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-background shadow-lg shadow-primary/20">
-                                {isAuthenticated ? (user?.name ? user.name[0] : 'P') : 'G'}
+                                {user?.name ? user.name[0].toUpperCase() : (isAuthenticated ? 'P' : 'G')}
                             </div>
                         </div>
                     </div>
@@ -292,7 +312,7 @@ const DealerDashboard = () => {
                                         <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[80px]" />
                                         <div className="relative z-10">
                                             <h2 className="text-3xl md:text-5xl font-serif font-black text-background mb-4">
-                                                Welcome back, <span className="italic">{isAuthenticated ? (user?.name?.split(' ')[0] || 'Partner') : 'Partner'}</span>
+                                                Welcome back, <span className="italic">{user?.name?.split(' ')[0] || (isAuthenticated ? 'Partner' : 'Partner')}</span>
                                             </h2>
                                             <p className="text-background/80 max-w-lg leading-relaxed font-medium">
                                                 Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
