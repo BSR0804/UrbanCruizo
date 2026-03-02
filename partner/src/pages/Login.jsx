@@ -12,10 +12,13 @@ const Login = () => {
     const [selectedRole, setSelectedRole] = useState('dealer');
     const [isLoading, setIsLoading] = useState(false);
     const { login, googleLogin } = useAuth();
-    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const redirectPath = queryParams.get('redirect');
 
     const getRedirectPath = () => {
-        return '/dashboard';
+        if (redirectPath) return redirectPath;
+        return selectedRole === 'dealer' ? '/dashboard' : '/dashboard';
     };
 
     const handleSubmit = async (e) => {
@@ -24,7 +27,12 @@ const Login = () => {
         const res = await login(email, password, selectedRole);
         setIsLoading(false);
         if (res.success) {
-            navigate(getRedirectPath());
+            const path = getRedirectPath();
+            if (path.startsWith('http')) {
+                window.location.href = path;
+            } else {
+                navigate(path);
+            }
         } else {
             toast.error(res.message);
         }
@@ -41,7 +49,13 @@ const Login = () => {
                 } else {
                     toast.success('Authenticated with Google');
                 }
-                navigate(getRedirectPath());
+                const path = getRedirectPath();
+                // If it's an external URL (like the main site), use window.location
+                if (path.startsWith('http')) {
+                    window.location.href = path;
+                } else {
+                    navigate(path);
+                }
             } else {
                 toast.error(res.message);
             }

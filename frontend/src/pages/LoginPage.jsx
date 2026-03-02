@@ -32,13 +32,9 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Welcome back!');
-                // Prioritize explicit redirect if provided from gateway/deep-link
-                if (redirectPath) {
-                    navigate(redirectPath);
-                } else {
-                    // Dealer → Dealer Dashboard, everyone else → User Dashboard
-                    navigate(userInfo.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
-                }
+                const target = redirectPath || (userInfo.role === 'dealer' ? '/partner' : '/dashboard');
+                console.log('Google Auth Target:', target);
+                navigate(target);
             } else {
                 console.error("Backend auth failed:", result.message, result.details);
                 const errorMsg = result.details ? `${result.message}: ${result.details}` : result.message;
@@ -69,20 +65,9 @@ const LoginPage = () => {
             console.log('userInfo.role:', userInfo.role);
 
             toast.success('Welcome back!');
-            // Prioritize explicit redirect
-            if (redirectPath) {
-                console.log('Redirecting to provided path:', redirectPath);
-                navigate(redirectPath);
-            } else if (userInfo.role === 'admin') {
-                console.log('Redirecting to /admin');
-                navigate('/admin');
-            } else if (userInfo.role === 'dealer') {
-                console.log('Redirecting to /dealer/dashboard');
-                navigate('/dealer/dashboard');
-            } else {
-                console.log('Redirecting to /dashboard, role was:', userInfo.role);
-                navigate('/dashboard');
-            }
+            const target = redirectPath || (userInfo.role === 'admin' ? '/admin' : (userInfo.role === 'dealer' ? '/partner' : '/dashboard'));
+            console.log('Login Submit Target:', target);
+            navigate(target);
         } else {
             setError(result.message);
             toast.error(result.message);

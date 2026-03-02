@@ -12,8 +12,11 @@ const Register = () => {
     const [selectedRole, setSelectedRole] = useState('dealer');
     const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
+    const queryParams = new URLSearchParams(window.location.search);
+    const redirectPath = queryParams.get('redirect');
 
     const getRedirectPath = () => {
+        if (redirectPath) return redirectPath;
         return '/dashboard';
     };
 
@@ -22,7 +25,12 @@ const Register = () => {
         const res = await register(name, email, password, selectedRole);
         if (res.success) {
             toast.success(`Registration successful! Welcome Partner.`);
-            navigate(getRedirectPath());
+            const path = getRedirectPath();
+            if (path.startsWith('http')) {
+                window.location.href = path;
+            } else {
+                navigate(path);
+            }
         } else {
             toast.error(res.message);
         }
@@ -33,7 +41,12 @@ const Register = () => {
             const res = await googleLogin(tokenResponse.access_token, selectedRole);
             if (res.success) {
                 toast.success('Authenticated with Google');
-                navigate(getRedirectPath());
+                const path = getRedirectPath();
+                if (path.startsWith('http')) {
+                    window.location.href = path;
+                } else {
+                    navigate(path);
+                }
             } else {
                 toast.error(res.message);
             }
@@ -77,7 +90,7 @@ const Register = () => {
                 </button>
 
                 <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
-                    Already registered? <Link to="/login" className="text-primary hover:underline">Authorize Access</Link>
+                    Already registered? <Link to={`/login${redirectPath ? `?redirect=${redirectPath}` : ''}`} className="text-primary hover:underline">Authorize Access</Link>
                 </div>
             </div>
         </div>
