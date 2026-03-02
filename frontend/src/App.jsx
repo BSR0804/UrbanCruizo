@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CityProvider } from './context/CityContext';
@@ -25,6 +26,15 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import PartnerLanding from './pages/PartnerLanding';
 import DestinationGateway from './pages/DestinationGateway';
 
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) {
+    return <Navigate to="/destination-gateway" replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <Router>
@@ -37,14 +47,14 @@ function App() {
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/home" element={<HomePage />} />
+                <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/vehicles" element={<VehicleListingPage />} />
                 <Route path="/vehicles/:id" element={<VehicleDetailsPage />} />
                 <Route path="/dealers/:id/vehicles" element={<DealerVehiclesPage />} />
-                <Route path="/caravans" element={<CaravanListingPage />} />
-                <Route path="/caravans/:id" element={<CaravanDetailsPage />} />
+                <Route path="/caravans" element={<ProtectedRoute><CaravanListingPage /></ProtectedRoute>} />
+                <Route path="/caravans/:id" element={<ProtectedRoute><CaravanDetailsPage /></ProtectedRoute>} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/partner" element={<PartnerLanding />} />
                 <Route path="/dealer/dashboard" element={<DealerDashboard />} />
