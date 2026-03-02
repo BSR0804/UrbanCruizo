@@ -142,13 +142,14 @@ const DealerDashboard = () => {
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (isAuthenticated) {
+            // Only save to backend if actually a dealer, otherwise use demo mode
+            if (isAuthenticated && user.role === 'dealer') {
                 let response;
                 try {
-                    // Try primary endpoint first
+                    // Try primary endpoint
                     response = await axios.put('dealers/profile', profileData);
                 } catch (err) {
-                    // Fallback to alias if primary 404s
+                    // Fallback alias
                     if (err.response?.status === 404) {
                         response = await axios.put('dealers/dashboard/profile', profileData);
                     } else {
@@ -158,13 +159,26 @@ const DealerDashboard = () => {
 
                 const updatedUser = { ...user, ...response.data, isProfileComplete: true };
                 updateUser(updatedUser);
-                toast.success('Profile saved and confirmed! ✨');
+                toast.success('Profile saved successfully! ✨');
                 setShowProfileForm(false);
                 fetchData();
             } else {
-                // Demo Mode
-                const demoUser = { ...profileData, role: 'dealer', isProfileComplete: true };
-                updateUser(demoUser);
+                // Demo Mode (for guests or non-dealer logged in users)
+                const demoUser = {
+                    ...(user || {}),
+                    ...profileData,
+                    role: user?.role || 'dealer', // Keep original role if exists, else 'dealer' for demo
+                    isProfileComplete: true
+                };
+
+                // If not logged in at all, we just update local state
+                if (!isAuthenticated) {
+                    updateUser(demoUser);
+                } else {
+                    // If logged in as user, update local but don't change role to dealer in DB
+                    updateUser({ ...user, ...profileData, isProfileComplete: true });
+                }
+
                 toast.success('Demo profile updated locally!');
                 setShowProfileForm(false);
             }
