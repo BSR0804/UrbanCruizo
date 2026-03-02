@@ -147,16 +147,21 @@ const DealerDashboard = () => {
             const imagesArray = vehicleFormData.images.split(',').map(img => img.trim());
             const dataToSubmit = { ...vehicleFormData, images: imagesArray };
 
-            if (editingVehicle) {
-                await axios.put(`vehicles/${editingVehicle._id}`, dataToSubmit);
-                toast.success('Vehicle updated!');
+            if (isAuthenticated) {
+                if (editingVehicle) {
+                    await axios.put(`vehicles/${editingVehicle._id}`, dataToSubmit);
+                    toast.success('Vehicle updated!');
+                } else {
+                    await axios.post('vehicles', dataToSubmit);
+                    toast.success('Vehicle added successfully!');
+                }
             } else {
-                await axios.post('vehicles', dataToSubmit);
-                toast.success('Vehicle added successfully!');
+                // Demo Mode Logic: Just show success and close
+                toast.success('Success! (Demo Mode: Results not saved to database)');
             }
             setShowAddModal(false);
             setEditingVehicle(null);
-            fetchData();
+            if (isAuthenticated) fetchData();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Operation failed');
         }
@@ -399,15 +404,6 @@ const DealerDashboard = () => {
                                             </div>
                                             <button
                                                 onClick={() => {
-                                                    if (!isAuthenticated) {
-                                                        toast.error('Demo Mode: Please login to add vehicles');
-                                                        return;
-                                                    }
-                                                    if (!user?.isProfileComplete) {
-                                                        toast.error('Complete your profile before listing!');
-                                                        setShowProfileForm(true);
-                                                        return;
-                                                    }
                                                     setEditingVehicle(null);
                                                     setVehicleFormData({
                                                         title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
