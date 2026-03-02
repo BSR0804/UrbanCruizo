@@ -96,13 +96,13 @@ const LoginPage = () => {
                     <div className="flex justify-center mb-10">
                         <div className="bg-background/50 p-1.5 rounded-2xl flex border border-gray-800">
                             <button
-                                onClick={() => navigate(`/login?role=${queryRole}`)}
+                                onClick={() => navigate(`/login?role=${queryRole}${redirectPath ? `&redirect=${redirectPath}` : ''}`)}
                                 className="px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-primary text-background shadow-lg"
                             >
                                 Login
                             </button>
                             <button
-                                onClick={() => navigate(`/register?role=${queryRole}`)}
+                                onClick={() => navigate(`/register?role=${queryRole}${redirectPath ? `&redirect=${redirectPath}` : ''}`)}
                                 className="px-8 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-textSecondary hover:text-white"
                             >
                                 Register
@@ -211,9 +211,9 @@ const LoginPage = () => {
 
                 <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
                     {loginType === 'dealer' ? (
-                        <>Institutional Partner? <a href="/register?role=dealer" className="text-primary hover:underline">Register Now</a></>
+                        <>Institutional Partner? <Link to={`/register?role=dealer${redirectPath ? `&redirect=${redirectPath}` : ''}`} className="text-primary hover:underline">Register Now</Link></>
                     ) : (
-                        <>New to UrbanCruizo? <a href={queryRole === 'user' ? "/register?role=user" : "/register"} className="text-primary hover:underline">Create Account</a></>
+                        <>New to UrbanCruizo? <Link to={`/register?role=user${redirectPath ? `&redirect=${redirectPath}` : ''}`} className="text-primary hover:underline">Create Account</Link></>
                     )}
                 </div>
             </div>

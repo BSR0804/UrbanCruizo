@@ -6,7 +6,9 @@ import { useGoogleLogin } from '@react-oauth/google';
 
 const RegisterPage = () => {
     const location = useLocation();
-    const queryRole = new URLSearchParams(location.search).get('role');
+    const queryParams = new URLSearchParams(location.search);
+    const queryRole = queryParams.get('role');
+    const redirectPath = queryParams.get('redirect');
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -25,7 +27,12 @@ const RegisterPage = () => {
                 // partners coming from the partner flow don't get sent to
                 // the regular user dashboard by mistake.
                 toast.success('Account created successfully!');
-                navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+
+                if (redirectPath) {
+                    navigate(redirectPath);
+                } else {
+                    navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                }
             } else {
                 setError(result.message);
                 toast.error(result.message);
@@ -45,8 +52,13 @@ const RegisterPage = () => {
             // Redirect purely based on the intended registration role
             // instead of whatever role might be returned initially.
             toast.success('Account created successfully!');
-            // Dealer → Dealer Dashboard, everyone else → User Dashboard
-            navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+
+            if (redirectPath) {
+                navigate(redirectPath);
+            } else {
+                // Dealer → Dealer Dashboard, everyone else → User Dashboard
+                navigate(role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+            }
         } else {
             setError(result.message);
             toast.error(result.message);
@@ -183,7 +195,7 @@ const RegisterPage = () => {
                 </button>
 
                 <div className="mt-10 text-center text-[10px] uppercase tracking-widest font-bold text-textSecondary">
-                    Already have an account? <a href={queryRole ? `/login?role=${queryRole}` : "/login"} className="text-primary hover:underline">Login</a>
+                    Already have an account? <Link to={queryRole ? `/login?role=${queryRole}${redirectPath ? `&redirect=${redirectPath}` : ''}` : "/login"} className="text-primary hover:underline">Login</Link>
                 </div>
             </div>
         </div>
