@@ -144,7 +144,7 @@ const DealerDashboard = () => {
         e.preventDefault();
         try {
             if (isAuthenticated) {
-                const { data } = await axios.put('dealers/profile', profileData);
+                const { data } = await axios.put('/api/v1/dealers/profile', profileData);
                 const updatedUser = { ...user, ...data, isProfileComplete: true };
                 updateUser(updatedUser);
                 toast.success('Profile updated! Welcome to the UrbanCruizo Partner Portal.');
