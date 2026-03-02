@@ -144,21 +144,35 @@ const DealerDashboard = () => {
         e.preventDefault();
         try {
             if (isAuthenticated) {
-                const { data } = await axios.put('dealers/profile', profileData);
-                const updatedUser = { ...user, ...data, isProfileComplete: true };
+                let response;
+                try {
+                    // Try primary endpoint first
+                    response = await axios.put('dealers/profile', profileData);
+                } catch (err) {
+                    // Fallback to alias if primary 404s
+                    if (err.response?.status === 404) {
+                        response = await axios.put('dealers/dashboard/profile', profileData);
+                    } else {
+                        throw err;
+                    }
+                }
+
+                const updatedUser = { ...user, ...response.data, isProfileComplete: true };
                 updateUser(updatedUser);
-                toast.success('Official Profile Updated!');
+                toast.success('Profile saved and confirmed! ✨');
+                setShowProfileForm(false);
                 fetchData();
             } else {
-                // Demo Mode: Update context locally so changes appear immediately
+                // Demo Mode
                 const demoUser = { ...profileData, role: 'dealer', isProfileComplete: true };
                 updateUser(demoUser);
-                toast.success('Demo Profile Updated Locally!');
+                toast.success('Demo profile updated locally!');
+                setShowProfileForm(false);
             }
-            setShowProfileForm(false);
         } catch (error) {
-            console.error('Update Error:', error);
-            toast.error(error.response?.data?.message || 'Update failed');
+            console.error('Save Error:', error);
+            const errMsg = error.response?.data?.message || error.message || 'Server connection error';
+            toast.error(`Save failed: ${errMsg}`);
         }
     };
 
