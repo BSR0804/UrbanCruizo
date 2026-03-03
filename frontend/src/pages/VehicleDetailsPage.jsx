@@ -351,7 +351,10 @@ const VehicleDetailsPage = () => {
                             </div>
                         </div>
 
-
+                        {/* Trip Planner Feature */}
+                        <div className="mt-8">
+                            <TripPlanner vehicle={vehicle} />
+                        </div>
                     </div>
 
                     {/* Right: Details & Booking Section */}
@@ -550,10 +553,7 @@ const VehicleDetailsPage = () => {
                             {!user && <p className="text-xs text-center text-red-500 font-bold">Login required to book.</p>}
                         </form>
 
-                        {/* Trip Planner Feature */}
-                        <div className="mt-8">
-                            <TripPlanner vehicle={vehicle} />
-                        </div>
+
 
                         {/* Map Section */}
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl overflow-hidden">
@@ -607,7 +607,7 @@ const VehicleDetailsPage = () => {
                 vehicleId={id}
                 onPaymentSuccess={confirmBookingAfterPayment}
             />
-        </div>
+        </div >
     );
 };
 
