@@ -1255,7 +1255,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg2',
         title: 'Rajasthan Royal Legacy Tour',
         duration: '4 Nights / 5 Days',
-        description: 'A grand 5-day royal immersion through Jaipur and its surrounding forts. Live like a King with desert safaris and palace stays. Experience a breathtaking hot air balloon flight over the pink city at the crack of dawn. Traverse the rugged Aravalli trails in a premium 4x4, uncovering hidden stepwells and ancient hunting lodges. Dine under the vast desert sky with private folk performances curated exclusively for your entertainment and comfort.',
+        description: 'Surrender to the grandeur of Rajasthan as Jaipur reveals itself in layers of royalty, romance, and raw desert beauty. From sunrise balloon rides drifting above the Pink City to twilight moments in the dunes where folk melodies echo beneath a starlit sky, every experience is designed to feel intimate yet epic. Wander through majestic forts, sip high-tea overlooking serene lakes, and retreat each evening to palace luxury that whispers stories of valor and legacy. This is not merely a journey through Jaipur—it is your invitation to live, even briefly, as royalty in a land where every sunset feels like a coronation.',
         packagePrice: 45000,
         amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala', 'Hot Air Balloon Experience'],
         images: [
@@ -1263,8 +1263,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1590050752117-23a9d7fc24b5?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'This 4-night Royal Legacy tour is our most prestigious package, offering a deep dive into the desert kingdom of Jaipur. From the golden sands of the Thar to the intricate marble of the City Palace, every moment is crafted to make you feel like the protagonist of an ancient epic. Witness the sun setting behind the Aravalli hills and the sky coming alive with a thousand colors. Rajasthan is a land of legends, and we provide you the key to unlock its most hidden treasures.',
-        description2: 'Stay in authentic 5-star heritage palaces and enjoy curated high-tea at the Amber Fort overlooking the reflection of the Maota Lake. The package covers all local transportation in a premium 4x4, private guides, and an exclusive cultural performance in the heart of the desert under a blanket of stars. Experience the thrill of a hot air balloon flight and the silence of the vast dunes. This journey is a celebration of valor, art, and the timeless hospitality of the Rajputana spirits.',
+        description1: '',
+        description2: '',
         city: 'Jaipur'
     },
     {
