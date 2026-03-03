@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+    ChevronLeft,
     MapPin,
     Phone,
     Car,
@@ -129,6 +130,9 @@ const VehicleListingPage = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                     >
+                        <Link to="/home" className="inline-flex items-center gap-2 text-textSecondary hover:text-primary mb-6 transition-colors group">
+                            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> Back to Destinations
+                        </Link>
                         <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-2">
                             {city ? `Expert Dealers in ${city}` : 'Authorized Local Dealers'}
                         </h1>
