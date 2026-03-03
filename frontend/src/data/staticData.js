@@ -1243,9 +1243,9 @@ export const MOCK_CARAVANS = [
         packagePrice: 12500,
         amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees', 'Luxury Boutique Stay'],
         images: [
-            '/images/kolkata.jpg',
-            'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=1200&auto=format&fit=crop'
+            '/images/tour_package_kolkata.png',
+            '/images/kolkata_interior_1.png',
+            'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop'
         ],
         description1: '',
         description2: '',
