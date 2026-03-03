@@ -215,9 +215,24 @@ const CaravanDetailsPage = () => {
                                 <span>Available Now</span>
                             </div>
                             <h1 className="text-5xl font-serif font-bold text-white mb-4">{caravan.title}</h1>
-                            <p className="text-textSecondary leading-relaxed text-lg">
+                            <p className="text-textSecondary leading-relaxed text-lg mb-8">
                                 {caravan.description}
                             </p>
+
+                            {/* Detailed Attraction Sections */}
+                            <div className="space-y-8">
+                                <div className="bg-surface/30 p-8 rounded-3xl border border-primary/10 backdrop-blur-sm">
+                                    <h4 className="text-primary font-bold uppercase tracking-widest text-xs mb-3">The Experience</h4>
+                                    <p className="text-textPrimary leading-relaxed italic">"{caravan.description1}"</p>
+                                </div>
+
+                                <div className="bg-surface/30 p-8 rounded-3xl border border-primary/10 backdrop-blur-sm">
+                                    <h4 className="text-primary font-bold uppercase tracking-widest text-xs mb-3">Inside the Journey</h4>
+                                    <p className="text-textPrimary leading-relaxed">
+                                        {caravan.description2}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Price Card */}

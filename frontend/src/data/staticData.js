@@ -1239,7 +1239,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg1',
         title: 'Kolkata Heritage & Culture Experience',
         duration: '2 Nights / 3 Days',
-        description: 'Immerse yourself in the colonial charm and spiritual depth of Kolkata. A 3-day journey covering Victoria Memorial, the Ghats, and iconic heritage sites.',
+        description: 'Immerse yourself in the colonial charm and spiritual depth of Kolkata. A 3-day journey covering Victoria Memorial, the Ghats, and iconic heritage sites. Witness the timeless ritual of the Ganga Aarti as the evening sun dips below the horizon. Stroll through our curated selection of North Kolkata\'s narrow lanes where every wall has a story to tell. Indulge in an exclusive multi-course Bengali zamindari lunch that will transport you back to the golden age of the Bengal Renaissance.',
         packagePrice: 12500,
         amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees', 'Luxury Boutique Stay'],
         images: [
@@ -1255,7 +1255,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg2',
         title: 'Rajasthan Royal Legacy Tour',
         duration: '4 Nights / 5 Days',
-        description: 'A grand 5-day royal immersion through Jaipur and its surrounding forts. Live like a King with desert safaris and palace stays.',
+        description: 'A grand 5-day royal immersion through Jaipur and its surrounding forts. Live like a King with desert safaris and palace stays. Experience a breathtaking hot air balloon flight over the pink city at the crack of dawn. Traverse the rugged Aravalli trails in a premium 4x4, uncovering hidden stepwells and ancient hunting lodges. Dine under the vast desert sky with private folk performances curated exclusively for your entertainment and comfort.',
         packagePrice: 45000,
         amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala', 'Hot Air Balloon Experience'],
         images: [
@@ -1271,7 +1271,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg3',
         title: 'Mumbai Glamour & Coastal Escape',
         duration: '2 Nights / 3 Days',
-        description: 'Experience the high-life of India\'s Maximum City. A 3-day luxury tour covering South Mumbai glamour and a private Arabian Sea retreat.',
+        description: 'Experience the high-life of India\'s Maximum City. A 3-day luxury tour covering South Mumbai glamour and a private Arabian Sea retreat. Navigate the sea-view boulevards in a premium Mercedes sedan as the city lights glitter in your rearview. Enjoy a private sunset yacht cruise at the Gateway of India with a curated champagne high-tea. Gain exclusive access to some of Colaba\'s most historic Art Deco structures and witness the architectural fusion of old and new Mumbai.',
         packagePrice: 22000,
         amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience', 'Colaba Heritage Walk'],
         images: [
