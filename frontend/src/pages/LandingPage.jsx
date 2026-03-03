@@ -12,7 +12,8 @@ import {
     LifeBuoy,
     UserCheck,
     Sparkles,
-    FileSearch
+    FileSearch,
+    Car
 } from 'lucide-react';
 
 const LandingPage = () => {
