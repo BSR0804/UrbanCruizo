@@ -261,6 +261,35 @@ const CaravanDetailsPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Static Map Card */}
+                        <div className="bg-surface p-4 rounded-3xl border border-gray-800 mt-6 overflow-hidden">
+                            <div className="px-4 pt-4 pb-2">
+                                <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-primary mb-4 flex items-center gap-2">
+                                    <Map className="w-4 h-4" /> Experience Location
+                                </h3>
+                            </div>
+                            <div className="relative h-64 rounded-2xl overflow-hidden group">
+                                <img
+                                    src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop"
+                                    alt="Experience Location Map"
+                                    className="w-full h-full object-cover grayscale opacity-50 group-hover:scale-110 transition-transform duration-700"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="relative">
+                                        <div className="absolute -inset-4 bg-primary/20 rounded-full animate-ping" />
+                                        <div className="relative bg-primary p-3 rounded-full shadow-2xl shadow-primary/50">
+                                            <MapPin className="w-6 h-6 text-background" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-4 left-4 right-4 bg-background/80 backdrop-blur-md p-3 rounded-xl border border-white/5">
+                                    <p className="text-[10px] text-textSecondary uppercase tracking-widest font-bold mb-1">Local Headquarters</p>
+                                    <p className="text-white text-xs truncate">{caravan.organizer?.address || 'Premium Local Presence'}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Right: Details & Booking */}
