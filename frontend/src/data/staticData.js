@@ -40,7 +40,7 @@ export const CITIES = [
     },
     {
         name: 'Kolkata',
-        image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/tour_package_kolkata.png',
         description: 'City of Joy and culture',
         coordinates: { lat: 22.5726, lng: 88.3639 }
     },
