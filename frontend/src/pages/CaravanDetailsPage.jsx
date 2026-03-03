@@ -82,12 +82,15 @@ const CaravanDetailsPage = () => {
             return;
         }
 
-        const amount = (caravan.packagePrice || caravan.pricePerDay) + 499; // 499 service fee
-        setTotalAmount(amount);
+        const basePrice = (caravan.packagePrice || caravan.pricePerDay);
+        setTotalAmount(basePrice);
         setIsFormModalOpen(true);
     };
 
     const handleFormSubmit = async (formData) => {
+        const basePrice = (caravan.packagePrice || caravan.pricePerDay);
+        const newTotal = (basePrice * formData.guests) + 499; // Correctly multiply base price and add fixed service fee
+        setTotalAmount(newTotal);
         setBookingData(formData);
         setIsFormModalOpen(false);
         setIsPaymentModalOpen(true);

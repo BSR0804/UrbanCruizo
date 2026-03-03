@@ -35,6 +35,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
         }
     };
 
+    const dynamicPrice = (price * formData.guests);
+
     if (!isOpen) return null;
 
     return (
@@ -78,7 +80,10 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                             </div>
                         </div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="space-y-8">
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            handleSubmit(e);
+                        }} className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Full Name</label>
@@ -157,9 +162,22 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                 </div>
                             </div>
 
-                            <div className="p-4 bg-primary/5 border border-primary/20 rounded-2xl flex items-center justify-between">
-                                <span className="text-textSecondary text-sm uppercase tracking-widest">Total Payable</span>
-                                <span className="text-2xl font-bold text-white">₹{price?.toLocaleString('en-IN')}</span>
+                            <div className="p-6 bg-surface/50 border border-gray-800 rounded-[2rem] space-y-4">
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-textSecondary">Base Package ({formData.guests} Traveler{formData.guests > 1 ? 's' : ''})</span>
+                                    <span className="text-white font-medium">₹{price.toLocaleString('en-IN')} × {formData.guests}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm pb-4 border-b border-gray-800/50">
+                                    <span className="text-textSecondary">Service & Documentation</span>
+                                    <span className="text-white font-medium">₹499</span>
+                                </div>
+                                <div className="flex justify-between items-center pt-2">
+                                    <div>
+                                        <span className="text-textSecondary text-xs uppercase tracking-[0.2em] block">Total Payable</span>
+                                        <span className="text-[10px] text-primary/60 italic font-medium">Included: Luxury Transfers & Entry Fees</span>
+                                    </div>
+                                    <span className="text-4xl font-bold text-white">₹{(dynamicPrice + 499).toLocaleString('en-IN')}</span>
+                                </div>
                             </div>
 
                             <button
