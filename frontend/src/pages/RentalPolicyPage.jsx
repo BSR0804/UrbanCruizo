@@ -123,7 +123,6 @@ const RentalPolicyPage = () => {
                     <p className="text-textSecondary mb-6">Our support team is available 24/7 to help you clarify any terms.</p>
                     <div className="flex justify-center gap-4">
                         <a href="/help-center" className="btn-primary px-8 py-3">Talk to Support</a>
-                        <a href="/vehicles" className="btn-outline px-8 py-3">Browse Fleet</a>
                     </div>
                 </motion.div>
             </div>
