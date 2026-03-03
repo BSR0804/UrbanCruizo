@@ -74,7 +74,7 @@ const CaravanDetailsPage = () => {
             return;
         }
 
-        const amount = nights * caravan.pricePerDay + 499; // 499 service fee
+        const amount = (caravan.packagePrice || caravan.pricePerDay) + 499; // 499 service fee
         setTotalAmount(amount);
         setIsPaymentModalOpen(true);
     };
@@ -210,8 +210,7 @@ const CaravanDetailsPage = () => {
                     <div className="space-y-8">
                         <div>
                             <div className="flex items-center gap-2 text-primary mb-2 uppercase tracking-widest text-xs font-bold">
-                                <MapPin className="w-3 h-3" />
-                                <span>{caravan.location}</span>
+                                <span>{caravan.duration || 'Per Package'}</span>
                                 <span className="w-1 h-1 bg-primary rounded-full" />
                                 <span>Available Now</span>
                             </div>
@@ -224,10 +223,10 @@ const CaravanDetailsPage = () => {
                         {/* Price Card */}
                         <div className="bg-surface border border-primary/20 p-8 rounded-3xl relative overflow-hidden">
                             <div className="relative z-10">
-                                <p className="text-textSecondary text-sm mb-1 uppercase tracking-widest">Base Rate</p>
+                                <p className="text-textSecondary text-sm mb-1 uppercase tracking-widest">Total Package Price</p>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-bold text-white">₹{caravan.pricePerDay}</span>
-                                    <span className="text-textSecondary text-xl">/night</span>
+                                    <span className="text-5xl font-bold text-white">₹{caravan.packagePrice || caravan.pricePerDay}</span>
+                                    <span className="text-textSecondary text-xl italic">({caravan.duration || 'Full Experience'})</span>
                                 </div>
                             </div>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

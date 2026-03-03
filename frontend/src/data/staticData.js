@@ -1237,47 +1237,50 @@ export const MOCK_VEHICLES = [
 export const MOCK_CARAVANS = [
     {
         _id: 'pkg1',
-        title: 'Kolkata Heritage Day Tour',
-        description: 'Discover the soul of the City of Joy with our curated Heritage Day Tour. Visit iconic landmarks including Victoria Memorial, Dakshineswar Temple, and Howrah Bridge in luxury comfort.',
-        pricePerDay: 4500,
-        amenities: ['Private Guide', 'Premium AC Vehicle', 'Traditional Lunch', 'Entry Tickets', 'WiFi'],
+        title: 'Kolkata Heritage & Culture Experience',
+        duration: '2 Nights / 3 Days',
+        description: 'Immerse yourself in the colonial charm and spiritual depth of Kolkata. A 3-day journey covering Victoria Memorial, the Ghats, and iconic heritage sites.',
+        packagePrice: 12500,
+        amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees'],
         images: [
             '/images/kolkata.jpg',
             'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'Our Heritage Day Tour is designed to give you an authentic glimpse into the rich history and vibrant culture of Kolkata. From the grand colonial architecture of the British era to the spiritual high of ancient temples, experience the city like never before.',
-        description2: 'Travel in a chauffeur-driven premium sedan or SUV with an expert guide who narrates the untold stories of the city. We handle all logistics, including entry fees and a curated traditional Bengali lunch at a renowned heritage restaurant.',
+        description1: 'The Kolkata Heritage Experience is a curated 2-night journey through the "City of Joy." You will explore the architectural marvels of the British Raj, witness the timeless rituals at Dakshineswar, and stroll through the nostalgic lanes of North Kolkata.',
+        description2: 'Your package includes a private chauffeur-driven SUV, stays at a premium boutique hotel, and a dedicated guide to share the city\'s deep history. We ensure priority entry to all monuments and a special candlelight dinner by the Hooghly river.',
         city: 'Kolkata'
     },
     {
         _id: 'pkg2',
-        title: 'Rajasthan Royal Escapade',
-        description: 'A magnificent 3-day journey through the Pink City of Jaipur. Experience royal hospitality, desert safaris, and private tours of grand palaces and formidable forts.',
-        pricePerDay: 12500,
-        amenities: ['Fort Transfers', 'Luxury SUV', 'Heritage Resort Stay', 'Desert Safari', 'Cultural Show'],
+        title: 'Rajasthan Royal Legacy Tour',
+        duration: '4 Nights / 5 Days',
+        description: 'A grand 5-day royal immersion through Jaipur and its surrounding forts. Live like a King with desert safaris and palace stays.',
+        packagePrice: 45000,
+        amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala'],
         images: [
             'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1590050752117-23a9d7fc24b5?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'Indulge in the grandeur of Rajasthan with our Royal Escapade package. This curated experience takes you through the heart of Jaipur, visiting the Amber Fort, Hawa Mahal, and the City Palace in absolute luxury.',
-        description2: 'The package includes a 2-night stay at a converted heritage haveli, private transport in a Toyota Fortuner, and an evening of traditional folk music and dance under the starlit desert sky.',
+        description1: 'This 4-night Royal Legacy tour is our most prestigious package, offering a deep dive into the desert kingdom of Jaipur. From the golden sands of the Thar to the intricate marble of the City Palace, every moment is crafted for royalty.',
+        description2: 'Stay in authentic 5-star heritage palaces and enjoy curated high-tea at the Amber Fort. The package covers all local transportation in a premium 4x4, private guides, and an exclusive cultural performance in the heart of the desert.',
         city: 'Jaipur'
     },
     {
         _id: 'pkg3',
-        title: 'Mumbai Coastal Luxury Drive',
-        description: 'Experience the glitz and glamour of India\'s financial capital with a luxury coastal drive. Visit Marine Drive, Gateway of India, and the Bandra-Worli Sea Link followed by a fine dining experience.',
-        pricePerDay: 7500,
-        amenities: ['Mercedes Sedan', 'Sunset Cruise', 'Valet Service', 'Fine Dining Reservation', 'Champagne on Board'],
+        title: 'Mumbai Glamour & Coastal Escape',
+        duration: '2 Nights / 3 Days',
+        description: 'Experience the high-life of India\'s Maximum City. A 3-day luxury tour covering South Mumbai glamour and a private Arabian Sea retreat.',
+        packagePrice: 22000,
+        amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience'],
         images: [
             'https://images.unsplash.com/photo-1566550973116-ef738596da5e?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'Discover the charm of the "Maximum City" from the plush seats of a Mercedes-Benz. Our Coastal Luxury Drive package is the perfect blend of scenic beauty and high-end lifestyle, showcasing the best of South Mumbai.',
-        description2: 'Your journey ends with a private 1-hour sunset cruise in the Arabian Sea, followed by an optional reservation at a premium rooftop restaurant overlooking the glittering Queen\'s Necklace.',
+        description1: 'The Mumbai Glamour package offers an elite 2-night perspective of the city that never sleeps. Experience the timeless elegance of Marine Drive and the modern architectural marvel of the Sea Link from the comfort of a luxury sedan.',
+        description2: 'Package highlights include a private yacht charter at Gateway of India, stays at Mumbai\'s iconic sea-view hotels, and a curated fine-dining itinerary. This is the ultimate way to witness Mumbais unique blend of heritage and modern luxury.',
         city: 'Mumbai'
     }
 ];
