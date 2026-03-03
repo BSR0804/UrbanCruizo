@@ -33,12 +33,7 @@ const LandingPage = () => {
         { src: '/images/interiors/interior4.webp', alt: 'Cozy Bedroom' }
     ];
 
-    const carFleetImages = [
-        { src: '/images/audi-a6.jpg', alt: 'Audi A6 Sedan' },
-        { src: '/images/mercedes-s-class.jpg', alt: 'Mercedes S-Class' },
-        { src: '/images/toyota-fortuner.jpg', alt: 'Toyota Fortuner' },
-        { src: '/images/x5.avif', alt: 'BMW X5 Luxury SUV' }
-    ];
+
 
     const features = [
         {
@@ -239,70 +234,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Car Fleet Showcase */}
-            <section className="py-24 bg-surface/30 border-t border-gray-800">
-                <div className="container mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
-                        <motion.div
-                            initial={{ x: 100, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.8 }}
-                            viewport={{ once: true }}
-                            className="flex-1"
-                        >
-                            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">
-                                Luxury <span className="text-primary">Executive</span> Fleet. <br />
-                                Elegance on Every Mile.
-                            </h2>
-                            <p className="text-lg text-textSecondary mb-8 leading-relaxed">
-                                Our executive collection features the world's most prestigious sedans and SUVs. Maintained to the highest standards, these vehicles offer unparalleled comfort for business or pleasure.
-                            </p>
 
-                            <div className="grid grid-cols-1 gap-4 mb-10 text-textPrimary">
-                                <div className="flex items-center gap-4 p-4 rounded-xl bg-background border border-gray-800">
-                                    <Car className="w-8 h-8 text-primary" />
-                                    <div>
-                                        <h4 className="font-bold">Premium Sedans</h4>
-                                        <p className="text-sm text-textSecondary">Audi A6, Mercedes S-Class, BMW 7 Series</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-4 p-4 rounded-xl bg-background border border-gray-800">
-                                    <Star className="w-8 h-8 text-primary" />
-                                    <div>
-                                        <h4 className="font-bold">Dominant SUVs</h4>
-                                        <p className="text-sm text-textSecondary">Toyota Fortuner, BMW X5, Mahindra Thar</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ x: -100, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.8 }}
-                            viewport={{ once: true }}
-                            className="flex-1 grid grid-cols-2 gap-4 relative"
-                        >
-                            {carFleetImages.map((img, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`relative rounded-xl overflow-hidden shadow-2xl border border-gray-800 group ${idx === 0 ? 'h-64' : idx === 1 ? 'h-48 mt-8' : idx === 2 ? 'h-48 -mt-8' : 'h-64'
-                                        }`}
-                                >
-                                    <img
-                                        src={img.src}
-                                        alt={img.alt}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                                    />
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
-                                </div>
-                            ))}
-                            {/* Decorative element */}
-                            <div className="absolute -top-10 -left-10 w-64 h-64 bg-primary/5 border border-primary/10 rounded-full blur-3xl -z-10" />
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
 
 
         </div>
