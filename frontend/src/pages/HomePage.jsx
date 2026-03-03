@@ -16,7 +16,7 @@ const HomePage = () => {
         { name: 'Hyderabad', image: '/images/hyderabad.jpg' },
         { name: 'Chennai', image: 'https://images.unsplash.com/photo-1616843413587-9e3a37f7bbd8?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Pune', image: 'https://images.unsplash.com/photo-1600112356915-089abb8fc71a?q=80&w=1600&auto=format&fit=crop' },
-        { name: 'Kolkata', image: '/images/kolkata.jpg' },
+        { name: 'Kolkata', image: '/images/tour_package_kolkata.png' },
         { name: 'Jaipur', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop' },
         { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
         { name: 'Kochi', image: '/images/kochi.jpg', comingSoon: true },
