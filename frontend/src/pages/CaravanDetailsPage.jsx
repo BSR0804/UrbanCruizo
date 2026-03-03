@@ -112,10 +112,10 @@ const CaravanDetailsPage = () => {
     if (!caravan) return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center text-center px-4">
             <div className="bg-surface p-12 rounded-3xl border border-gray-800 shadow-2xl">
-                <h1 className="text-4xl font-serif text-red-500 mb-4">Caravan Not Found</h1>
-                <p className="text-textSecondary mb-8">The caravan you are looking for might have been moved or removed.</p>
+                <h1 className="text-4xl font-serif text-red-500 mb-4">Package Not Found</h1>
+                <p className="text-textSecondary mb-8">The tour package you are looking for might have been moved or removed.</p>
                 <Link to="/caravans" className="btn-primary px-8 py-3">
-                    Back to Fleet
+                    Back to Packages
                 </Link>
             </div>
         </div>
@@ -138,7 +138,7 @@ const CaravanDetailsPage = () => {
         <div className="min-h-screen bg-background text-textPrimary py-12">
             <div className="container mx-auto px-6">
                 <Link to="/caravans" className="inline-flex items-center gap-2 text-textSecondary hover:text-primary mb-8 transition-colors group">
-                    <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> Back to Fleet
+                    <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> Back to Packages
                 </Link>
 
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
@@ -189,7 +189,7 @@ const CaravanDetailsPage = () => {
 
                         {/* Amenities Card */}
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8">
-                            <h3 className="text-2xl font-serif font-bold text-white mb-6">World-Class Amenities</h3>
+                            <h3 className="text-2xl font-serif font-bold text-white mb-6">Package Highlights</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 {caravan.amenities.map((amenity, index) => {
                                     const Icon = getAmenityIcon(amenity);
@@ -236,7 +236,7 @@ const CaravanDetailsPage = () => {
                         {/* Booking Form */}
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl space-y-6">
                             <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                <Calendar className="w-5 h-5 text-primary" /> Plan Your Adventure
+                                <Calendar className="w-5 h-5 text-primary" /> Book This Experience
                             </h3>
 
                             {error && <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">{error}</div>}
@@ -273,7 +273,7 @@ const CaravanDetailsPage = () => {
                                         <span className="text-white font-bold">₹499 (Included)</span>
                                     </div>
                                     <button className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-3 group">
-                                        Confirm Your Stay
+                                        Confirm Your Experience
                                         <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                     </button>
                                 </div>

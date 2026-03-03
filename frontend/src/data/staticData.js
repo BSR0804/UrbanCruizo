@@ -1236,51 +1236,49 @@ export const MOCK_VEHICLES = [
 
 export const MOCK_CARAVANS = [
     {
-        _id: 'caravan1',
-        title: 'Force Traveler Caravan',
-        description: 'Spacious 6-seater caravan with modern amenities, perfect for family road trips. Features include air conditioning, comfortable beds, kitchenette, and bathroom facilities.',
-        pricePerDay: 6000,
-        amenities: ['Air Conditioning', 'Kitchenette', 'Bathroom', 'WiFi', 'Power Outlets', 'Storage'],
+        _id: 'pkg1',
+        title: 'Kolkata Heritage Day Tour',
+        description: 'Discover the soul of the City of Joy with our curated Heritage Day Tour. Visit iconic landmarks including Victoria Memorial, Dakshineswar Temple, and Howrah Bridge in luxury comfort.',
+        pricePerDay: 4500,
+        amenities: ['Private Guide', 'Premium AC Vehicle', 'Traditional Lunch', 'Entry Tickets', 'WiFi'],
         images: [
-            '/images/force-traveller-caravan.jpg',
-            '/images/force-traveller-interior-1.webp',
-            '/images/force-traveller-interior-2.jpg',
-            '/images/force-traveller-interior-4.jpg'
+            '/images/kolkata.jpg',
+            'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Force Traveler Caravan is a versatile "home on wheels," designed for self-sufficient exploration across the vast landscapes of India. Its durable diesel engine and spacious interior provide a reliable foundation for long-term travel.',
-        description2: 'Custom-built with modern amenities including climate control and comfortable sleeping quarters, this 2022 edition offers freedom without compromise. Navigate from coastal roads to mountain passes with ease.',
-        city: 'Bangalore'
+        description1: 'Our Heritage Day Tour is designed to give you an authentic glimpse into the rich history and vibrant culture of Kolkata. From the grand colonial architecture of the British era to the spiritual high of ancient temples, experience the city like never before.',
+        description2: 'Travel in a chauffeur-driven premium sedan or SUV with an expert guide who narrates the untold stories of the city. We handle all logistics, including entry fees and a curated traditional Bengali lunch at a renowned heritage restaurant.',
+        city: 'Kolkata'
     },
     {
-        _id: 'caravan2',
-        title: 'Mercedes Sprinter Caravan',
-        description: 'Luxury 4-seater caravan with premium interiors. Equipped with heating, air conditioning, premium bedding, and entertainment system.',
-        pricePerDay: 8000,
-        amenities: ['Heating', 'Air Conditioning', 'Premium Bedding', 'Entertainment System', 'Kitchenette', 'Bathroom'],
+        _id: 'pkg2',
+        title: 'Rajasthan Royal Escapade',
+        description: 'A magnificent 3-day journey through the Pink City of Jaipur. Experience royal hospitality, desert safaris, and private tours of grand palaces and formidable forts.',
+        pricePerDay: 12500,
+        amenities: ['Fort Transfers', 'Luxury SUV', 'Heritage Resort Stay', 'Desert Safari', 'Cultural Show'],
         images: [
-            '/images/sprinter-caravan.jpg',
-            '/images/sprinter-interior-1.png',
-            '/images/sprinter-interior-2.jpg',
-            '/images/sprinter-interior-3.jpg'
+            'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1590050752117-23a9d7fc24b5?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Mercedes Sprinter Caravan is the ultimate foundation for your home on wheels, offering a premium driving experience with unmatched reliability. Its agile handling and smooth suspension ensure a serene journey across the coastline.',
-        description2: 'Inside, expect a sanctuary of comfort with ergonomic designs and high-quality finishes. Whether it is a coastal escape or a cross-country adventure, this van provides the perfect blend of luxury and freedom.',
+        description1: 'Indulge in the grandeur of Rajasthan with our Royal Escapade package. This curated experience takes you through the heart of Jaipur, visiting the Amber Fort, Hawa Mahal, and the City Palace in absolute luxury.',
+        description2: 'The package includes a 2-night stay at a converted heritage haveli, private transport in a Toyota Fortuner, and an evening of traditional folk music and dance under the starlit desert sky.',
+        city: 'Jaipur'
+    },
+    {
+        _id: 'pkg3',
+        title: 'Mumbai Coastal Luxury Drive',
+        description: 'Experience the glitz and glamour of India\'s financial capital with a luxury coastal drive. Visit Marine Drive, Gateway of India, and the Bandra-Worli Sea Link followed by a fine dining experience.',
+        pricePerDay: 7500,
+        amenities: ['Mercedes Sedan', 'Sunset Cruise', 'Valet Service', 'Fine Dining Reservation', 'Champagne on Board'],
+        images: [
+            'https://images.unsplash.com/photo-1566550973116-ef738596da5e?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200&auto=format&fit=crop'
+        ],
+        description1: 'Discover the charm of the "Maximum City" from the plush seats of a Mercedes-Benz. Our Coastal Luxury Drive package is the perfect blend of scenic beauty and high-end lifestyle, showcasing the best of South Mumbai.',
+        description2: 'Your journey ends with a private 1-hour sunset cruise in the Arabian Sea, followed by an optional reservation at a premium rooftop restaurant overlooking the glittering Queen\'s Necklace.',
         city: 'Mumbai'
-    },
-    {
-        _id: 'caravan3',
-        title: 'Eco-Friendly Solar Caravan',
-        description: 'Sustainable 5-seater caravan powered by solar panels. Perfect for eco-conscious travelers with modern amenities and zero emissions.',
-        pricePerDay: 5500,
-        amenities: ['Solar Power', 'Eco-Friendly', 'Kitchenette', 'Bathroom', 'LED Lighting', 'Water Tank'],
-        images: [
-            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1566023967268-de0be658b7a7?q=80&w=1200&auto=format&fit=crop'
-        ],
-        description1: 'The Eco-Friendly Solar Caravan is a pioneering "Green Explorer" that pairs sustainable energy with the freedom of the road. Its integrated solar panels provide off-grid power for essential amenities, perfect for eco-conscious travelers.',
-        description2: 'Experience a unique blend of self-sufficiency and comfort in this custom 2023 edition. Designed for those who want to explore India’s natural beauty with a minimal carbon footprint.',
-        city: 'Delhi'
     }
 ];
 

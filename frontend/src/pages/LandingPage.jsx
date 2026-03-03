@@ -52,7 +52,7 @@ const LandingPage = () => {
         {
             icon: <MapPin className="w-8 h-8 text-primary" />,
             title: "Multi-Vehicle Fleet",
-            desc: "Choose from our wide range of premium Cars, rugged Bikes, and luxury Caravans from top local dealers."
+            desc: "Choose from our wide range of premium Cars, rugged Bikes, and Premium Tour Packages from top local dealers."
         }
     ];
 
@@ -102,7 +102,7 @@ const LandingPage = () => {
                             variants={fadeIn}
                             className="text-xl text-textSecondary mb-10 max-w-xl leading-relaxed"
                         >
-                            Whether it's a sleek Car, a powerful Bike, or a luxury Caravan—find the perfect ride with India's most trusted local dealers.
+                            Whether it's a sleek Car, a powerful Bike, or a Premium Tour Package—find the perfect ride with India's most trusted local dealers.
                         </motion.p>
                         <motion.div
                             variants={fadeIn}
@@ -174,7 +174,7 @@ const LandingPage = () => {
                         >
                             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">
                                 One App. <span className="text-primary">Every Ride</span>. <br />
-                                Cars, Bikes & Caravans.
+                                Cars, Bikes & Tour Packages.
                             </h2>
                             <p className="text-lg text-textSecondary mb-8 leading-relaxed">
                                 Our platform connects you with verified local dealers offering a premium fleet for every terrain. From city cruises to cross-country expeditions, we've got you covered.

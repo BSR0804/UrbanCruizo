@@ -11,7 +11,7 @@ const Footer = () => {
                             UrbanCruizo
                         </Link>
                         <p className="text-textSecondary leading-relaxed">
-                            Your premium gateway to local dealers for Cars, Bikes, and Luxury Caravans across India.
+                            Your premium gateway to local dealers for Cars, Bikes, and Premium Tour Packages across India.
                         </p>
                     </div>
 

@@ -36,17 +36,17 @@ const CaravanListingPage = () => {
         return () => clearTimeout(timeoutId);
     }, [keyword]); // Refetch when keyword changes
 
-    if (loading) return <div className="text-center py-20 text-primary">Loading Fleet...</div>;
+    if (loading) return <div className="text-center py-20 text-primary">Exploring Packages...</div>;
 
     return (
         <div className="container mx-auto px-4 py-12">
-            <h1 className="text-4xl font-serif text-center mb-8 text-primary">Our Luxury Fleet</h1>
+            <h1 className="text-4xl font-serif text-center mb-8 text-primary">Premium Tour Packages</h1>
 
             {/* Search Bar */}
             <div className="max-w-md mx-auto mb-12">
                 <input
                     type="text"
-                    placeholder="Search by name..."
+                    placeholder="Search packages..."
                     className="input-field"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
@@ -54,7 +54,7 @@ const CaravanListingPage = () => {
             </div>
 
             {caravans.length === 0 ? (
-                <div className="text-center text-textSecondary text-xl">No caravans found matching your search.</div>
+                <div className="text-center text-textSecondary text-xl">No packages found matching your search.</div>
             ) : (
                 <div className="grid md:grid-cols-3 gap-8">
                     {caravans.map((caravan) => (

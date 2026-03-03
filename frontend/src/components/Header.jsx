@@ -68,7 +68,7 @@ const Header = () => {
                                 Destinations
                             </NavLink>
                             <NavLink to="/caravans" className={navLinkClass}>
-                                Luxury Caravans
+                                Tour Packages
                             </NavLink>
 
                             {user ? (
