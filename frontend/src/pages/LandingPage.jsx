@@ -30,7 +30,7 @@ const LandingPage = () => {
         { src: '/images/thar-cover.jpg', alt: 'Mahindra Thar' },
         { src: '/images/interiors/interior1.webp', alt: 'Luxury Caravan Suite' },
         { src: '/images/mercedes-cover.webp', alt: 'Mercedes Executive' },
-        { src: '/images/interiors/interior4.webp', alt: 'Cozy Caravan Bedroom' }
+        { src: '/images/bike-cover.avif', alt: 'Premium Sportbike' }
     ];
 
 
