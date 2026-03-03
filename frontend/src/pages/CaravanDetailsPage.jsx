@@ -12,7 +12,9 @@ import {
     Utensils,
     Tv,
     Wind,
-    Droplets
+    Droplets,
+    Building2,
+    Phone
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
@@ -219,6 +221,44 @@ const CaravanDetailsPage = () => {
                                         </div>
                                     );
                                 })}
+                            </div>
+                        </div>
+
+                        {/* Organising Organisation Card */}
+                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-6 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Building2 className="w-12 h-12 text-primary" />
+                            </div>
+                            <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-primary mb-6 flex items-center gap-2">
+                                <ShieldCheck className="w-4 h-4" /> Organising Organisation
+                            </h3>
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <h4 className="text-white font-serif text-2xl font-bold">UrbanCruizo Luxury Travels</h4>
+                                    <p className="text-textSecondary text-xs uppercase tracking-widest font-medium">Official Premium Experience Partner</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div className="flex items-center gap-4 bg-background/30 p-4 rounded-2xl border border-gray-800/50">
+                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                            <Phone className="w-5 h-5" />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] text-textSecondary uppercase tracking-widest">Contact Number</span>
+                                            <span className="text-white font-medium">+91 98765 43210</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-4 bg-background/30 p-4 rounded-2xl border border-gray-800/50">
+                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                            <MapPin className="w-5 h-5" />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] text-textSecondary uppercase tracking-widest">Office Address</span>
+                                            <span className="text-white font-medium">12/A, Park Street, Kolkata, WB 700016</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
