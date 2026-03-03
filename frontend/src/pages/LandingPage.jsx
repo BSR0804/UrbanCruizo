@@ -26,7 +26,6 @@ import {
 
 const LandingPage = () => {
     const navigate = useNavigate();
-    const [showAllAmenities, setShowAllAmenities] = useState(false);
 
     const fadeIn = {
         initial: { opacity: 0, y: 20 },
@@ -195,7 +194,7 @@ const LandingPage = () => {
                             </p>
 
                             <div className="grid grid-cols-2 gap-6 mb-10">
-                                {luxuryAmenities.slice(0, showAllAmenities ? luxuryAmenities.length : 4).map((item, idx) => (
+                                {luxuryAmenities.map((item, idx) => (
                                     <motion.div
                                         key={idx}
                                         initial={{ opacity: 0, y: 10 }}
@@ -210,14 +209,6 @@ const LandingPage = () => {
                                     </motion.div>
                                 ))}
                             </div>
-
-                            <button
-                                onClick={() => setShowAllAmenities(!showAllAmenities)}
-                                className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all"
-                            >
-                                {showAllAmenities ? 'SHOW LESS' : 'VIEW ALL AMENITIES'}
-                                <ChevronRight className={`w-5 h-5 transition-transform ${showAllAmenities ? 'rotate-90' : ''}`} />
-                            </button>
                         </motion.div>
 
                         <motion.div
