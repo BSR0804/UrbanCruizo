@@ -77,10 +77,10 @@ const CaravanListingPage = () => {
                             />
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h3 className="text-xl font-bold font-serif text-textPrimary">{caravan.title}</h3>
-                                    <div className="text-right">
+                                    <h3 className="text-xl font-bold font-serif text-textPrimary leading-tight">{caravan.title}</h3>
+                                    <div className="text-right flex-shrink-0 ml-4">
                                         <div className="text-primary font-bold text-lg">₹{caravan.packagePrice || caravan.pricePerDay}</div>
-                                        <div className="text-xs text-textSecondary uppercase tracking-tighter">{caravan.duration || 'Per Package'}</div>
+                                        <div className="text-[10px] text-textSecondary uppercase tracking-tighter whitespace-nowrap">{caravan.duration || 'Per Package'}</div>
                                     </div>
                                 </div>
                                 <p className="text-textSecondary mb-4 flex-1">{caravan.description.substring(0, 100)}...</p>
