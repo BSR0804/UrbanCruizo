@@ -234,7 +234,7 @@ const CaravanDetailsPage = () => {
                             </h3>
                             <div className="space-y-6">
                                 <div className="space-y-1">
-                                    <h4 className="text-white font-serif text-2xl font-bold">UrbanCruizo Luxury Travels</h4>
+                                    <h4 className="text-white font-serif text-2xl font-bold">{caravan.organizer?.name || 'UrbanCruizo Luxury Travels'}</h4>
                                     <p className="text-textSecondary text-xs uppercase tracking-widest font-medium">Official Premium Experience Partner</p>
                                 </div>
 
@@ -245,7 +245,7 @@ const CaravanDetailsPage = () => {
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-[10px] text-textSecondary uppercase tracking-widest">Contact Number</span>
-                                            <span className="text-white font-medium">+91 98765 43210</span>
+                                            <span className="text-white font-medium">{caravan.organizer?.phone || '+91 98765 43210'}</span>
                                         </div>
                                     </div>
 
@@ -255,7 +255,7 @@ const CaravanDetailsPage = () => {
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-[10px] text-textSecondary uppercase tracking-widest">Office Address</span>
-                                            <span className="text-white font-medium">12/A, Park Street, Kolkata, WB 700016</span>
+                                            <span className="text-white font-medium">{caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016'}</span>
                                         </div>
                                     </div>
                                 </div>

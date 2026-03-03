@@ -1249,7 +1249,12 @@ export const MOCK_CARAVANS = [
         ],
         description1: '',
         description2: '',
-        city: 'Kolkata'
+        city: 'Kolkata',
+        organizer: {
+            name: 'UrbanCruizo Luxury Travels',
+            phone: '+91 98765 43210',
+            address: '12/A, Park Street, Kolkata, WB 700016'
+        }
     },
     {
         _id: 'pkg2',
@@ -1265,7 +1270,12 @@ export const MOCK_CARAVANS = [
         ],
         description1: '',
         description2: '',
-        city: 'Jaipur'
+        city: 'Jaipur',
+        organizer: {
+            name: 'UrbanCruizo Luxury Travels',
+            phone: '+91 91234 56789',
+            address: 'Palace Road, Near City Palace, Jaipur, Rajasthan 302002'
+        }
     },
     {
         _id: 'pkg3',
