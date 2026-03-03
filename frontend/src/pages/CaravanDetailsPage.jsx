@@ -74,8 +74,8 @@ const CaravanDetailsPage = () => {
             return;
         }
 
-        if (nights > 3) {
-            toast.error('Booking cannot exceed 3 days for this package');
+        if (nights !== 3) {
+            toast.error('This curated experience is designed as a strict 3-day package. Please select exactly 3 days.');
             return;
         }
 
