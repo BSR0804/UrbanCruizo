@@ -259,6 +259,34 @@ const CaravanDetailsPage = () => {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Organisation Map Card */}
+                                <div className="bg-surface p-4 rounded-[2.5rem] border border-gray-800 mt-6 shadow-2xl relative overflow-hidden group">
+                                    <div className="absolute top-4 left-6 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-md border border-white/10">
+                                        <MapPin className="w-3.5 h-3.5 text-primary" />
+                                        <span className="text-[10px] text-white font-bold uppercase tracking-widest leading-none">Head Office Location</span>
+                                    </div>
+
+                                    <div className="w-full h-48 rounded-[2rem] overflow-hidden border border-gray-800 relative shadow-inner">
+                                        <iframe
+                                            title="Organisation Location"
+                                            width="100%"
+                                            height="100%"
+                                            frameBorder="0"
+                                            scrolling="no"
+                                            marginHeight="0"
+                                            marginWidth="0"
+                                            src="https://maps.google.com/maps?q=Park%20Street,%20Kolkata&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                            className="w-full h-full grayscale"
+                                            style={{
+                                                filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.9)',
+                                                opacity: 0.8
+                                            }}
+                                        ></iframe>
+                                        {/* Overlay for premium feel */}
+                                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-background/40 to-transparent"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -377,22 +405,22 @@ const CaravanDetailsPage = () => {
                         </div>
                     </div>
                 </div>
+
+                <BookingFormModal
+                    isOpen={isFormModalOpen}
+                    onClose={() => setIsFormModalOpen(false)}
+                    onSubmit={handleFormSubmit}
+                    packageName={caravan.title}
+                    price={totalAmount}
+                />
+
+                <PaymentModal
+                    isOpen={isPaymentModalOpen}
+                    onClose={() => setIsPaymentModalOpen(false)}
+                    amount={totalAmount}
+                    onPaymentSuccess={confirmBookingAfterPayment}
+                />
             </div>
-
-            <BookingFormModal
-                isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
-                onSubmit={handleFormSubmit}
-                packageName={caravan.title}
-                price={totalAmount}
-            />
-
-            <PaymentModal
-                isOpen={isPaymentModalOpen}
-                onClose={() => setIsPaymentModalOpen(false)}
-                amount={totalAmount}
-                onPaymentSuccess={confirmBookingAfterPayment}
-            />
         </div>
     );
 };
