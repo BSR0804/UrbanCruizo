@@ -27,10 +27,10 @@ const LandingPage = () => {
     };
 
     const interiorImages = [
-        { src: '/images/interiors/interior.jfif', alt: 'Luxury Suite' },
-        { src: '/images/interiors/interior1.webp', alt: 'Modern Living Area' },
-        { src: '/images/interiors/interior2.jpg', alt: 'Gourmet Kitchen' },
-        { src: '/images/interiors/interior4.webp', alt: 'Cozy Bedroom' }
+        { src: '/images/thar-cover.jpg', alt: 'Mahindra Thar' },
+        { src: '/images/interiors/interior1.webp', alt: 'Luxury Caravan Suite' },
+        { src: '/images/mercedes-cover.webp', alt: 'Mercedes Executive' },
+        { src: '/images/interiors/interior4.webp', alt: 'Cozy Caravan Bedroom' }
     ];
 
     const carFleetImages = [
