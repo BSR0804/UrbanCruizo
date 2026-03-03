@@ -14,7 +14,8 @@ import {
     Wind,
     Droplets,
     Building2,
-    Phone
+    Phone,
+    Map
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
