@@ -46,7 +46,7 @@ export const CITIES = [
     },
     {
         name: 'Jaipur',
-        image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/rajasthan_royal.png',
         description: 'The Pink City',
         coordinates: { lat: 26.9124, lng: 75.7873 }
     }
@@ -1259,9 +1259,9 @@ export const MOCK_CARAVANS = [
         packagePrice: 45000,
         amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala', 'Hot Air Balloon Experience'],
         images: [
-            'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1590050752117-23a9d7fc24b5?q=80&w=1200&auto=format&fit=crop'
+            '/images/rajasthan_royal.png',
+            '/images/rajasthan_interior_1.png',
+            '/images/rajasthan_interior_2.png'
         ],
         description1: '',
         description2: '',
