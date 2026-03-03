@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import { MOCK_CARAVANS } from '../data/staticData';
 import PaymentModal from '../components/PaymentModal';
 import BookingFormModal from '../components/BookingFormModal';
 import toast from 'react-hot-toast';
