@@ -39,7 +39,7 @@ const HelpCenterPage = () => {
                         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
                             <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center overflow-hidden">
                                 <img
-                                    src="/images/profile.jpeg"
+                                    src="/images/direct-lead-support.jpeg"
                                     alt={contactInfo.name}
                                     className="w-full h-full object-cover"
                                 />
