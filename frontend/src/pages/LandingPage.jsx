@@ -2,26 +2,17 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
-    Car,
     ShieldCheck,
     MapPin,
-    Wifi,
     Zap,
     ChevronRight,
     Star,
     Tv,
-    Wind,
-    Music,
-    Lock,
-    Bike,
     Map,
-    Smartphone,
-    Settings,
     LifeBuoy,
     UserCheck,
     Sparkles,
-    FileSearch,
-    Users
+    FileSearch
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -60,21 +51,13 @@ const LandingPage = () => {
     ];
 
     const luxuryAmenities = [
-        { icon: <Bike />, label: "Premium Riding Gear" },
         { icon: <Map />, label: "GPS Navigation" },
-        { icon: <Smartphone />, label: "App-Key Entry" },
-        { icon: <Settings />, label: "Performance Tuning" },
         { icon: <LifeBuoy />, label: "24/7 Roadside Assist" },
         { icon: <UserCheck />, label: "Verified Dealers" },
         { icon: <FileSearch />, label: "Insurance Covered" },
         { icon: <Sparkles />, label: "Sanitized Vehicles" },
-        { icon: <Wifi />, label: "High-Speed WiFi" },
-        { icon: <Car />, label: "Smart Drive Tech" },
         { icon: <Star />, label: "Premium Interior" },
-        { icon: <Wind />, label: "Climate Control" },
-        { icon: <Tv />, label: "Smart Entertainment" },
-        { icon: <Music />, label: "Surround Sound" },
-        { icon: <Lock />, label: "Biometric Entry" }
+        { icon: <Tv />, label: "Smart Entertainment" }
     ];
 
     return (
