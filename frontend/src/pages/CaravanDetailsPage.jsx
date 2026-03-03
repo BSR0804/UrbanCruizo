@@ -74,6 +74,11 @@ const CaravanDetailsPage = () => {
             return;
         }
 
+        if (nights > 3) {
+            toast.error('Booking cannot exceed 3 days for this package');
+            return;
+        }
+
         const amount = (caravan.packagePrice || caravan.pricePerDay) + 499; // 499 service fee
         setTotalAmount(amount);
         setIsPaymentModalOpen(true);
