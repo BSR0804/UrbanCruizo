@@ -19,7 +19,8 @@ import {
     Bluetooth,
     MapPin,
     Navigation,
-    AlertCircle
+    AlertCircle,
+    Map
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from '../utils/api';
@@ -564,18 +565,24 @@ const VehicleDetailsPage = () => {
                                 Dealer Location
                             </h3>
                             <div className="w-full h-64 rounded-2xl overflow-hidden border border-gray-800 shadow-lg relative group">
-                                <iframe
-                                    title="Dealer Location"
-                                    width="100%"
-                                    height="100%"
-                                    frameBorder="0"
-                                    scrolling="no"
-                                    marginHeight="0"
-                                    marginWidth="0"
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(vehicle.location || 'Karol Bagh, Delhi')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                                    className="w-full h-full"
-                                    style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
-                                ></iframe>
+                                <img
+                                    src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop"
+                                    alt="Dealer Location Map"
+                                    className="w-full h-full object-cover grayscale opacity-50 group-hover:scale-110 transition-transform duration-700"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="relative">
+                                        <div className="absolute -inset-4 bg-primary/20 rounded-full animate-ping" />
+                                        <div className="relative bg-primary p-3 rounded-full shadow-2xl shadow-primary/50">
+                                            <MapPin className="w-6 h-6 text-background" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-4 left-4 right-4 bg-background/80 backdrop-blur-md p-3 rounded-xl border border-white/5">
+                                    <p className="text-[10px] text-textSecondary uppercase tracking-widest font-bold mb-1">Local Showroom</p>
+                                    <p className="text-white text-xs truncate">{vehicle.location || 'Premium Local Presence'}</p>
+                                </div>
                             </div>
                             <div className="mt-6 space-y-3">
                                 <div className="flex items-start gap-3 text-textSecondary text-sm">

@@ -140,19 +140,59 @@ const TripPlanner = ({ vehicle }) => {
 
     if (loadError || !apiKey) {
         return (
-            <div className="bg-surface p-10 rounded-3xl border border-primary/20 text-center shadow-2xl">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <AlertCircle className="w-8 h-8 text-primary" />
+            <div className="space-y-6">
+                <div className="bg-surface p-10 rounded-3xl border border-primary/20 text-center shadow-2xl relative overflow-hidden group">
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop"
+                            alt="Map Background"
+                            className="w-full h-full object-cover grayscale opacity-20 group-hover:scale-105 transition-transform duration-1000"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent" />
+                    </div>
+
+                    <div className="relative z-10">
+                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                            <div className="absolute -inset-4 bg-primary/10 rounded-full animate-ping" />
+                            <AlertCircle className="w-8 h-8 text-primary" />
+                        </div>
+                        <h3 className="text-2xl font-serif font-bold text-white mb-3 tracking-tight">Maps Integration Required</h3>
+                        <p className="text-textSecondary text-sm mb-8 max-w-md mx-auto leading-relaxed">
+                            To unlock advanced <span className="text-primary italic">Live Route Mapping</span> and automated fuel estimations, please configure your Google Maps API Key in your environment settings.
+                        </p>
+
+                        <div className="inline-flex flex-col gap-2 p-6 bg-background/60 backdrop-blur-xl rounded-3xl border border-white/5 text-left shadow-2xl">
+                            <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                                <code className="text-[10px] text-primary uppercase font-bold tracking-widest leading-none">Step 1: Create API Key in GC Console</code>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-primary/40" />
+                                <code className="text-textSecondary text-[10px] lowercase tracking-wide italic leading-none">Step 2: Add VITE_GOOGLE_MAPS_API_KEY to frontend/.env</code>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-white mb-3">Maps Integration Required</h3>
-                <p className="text-textSecondary text-sm mb-6 max-w-md mx-auto">
-                    To enable real-time route planning and fuel estimation, please configure your
-                    <span className="text-primary font-bold"> Google Maps API Key </span>
-                    in the environment variables.
-                </p>
-                <div className="inline-block p-4 bg-background rounded-2xl border border-gray-800 text-left">
-                    <code className="text-[10px] text-primary block mb-1">Step 1: Create API Key in Google Cloud Console</code>
-                    <code className="text-textSecondary text-[10px]">Step 2: Add VITE_GOOGLE_MAPS_API_KEY to frontend/.env</code>
+
+                {/* Decorative Map Visual for Placeholder */}
+                <div className="relative h-64 rounded-[2.5rem] overflow-hidden border border-gray-800 shadow-2xl">
+                    <img
+                        src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop"
+                        alt="Planning Map"
+                        className="w-full h-full object-cover grayscale opacity-40 brightness-75"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="relative">
+                                <div className="absolute -inset-8 bg-primary/10 rounded-full animate-ping" />
+                                <div className="bg-primary/20 p-4 rounded-full border border-primary/30 text-primary">
+                                    <Navigation className="w-8 h-8 rotate-45" />
+                                </div>
+                            </div>
+                            <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-white/50">Simulated Visualization</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
