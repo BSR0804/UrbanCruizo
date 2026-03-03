@@ -1247,8 +1247,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Kolkata Heritage Experience is a curated 2-night journey through the "City of Joy." You will explore the architectural marvels of the British Raj, witness the timeless rituals at Dakshineswar, and stroll through the nostalgic lanes of North Kolkata.',
-        description2: 'Your package includes a private chauffeur-driven SUV, stays at a premium boutique hotel, and a dedicated guide to share the city\'s deep history. We ensure priority entry to all monuments and a special candlelight dinner by the Hooghly river.',
+        description1: 'The Kolkata Heritage Experience is a curated 2-night journey through the "City of Joy." Explore the architectural marvels of the British Raj, witness the timeless rituals at Dakshineswar, and stroll through the nostalgic lanes of North Kolkata where history whispers from every corner. From the tram-lined streets of Esplanade to the aromatic spice markets, this city is a sensory masterpiece waiting to be discovered. Experience the deep-rooted soul of a city that was once the pride of the East.',
+        description2: 'Your package includes a private chauffeur-driven SUV, stays at a premium boutique hotel, and a dedicated guide to share the city\'s deep history. We ensure priority entry to all monuments and a special candlelight dinner by the Hooghly river as the city lights shimmer on the water. Indulge in authentic local flavors and witness the artistic heartbeat of the Kumartuli potters. This isn\'t just a tour; it\'s a portal into a world where tradition and modernity dance in perfect harmony.',
         city: 'Kolkata'
     },
     {
@@ -1263,8 +1263,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1590050752117-23a9d7fc24b5?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'This 4-night Royal Legacy tour is our most prestigious package, offering a deep dive into the desert kingdom of Jaipur. From the golden sands of the Thar to the intricate marble of the City Palace, every moment is crafted for royalty.',
-        description2: 'Stay in authentic 5-star heritage palaces and enjoy curated high-tea at the Amber Fort. The package covers all local transportation in a premium 4x4, private guides, and an exclusive cultural performance in the heart of the desert.',
+        description1: 'This 4-night Royal Legacy tour is our most prestigious package, offering a deep dive into the desert kingdom of Jaipur. From the golden sands of the Thar to the intricate marble of the City Palace, every moment is crafted to make you feel like the protagonist of an ancient epic. Witness the sun setting behind the Aravalli hills and the sky coming alive with a thousand colors. Rajasthan is a land of legends, and we provide you the key to unlock its most hidden treasures.',
+        description2: 'Stay in authentic 5-star heritage palaces and enjoy curated high-tea at the Amber Fort overlooking the reflection of the Maota Lake. The package covers all local transportation in a premium 4x4, private guides, and an exclusive cultural performance in the heart of the desert under a blanket of stars. Experience the thrill of a hot air balloon flight and the silence of the vast dunes. This journey is a celebration of valor, art, and the timeless hospitality of the Rajputana spirits.',
         city: 'Jaipur'
     },
     {
@@ -1279,8 +1279,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Mumbai Glamour package offers an elite 2-night perspective of the city that never sleeps. Experience the timeless elegance of Marine Drive and the modern architectural marvel of the Sea Link from the comfort of a luxury sedan.',
-        description2: 'Package highlights include a private yacht charter at Gateway of India, stays at Mumbai\'s iconic sea-view hotels, and a curated fine-dining itinerary. This is the ultimate way to witness Mumbais unique blend of heritage and modern luxury.',
+        description1: 'The Mumbai Glamour package offers an elite 2-night perspective of the city that never sleeps. Experience the timeless elegance of Marine Drive and the modern architectural marvel of the Sea Link from the comfort of a luxury sedan as the skyline glitters like a million diamonds. Mumbai is the pulsating heart of modern India—a city of dreams where every street corner has a story of ambition and survival. Let us take you beyond the postcards and into the soul of this high-octane metropolis.',
+        description2: 'Package highlights include a private yacht charter at Gateway of India, stays at Mumbai\'s iconic sea-view hotels, and a curated fine-dining itinerary at some of the world\'s most exclusive restaurants. Walk the heritage lanes of Colaba where Art Deco meets Victorian Gothic, and feel the electric energy of the Maximum City. We provide VIP access to the city\'s most sought-after experiences, ensuring your journey is as fast-paced or relaxed as you desire. Mumbai isn\'t just a destination; it\'s a feeling of infinite possibility.',
         city: 'Mumbai'
     }
 ];
