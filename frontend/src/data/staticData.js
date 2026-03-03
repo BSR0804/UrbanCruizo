@@ -1241,7 +1241,7 @@ export const MOCK_CARAVANS = [
         duration: '2 Nights / 3 Days',
         description: 'Immerse yourself in the colonial charm and spiritual depth of Kolkata. A 3-day journey covering Victoria Memorial, the Ghats, and iconic heritage sites.',
         packagePrice: 12500,
-        amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees'],
+        amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees', 'Luxury Boutique Stay'],
         images: [
             '/images/kolkata.jpg',
             'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
@@ -1257,7 +1257,7 @@ export const MOCK_CARAVANS = [
         duration: '4 Nights / 5 Days',
         description: 'A grand 5-day royal immersion through Jaipur and its surrounding forts. Live like a King with desert safaris and palace stays.',
         packagePrice: 45000,
-        amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala'],
+        amenities: ['Palace Stays', 'Toyota Fortuner with Chauffeur', 'Exclusive Desert Safari', 'Private Elephant Ride', 'Traditional Folk Gala', 'Hot Air Balloon Experience'],
         images: [
             'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1200&auto=format&fit=crop',
@@ -1273,7 +1273,7 @@ export const MOCK_CARAVANS = [
         duration: '2 Nights / 3 Days',
         description: 'Experience the high-life of India\'s Maximum City. A 3-day luxury tour covering South Mumbai glamour and a private Arabian Sea retreat.',
         packagePrice: 22000,
-        amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience'],
+        amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience', 'Colaba Heritage Walk'],
         images: [
             'https://images.unsplash.com/photo-1566550973116-ef738596da5e?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
