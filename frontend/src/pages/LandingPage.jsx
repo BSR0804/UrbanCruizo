@@ -115,9 +115,6 @@ const LandingPage = () => {
                                 Explore Fleet
                                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <button className="btn-outline text-lg px-8 py-4">
-                                Our Story
-                            </button>
                         </motion.div>
                     </motion.div>
                 </div>
