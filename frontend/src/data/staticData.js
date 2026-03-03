@@ -1239,7 +1239,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg1',
         title: 'Kolkata Heritage & Culture Experience',
         duration: '2 Nights / 3 Days',
-        description: 'Immerse yourself in the colonial charm and spiritual depth of Kolkata. A 3-day journey covering Victoria Memorial, the Ghats, and iconic heritage sites. Witness the timeless ritual of the Ganga Aarti as the evening sun dips below the horizon. Stroll through our curated selection of North Kolkata\'s narrow lanes where every wall has a story to tell. Indulge in an exclusive multi-course Bengali zamindari lunch that will transport you back to the golden age of the Bengal Renaissance.',
+        description: 'Step into a living tapestry of art, faith, and faded grandeur as Kolkata unfolds not just as a destination, but as an emotion. From the marble brilliance of Victoria Memorial to the soul-stirring chants along the Hooghly at dusk, every moment is carefully curated to awaken your senses. Wander through the storied lanes of North Kolkata, savor a regal zamindari feast, and let expert storytellers reveal the city’s hidden layers of history and culture. With seamless luxury, private transfers, and exclusive experiences woven throughout, this journey invites you to pause, look closer, and truly feel the timeless spirit of the City of Joy.',
         packagePrice: 12500,
         amenities: ['Private Heritage Guide', 'Premium AC SUV', 'Ganga Sunset Cruise', 'Traditional Bengali Cuisine', 'All Premium Entry Fees', 'Luxury Boutique Stay'],
         images: [
@@ -1247,8 +1247,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Kolkata Heritage Experience is a curated 2-night journey through the "City of Joy." Explore the architectural marvels of the British Raj, witness the timeless rituals at Dakshineswar, and stroll through the nostalgic lanes of North Kolkata where history whispers from every corner. From the tram-lined streets of Esplanade to the aromatic spice markets, this city is a sensory masterpiece waiting to be discovered. Experience the deep-rooted soul of a city that was once the pride of the East.',
-        description2: 'Your package includes a private chauffeur-driven SUV, stays at a premium boutique hotel, and a dedicated guide to share the city\'s deep history. We ensure priority entry to all monuments and a special candlelight dinner by the Hooghly river as the city lights shimmer on the water. Indulge in authentic local flavors and witness the artistic heartbeat of the Kumartuli potters. This isn\'t just a tour; it\'s a portal into a world where tradition and modernity dance in perfect harmony.',
+        description1: '',
+        description2: '',
         city: 'Kolkata'
     },
     {
