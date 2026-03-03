@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
-import { MOCK_CARAVANS } from '../data/staticData';
 import PaymentModal from '../components/PaymentModal';
+import BookingFormModal from '../components/BookingFormModal';
 import toast from 'react-hot-toast';
 
 const CaravanDetailsPage = () => {
@@ -31,7 +31,9 @@ const CaravanDetailsPage = () => {
     const [error, setError] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [bookingData, setBookingData] = useState(null);
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -81,6 +83,12 @@ const CaravanDetailsPage = () => {
 
         const amount = (caravan.packagePrice || caravan.pricePerDay) + 499; // 499 service fee
         setTotalAmount(amount);
+        setIsFormModalOpen(true);
+    };
+
+    const handleFormSubmit = async (formData) => {
+        setBookingData(formData);
+        setIsFormModalOpen(false);
         setIsPaymentModalOpen(true);
     };
 
@@ -326,6 +334,14 @@ const CaravanDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <BookingFormModal
+                isOpen={isFormModalOpen}
+                onClose={() => setIsFormModalOpen(false)}
+                onSubmit={handleFormSubmit}
+                packageName={caravan.title}
+                price={totalAmount}
+            />
 
             <PaymentModal
                 isOpen={isPaymentModalOpen}

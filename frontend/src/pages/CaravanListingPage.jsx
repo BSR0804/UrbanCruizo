@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 import axios from '../utils/api';
 import { MOCK_CARAVANS } from '../data/staticData';
 
@@ -92,6 +94,36 @@ const CaravanListingPage = () => {
                     ))}
                 </div>
             )}
+
+            {/* Coming Soon Banner */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-20 p-12 rounded-[3rem] bg-surface border border-primary/10 relative overflow-hidden text-center group"
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-50" />
+                <div className="relative z-10 flex flex-col items-center gap-6">
+                    <div className="p-4 rounded-2xl bg-primary/10 text-primary">
+                        <Sparkles className="w-8 h-8 animate-pulse" />
+                    </div>
+                    <div className="space-y-2">
+                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">More Exclusive Packages Coming Soon</h2>
+                        <p className="text-textSecondary max-w-2xl mx-auto">
+                            Our destination experts are currently scouting the most breathtaking locations and curating ultra-luxury experiences in <span className="text-primary italic">Goa, Kerala, and the Himalayas</span>. Stay tuned for the next chapter of your journey.
+                        </p>
+                    </div>
+                    <div className="flex gap-4 items-center">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <div className="w-2 h-2 rounded-full bg-primary/50" />
+                        <div className="w-2 h-2 rounded-full bg-primary/20" />
+                    </div>
+                </div>
+
+                {/* Decorative backgrounds */}
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+            </motion.div>
         </div>
     );
 };
