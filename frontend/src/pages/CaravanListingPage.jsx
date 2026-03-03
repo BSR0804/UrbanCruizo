@@ -13,7 +13,18 @@ const CaravanListingPage = () => {
             try {
                 // The backend controller for getCaravans accepts a keyword query parameter
                 const { data } = await axios.get(`/caravans?keyword=${keyword}`);
-                setCaravans(data.caravans);
+                if (data.caravans && data.caravans.length > 0) {
+                    setCaravans(data.caravans);
+                } else {
+                    // If backend is empty or doesn't match new concept, use refined mock data
+                    const filteredPackages = keyword
+                        ? MOCK_CARAVANS.filter(pkg =>
+                            pkg.title.toLowerCase().includes(keyword.toLowerCase()) ||
+                            pkg.description.toLowerCase().includes(keyword.toLowerCase())
+                        )
+                        : MOCK_CARAVANS;
+                    setCaravans(filteredPackages);
+                }
                 setLoading(false);
             } catch (error) {
                 console.error(error);
