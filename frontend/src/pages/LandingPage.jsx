@@ -33,12 +33,8 @@ const LandingPage = () => {
         { src: '/images/interiors/interior4.webp', alt: 'Cozy Caravan Bedroom' }
     ];
 
-    const carFleetImages = [
-        { src: '/images/thar-cover.jpg', alt: 'Mahindra Thar' },
-        { src: '/images/mercedes-cover.webp', alt: 'Mercedes Luxury' },
-        { src: '/images/Toyota-Fortuner-cover.webp', alt: 'Toyota Fortuner' },
-        { src: '/images/BMW-cover.webp', alt: 'BMW Executive' }
-    ];
+
+
 
 
 
@@ -241,44 +237,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Car Carousel Section */}
-            <section className="py-24 bg-surface/30">
-                <div className="container mx-auto px-6">
-                    <div className="mb-12">
-                        <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4">
-                            Premium <span className="text-primary italic">Executive</span> Fleet
-                        </h2>
-                        <p className="text-textSecondary max-w-2xl italic">
-                            Experience the pinnacle of automotive engineering with our curated selection of high-performance vehicles.
-                        </p>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {carFleetImages.map((car, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                                viewport={{ once: true }}
-                                className="group relative aspect-[4/3] rounded-3xl overflow-hidden border border-gray-800 hover:border-primary/50 transition-all duration-500 shadow-2xl"
-                            >
-                                <img
-                                    src={car.src}
-                                    alt={car.alt}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
-                                    <div>
-                                        <h4 className="text-white font-bold text-xl mb-1">{car.alt}</h4>
-                                        <p className="text-primary text-sm font-bold uppercase tracking-widest">Available Now</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
 
 
