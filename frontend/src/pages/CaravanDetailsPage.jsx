@@ -303,7 +303,7 @@ const CaravanDetailsPage = () => {
                             <div className="relative z-10">
                                 <p className="text-textSecondary text-sm mb-1 uppercase tracking-widest">Total Package Price</p>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-bold text-white">₹{caravan.packagePrice || caravan.pricePerDay}</span>
+                                    <span className="text-5xl font-bold text-white">₹{(caravan.packagePrice || caravan.pricePerDay)?.toLocaleString('en-IN')}</span>
                                     <span className="text-textSecondary text-xl italic">({caravan.duration || 'Full Experience'})</span>
                                 </div>
                             </div>
@@ -347,7 +347,7 @@ const CaravanDetailsPage = () => {
                                 <div className="pt-4">
                                     <div className="flex justify-between items-center mb-6 px-2">
                                         <span className="text-textSecondary">Service Fee</span>
-                                        <span className="text-white font-bold">₹499 (Included)</span>
+                                        <span className="text-white font-bold">₹{(499)?.toLocaleString('en-IN')} (Included)</span>
                                     </div>
                                     <button className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-3 group">
                                         Confirm Your Experience

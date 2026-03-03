@@ -116,7 +116,7 @@ const DealerVehiclesPage = () => {
                                 </div>
                                 <div className="absolute bottom-4 right-4">
                                     <div className="bg-primary px-4 py-2 rounded-xl text-background font-bold shadow-xl">
-                                        ₹{vehicle.pricePerDay}<span className="text-xs opacity-70"> /day</span>
+                                        ₹{vehicle.pricePerDay?.toLocaleString('en-IN')}<span className="text-xs opacity-70"> /day</span>
                                     </div>
                                 </div>
                             </div>

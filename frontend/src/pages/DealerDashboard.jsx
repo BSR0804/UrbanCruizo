@@ -489,7 +489,7 @@ const DealerDashboard = () => {
                                                         <MapPin className="w-4 h-4 text-primary/60" /> {vehicle.location}, {vehicle.city}
                                                     </p>
                                                     <div className="flex justify-between items-center bg-surface/50 p-4 rounded-xl border border-gray-800/50">
-                                                        <span className="text-primary font-bold">₹{vehicle.pricePerDay}/day</span>
+                                                        <span className="text-primary font-bold">₹{vehicle.pricePerDay?.toLocaleString('en-IN')}/day</span>
                                                         <div className="flex gap-2">
                                                             <button
                                                                 onClick={() => {
@@ -559,7 +559,7 @@ const DealerDashboard = () => {
                                                     <div className="space-y-1 text-sm text-textSecondary mb-4">
                                                         <p className="flex items-center gap-2"><Users className="w-3 h-3 text-primary" /> {booking.user?.name || booking.bookingName}</p>
                                                         <p className="flex items-center gap-2"><CalendarCheck className="w-3 h-3 text-primary" /> {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}</p>
-                                                        <p className="flex items-center gap-2 font-bold text-primary">₹{booking.finalAmount || booking.totalPrice}</p>
+                                                        <p className="flex items-center gap-2 font-bold text-primary">₹{(booking.finalAmount || booking.totalPrice)?.toLocaleString('en-IN')}</p>
                                                     </div>
 
                                                     {booking.status === 'pending_approval' && (

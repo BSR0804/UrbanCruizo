@@ -402,12 +402,12 @@ const VehicleDetailsPage = () => {
                                 <div>
                                     <p className="text-textSecondary text-sm mb-1 uppercase tracking-widest">Pricing starts from</p>
                                     <div className="flex items-baseline gap-2">
-                                        <span className="text-4xl font-bold text-white">₹{vehicle.pricePerDay}</span>
+                                        <span className="text-4xl font-bold text-white">₹{vehicle.pricePerDay?.toLocaleString('en-IN')}</span>
                                         <span className="text-textSecondary">/day</span>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-primary font-bold">₹{vehicle.pricePerHour}/hr</p>
+                                    <p className="text-primary font-bold">₹{vehicle.pricePerHour?.toLocaleString('en-IN')}/hr</p>
                                     <p className="text-[10px] text-textSecondary uppercase">Hourly Rate</p>
                                 </div>
                             </div>
@@ -517,19 +517,19 @@ const VehicleDetailsPage = () => {
                                 >
                                     <div className="flex justify-between text-sm">
                                         <span className="text-textSecondary">Base Fare</span>
-                                        <span className="text-white font-bold">₹{priceBreakdown.baseFare}</span>
+                                        <span className="text-white font-bold">₹{priceBreakdown.baseFare?.toLocaleString('en-IN')}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span className="text-textSecondary">GST (18%)</span>
-                                        <span className="text-white font-bold">₹{priceBreakdown.gst.toFixed(2)}</span>
+                                        <span className="text-white font-bold">₹{priceBreakdown.gst?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span className="text-textSecondary">Security Deposit</span>
-                                        <span className="text-white font-bold">₹{priceBreakdown.deposit}</span>
+                                        <span className="text-white font-bold">₹{priceBreakdown.deposit?.toLocaleString('en-IN')}</span>
                                     </div>
                                     <div className="pt-3 border-t border-gray-800 flex justify-between items-center">
                                         <span className="text-white font-bold">Total Amount</span>
-                                        <span className="text-2xl font-bold text-primary">₹{priceBreakdown.total.toFixed(0)}</span>
+                                        <span className="text-2xl font-bold text-primary">₹{priceBreakdown.total?.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
                                     </div>
                                 </motion.div>
                             ) : startDate && endDate ? (

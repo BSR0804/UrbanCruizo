@@ -144,7 +144,7 @@ const AdminPage = () => {
                                         </div>
                                         <div className="text-right">
                                             <div className="text-sm font-bold text-white mb-2">
-                                                ₹{booking.finalAmount || booking.totalPrice}
+                                                ₹{(booking.finalAmount || booking.totalPrice)?.toLocaleString('en-IN')}
                                             </div>
                                             {booking.status === 'pending_approval' && (
                                                 <div className="flex gap-2">
@@ -201,7 +201,7 @@ const AdminPage = () => {
                                         {vehicle.title}
                                     </div>
                                     <div className="text-sm text-primary">
-                                        ${vehicle.pricePerDay}/day
+                                        ₹{vehicle.pricePerDay?.toLocaleString('en-IN')}/day
                                     </div>
                                 </div>
                                 <div className="space-x-2">
@@ -301,7 +301,7 @@ const AdminPage = () => {
                                 <div className="space-y-2 text-textSecondary text-sm bg-background p-4 rounded-xl border border-gray-800">
                                     <p><span className="text-white">Vehicle:</span> {selectedDocBooking.vehicle?.title}</p>
                                     <p><span className="text-white">Dates:</span> {new Date(selectedDocBooking.startDate).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })} - {new Date(selectedDocBooking.endDate).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
-                                    <p><span className="text-white">Amount:</span> ₹{selectedDocBooking.finalAmount}</p>
+                                    <p><span className="text-white">Amount:</span> ₹{selectedDocBooking.finalAmount?.toLocaleString('en-IN')}</p>
                                 </div>
                             </div>
                         </div>
