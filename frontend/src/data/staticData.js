@@ -788,7 +788,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1300,
         securityDeposit: 2000,
         city: 'Kolkata',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/datsun-redi-go.avif',
+            '/images/datsun-redi-go-interior-1.avif',
+            '/images/datsun-redi-go-interior-2.jpg'
+        ],
         location: 'Ballygunge, Kolkata',
         kmsLimitPerDay: 240,
         description1: 'The Datsun redi-GO 1.0 is a bold and stylish urban cross-hatch designed for the narrow streets of the city. Its tall-boy design offers surprisingly good headroom and a commanding view of the road despite its compact size.',
@@ -813,7 +817,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1500,
         securityDeposit: 2300,
         city: 'Kolkata',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/chevrolet-beat.jpg',
+            '/images/chevrolet-beat-interior-1.jpg',
+            '/images/chevrolet-beat-interior-2.jpg'
+        ],
         location: 'Alipore, Kolkata',
         kmsLimitPerDay: 240,
         description1: 'The Chevrolet Beat is a compact icon known for its edgy design and punchy city performance. Its nimble handling and fuel-efficient engine make it an ideal choice for navigating tight parking and busy corridors.',
