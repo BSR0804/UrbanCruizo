@@ -1245,7 +1245,7 @@ export const MOCK_CARAVANS = [
         images: [
             '/images/tour_package_kolkata.png',
             '/images/kolkata_interior_1.png',
-            'https://images.unsplash.com/photo-1558431382-bb7b68c4b55d?q=80&w=1200&auto=format&fit=crop'
+            '/images/kolkata_interior_2.png'
         ],
         description1: '',
         description2: '',
