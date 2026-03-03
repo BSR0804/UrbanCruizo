@@ -15,7 +15,13 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
     const [success, setSuccess] = useState(false);
 
     const handleChange = (e) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        if (name === 'guests') {
+            const val = parseInt(value);
+            if (val > 6) return; // Cap at 6
+            if (val < 1 && value !== '') return; // Allow empty for typing but min 1
+        }
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -138,7 +144,7 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                             type="number"
                                             name="guests"
                                             min="1"
-                                            max="10"
+                                            max="6"
                                             required
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                             value={formData.guests}
