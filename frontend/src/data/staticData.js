@@ -759,7 +759,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 1400,
         securityDeposit: 2200,
         city: 'Kolkata',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/renault-kwid.avif',
+            '/images/renault-kwid-interior-1.webp',
+            '/images/renault-kwid-interior-2.jpg'
+        ],
         location: 'Park Street, Kolkata',
         kmsLimitPerDay: 240,
         description1: 'The Renault Kwid is the ultimate compact adventurer, featuring an SUV-inspired design and class-leading ground clearance. Its efficient engine and nimble dimensions make it the perfect choice for navigating busy city traffic.',
