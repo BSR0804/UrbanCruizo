@@ -215,9 +215,11 @@ const CaravanDetailsPage = () => {
                                 <span>Available Now</span>
                             </div>
                             <h1 className="text-5xl font-serif font-bold text-white mb-4">{caravan.title}</h1>
-                            <p className="text-textSecondary leading-relaxed text-lg mb-8">
-                                {caravan.description}
-                            </p>
+                            <div className="bg-surface/30 p-8 rounded-3xl border border-primary/10 backdrop-blur-sm mb-8">
+                                <p className="text-textSecondary leading-relaxed text-lg italic">
+                                    "{caravan.description}"
+                                </p>
+                            </div>
 
                             {/* Detailed Attraction Sections */}
                             <div className="space-y-8">
