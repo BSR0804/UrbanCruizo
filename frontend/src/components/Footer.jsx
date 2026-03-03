@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <footer className="bg-surface pt-20 pb-10 border-t border-gray-800">
             <div className="container mx-auto px-6">
-                <div className="grid md:grid-cols-4 gap-12 mb-16">
+                <div className="grid md:grid-cols-3 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-1">
                         <Link to="/" className="text-3xl font-serif font-bold text-primary mb-6 block">
                             UrbanCruizo
@@ -13,17 +13,6 @@ const Footer = () => {
                         <p className="text-textSecondary leading-relaxed">
                             Your premium gateway to local dealers for Cars, Bikes, and Luxury Caravans across India.
                         </p>
-                    </div>
-
-                    <div>
-                        <h4 className="text-white font-bold mb-6 italic">Quick Links</h4>
-                        <ul className="space-y-4 text-textSecondary">
-                            <li><Link to="/" className="hover:text-primary transition">Home</Link></li>
-                            <li><Link to="/home" className="hover:text-primary transition">Destinations</Link></li>
-                            <li><Link to="/vehicles" className="hover:text-primary transition">Our Fleet</Link></li>
-                            <li><Link to="/login" className="hover:text-primary transition">Member Login</Link></li>
-                            <li><Link to="/register" className="hover:text-primary transition">Join Club</Link></li>
-                        </ul>
                     </div>
 
                     <div>
