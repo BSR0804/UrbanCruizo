@@ -22,7 +22,7 @@ export const CITIES = [
     },
     {
         name: 'Hyderabad',
-        image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/hyderabad_new.png',
         description: 'City of Biryani and pearls',
         coordinates: { lat: 17.3850, lng: 78.4867 }
     },
