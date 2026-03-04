@@ -8,6 +8,16 @@ const caravanSchema = mongoose.Schema({
     images: [{ type: String }],
     location: { type: String, required: true },
     availability: { type: Boolean, default: true, required: true },
+    packagePrice: { type: Number },
+    duration: { type: String },
+    city: { type: String },
+    description1: { type: String },
+    description2: { type: String },
+    organizer: {
+        name: { type: String },
+        phone: { type: String },
+        address: { type: String }
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Caravan', caravanSchema);

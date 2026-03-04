@@ -155,6 +155,38 @@ const CaravanDetailsPage = () => {
         return ShieldCheck;
     };
 
+    const getOrganizerInfo = () => {
+        if (caravan.organizer) return caravan.organizer;
+
+        const city = caravan.city || caravan.location || '';
+        const lower = city.toLowerCase();
+
+        if (lower.includes('jaipur') || lower.includes('rajasthan')) {
+            return {
+                name: 'UrbanCruizo Luxury Travels',
+                phone: '+91 91234 56789',
+                address: 'Palace Road, Near City Palace, Jaipur, Rajasthan 302002'
+            };
+        }
+
+        if (lower.includes('mumbai') || lower.includes('maharashtra')) {
+            return {
+                name: 'UrbanCruizo Luxury Travels',
+                phone: '+91 99887 76655',
+                address: 'Hiranandani Gardens, Powai, Mumbai, MH 400076'
+            };
+        }
+
+        // Default to Kolkata for legacy reasons or unidentified cities
+        return {
+            name: 'UrbanCruizo Luxury Travels',
+            phone: '+91 98765 43210',
+            address: '12/A, Park Street, Kolkata, WB 700016'
+        };
+    };
+
+    const organizer = getOrganizerInfo();
+
     return (
         <div className="min-h-screen bg-background text-textPrimary py-12">
             <div className="container mx-auto px-6">
@@ -236,7 +268,7 @@ const CaravanDetailsPage = () => {
                             </h3>
                             <div className="space-y-6">
                                 <div className="space-y-1">
-                                    <h4 className="text-white font-serif text-2xl font-bold">{caravan.organizer?.name || 'UrbanCruizo Luxury Travels'}</h4>
+                                    <h4 className="text-white font-serif text-2xl font-bold">{organizer.name}</h4>
                                     <p className="text-textSecondary text-xs uppercase tracking-widest font-medium">Official Premium Experience Partner</p>
                                 </div>
 
@@ -247,7 +279,7 @@ const CaravanDetailsPage = () => {
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-[10px] text-textSecondary uppercase tracking-widest">Contact Number</span>
-                                            <span className="text-white font-medium">{caravan.organizer?.phone || '+91 98765 43210'}</span>
+                                            <span className="text-white font-medium">{organizer.phone}</span>
                                         </div>
                                     </div>
 
@@ -257,7 +289,7 @@ const CaravanDetailsPage = () => {
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-[10px] text-textSecondary uppercase tracking-widest">Office Address</span>
-                                            <span className="text-white font-medium">{caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016'}</span>
+                                            <span className="text-white font-medium">{organizer.address}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -394,7 +426,7 @@ const CaravanDetailsPage = () => {
                                     scrolling="no"
                                     marginHeight="0"
                                     marginWidth="0"
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(organizer.address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                                     className="w-full h-full"
                                     style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
                                 ></iframe>
@@ -402,7 +434,7 @@ const CaravanDetailsPage = () => {
                             <div className="mt-6 space-y-3">
                                 <div className="flex items-start gap-3 text-textSecondary text-sm">
                                     <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                                    <span className="leading-relaxed">{caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016'}</span>
+                                    <span className="leading-relaxed">{organizer.address}</span>
                                 </div>
                                 <button className="w-full mt-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors">
                                     <Navigation className="w-3 h-3" />

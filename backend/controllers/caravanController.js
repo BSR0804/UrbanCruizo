@@ -37,7 +37,7 @@ const getCaravanById = asyncHandler(async (req, res) => {
 
 // @desc    Create a caravan
 const createCaravan = asyncHandler(async (req, res) => {
-    const { title, description, pricePerDay, amenities, images, location } = req.body;
+    const { title, description, pricePerDay, amenities, images, location, packagePrice, duration, city, description1, description2, organizer } = req.body;
 
     const caravan = new Caravan({
         title,
@@ -46,6 +46,12 @@ const createCaravan = asyncHandler(async (req, res) => {
         amenities,
         images,
         location,
+        packagePrice,
+        duration,
+        city,
+        description1,
+        description2,
+        organizer
     });
 
     const createdCaravan = await caravan.save();
@@ -54,7 +60,7 @@ const createCaravan = asyncHandler(async (req, res) => {
 
 // @desc    Update a caravan
 const updateCaravan = asyncHandler(async (req, res) => {
-    const { title, description, pricePerDay, amenities, images, location, availability } = req.body;
+    const { title, description, pricePerDay, amenities, images, location, availability, packagePrice, duration, city, description1, description2, organizer } = req.body;
 
     const caravan = await Caravan.findById(req.params.id);
 
@@ -66,6 +72,12 @@ const updateCaravan = asyncHandler(async (req, res) => {
         caravan.images = images;
         caravan.location = location;
         caravan.availability = availability;
+        caravan.packagePrice = packagePrice;
+        caravan.duration = duration;
+        caravan.city = city;
+        caravan.description1 = description1;
+        caravan.description2 = description2;
+        caravan.organizer = organizer;
 
         const updatedCaravan = await caravan.save();
         res.json(updatedCaravan);
