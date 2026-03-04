@@ -10,7 +10,7 @@ export const CITIES = [
     },
     {
         name: 'Mumbai',
-        image: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/mumbai_glamour.png',
         description: 'City of dreams and Bollywood',
         coordinates: { lat: 19.0760, lng: 72.8777 }
     },
@@ -1313,9 +1313,10 @@ export const MOCK_CARAVANS = [
         packagePrice: 22000,
         amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience', 'Colaba Heritage Walk'],
         images: [
-            'https://images.unsplash.com/photo-1566550973116-ef738596da5e?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200&auto=format&fit=crop'
+            '/images/mumbai_glamour.png',
+            '/images/mumbai_interior_1.png',
+            '/images/mumbai_interior_2.png',
+            '/images/mumbai_interior_3.png'
         ],
         description1: '',
         description2: '',
