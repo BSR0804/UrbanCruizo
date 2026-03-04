@@ -49,6 +49,34 @@ export const CITIES = [
         image: '/images/rajasthan_royal.png',
         description: 'The Pink City',
         coordinates: { lat: 26.9124, lng: 75.7873 }
+    },
+    {
+        name: 'Goa',
+        image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop',
+        description: 'Pearl of the Orient',
+        coordinates: { lat: 15.2993, lng: 74.1240 },
+        comingSoon: true
+    },
+    {
+        name: 'Kochi',
+        image: '/images/kochi_new.png',
+        description: 'Queen of the Arabian Sea',
+        coordinates: { lat: 9.9312, lng: 76.2673 },
+        comingSoon: true
+    },
+    {
+        name: 'Ahmedabad',
+        image: '/images/ahmedabad.jpg',
+        description: 'Manchester of the East',
+        coordinates: { lat: 23.0225, lng: 72.5714 },
+        comingSoon: true
+    },
+    {
+        name: 'Chandigarh',
+        image: '/images/chandigarh.jpg',
+        description: 'The City Beautiful',
+        coordinates: { lat: 30.7333, lng: 76.7794 },
+        comingSoon: true
     }
 ];
 
