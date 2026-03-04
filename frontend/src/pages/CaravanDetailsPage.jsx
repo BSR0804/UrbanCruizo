@@ -14,7 +14,9 @@ import {
     Wind,
     Droplets,
     Building2,
-    Phone
+    Phone,
+    Navigation,
+    AlertCircle
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
@@ -373,6 +375,39 @@ const CaravanDetailsPage = () => {
                             <div className="flex flex-col items-center gap-1">
                                 <Droplets className="w-6 h-6 text-primary" />
                                 <span className="text-[10px] text-textSecondary uppercase">Verified</span>
+                            </div>
+                        </div>
+                        {/* Map Section */}
+                        <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl overflow-hidden mt-8">
+                            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                                <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-500">
+                                    <MapPin className="w-5 h-5" />
+                                </div>
+                                Organizer Location
+                            </h3>
+                            <div className="w-full h-64 rounded-2xl overflow-hidden border border-gray-800 shadow-lg relative group">
+                                <iframe
+                                    title="Organizer Location"
+                                    width="100%"
+                                    height="100%"
+                                    frameBorder="0"
+                                    scrolling="no"
+                                    marginHeight="0"
+                                    marginWidth="0"
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    className="w-full h-full"
+                                    style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
+                                ></iframe>
+                            </div>
+                            <div className="mt-6 space-y-3">
+                                <div className="flex items-start gap-3 text-textSecondary text-sm">
+                                    <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                                    <span className="leading-relaxed">{caravan.organizer?.address || '12/A, Park Street, Kolkata, WB 700016'}</span>
+                                </div>
+                                <button className="w-full mt-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors">
+                                    <Navigation className="w-3 h-3" />
+                                    Get Directions on Google Maps
+                                </button>
                             </div>
                         </div>
                     </div>
