@@ -66,7 +66,7 @@ export const CITIES = [
     },
     {
         name: 'Ahmedabad',
-        image: '/images/ahmedabad.jpg',
+        image: '/images/ahmedabad_new.png',
         description: 'Manchester of the East',
         coordinates: { lat: 23.0225, lng: 72.5714 },
         comingSoon: true

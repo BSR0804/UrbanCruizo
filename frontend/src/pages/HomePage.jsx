@@ -20,7 +20,7 @@ const HomePage = () => {
         { name: 'Jaipur', image: '/images/rajasthan_royal.png' },
         { name: 'Goa', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop', comingSoon: true },
         { name: 'Kochi', image: '/images/kochi_new.png', comingSoon: true },
-        { name: 'Ahmedabad', image: '/images/ahmedabad.jpg', comingSoon: true },
+        { name: 'Ahmedabad', image: '/images/ahmedabad_new.png', comingSoon: true },
         { name: 'Chandigarh', image: '/images/chandigarh.jpg', comingSoon: true },
     ];
 
