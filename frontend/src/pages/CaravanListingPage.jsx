@@ -100,23 +100,23 @@ const CaravanListingPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="mt-20 p-12 rounded-[3rem] bg-surface border border-primary/10 relative overflow-hidden text-center group"
+                className="mt-16 p-8 md:p-10 rounded-[2.5rem] bg-surface border border-primary/10 relative overflow-hidden text-center group"
             >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-50" />
-                <div className="relative z-10 flex flex-col items-center gap-6">
-                    <div className="p-4 rounded-2xl bg-primary/10 text-primary">
-                        <Sparkles className="w-8 h-8 animate-pulse" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                        <Sparkles className="w-6 h-6 animate-pulse" />
                     </div>
                     <div className="space-y-2">
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white">More Exclusive Packages Coming Soon</h2>
-                        <p className="text-textSecondary max-w-2xl mx-auto">
+                        <h2 className="text-2xl md:text-3xl font-serif font-bold text-white">More Exclusive Packages Coming Soon</h2>
+                        <p className="text-textSecondary text-sm max-w-xl mx-auto leading-relaxed">
                             Our destination experts are currently scouting the most breathtaking locations and curating ultra-luxury experiences in <span className="text-primary italic">Goa, Kerala, and the Himalayas</span>. Stay tuned for the next chapter of your journey.
                         </p>
                     </div>
-                    <div className="flex gap-4 items-center">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
-                        <div className="w-2 h-2 rounded-full bg-primary/50" />
-                        <div className="w-2 h-2 rounded-full bg-primary/20" />
+                    <div className="flex gap-3 items-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary/50" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
                     </div>
                 </div>
 
