@@ -1309,7 +1309,7 @@ export const MOCK_CARAVANS = [
         _id: 'pkg3',
         title: 'Mumbai Glamour & Coastal Escape',
         duration: '2 Nights / 3 Days',
-        description: 'Experience the high-life of India\'s Maximum City. A 3-day luxury tour covering South Mumbai glamour and a private Arabian Sea retreat. Navigate the sea-view boulevards in a premium Mercedes sedan as the city lights glitter in your rearview. Enjoy a private sunset yacht cruise at the Gateway of India with a curated champagne high-tea. Gain exclusive access to some of Colaba\'s most historic Art Deco structures and witness the architectural fusion of old and new Mumbai.',
+        description: 'Step into the dazzling rhythm of Mumbai, where timeless heritage and modern glamour blend effortlessly against the backdrop of the Arabian Sea. Cruise past the iconic skyline in a luxury sedan, watch the sunset paint the waters near the Gateway of India from your private yacht, and wander through Colaba’s storied lanes where Art Deco elegance meets colonial grandeur. From candlelit dinners overlooking the sea to the electric buzz of Marine Drive at night, every moment is curated to reveal the charm, ambition, and irresistible energy of India’s Maximum City.',
         packagePrice: 22000,
         amenities: ['Mercedes-Benz City Drive', 'Private Yacht Sunset Cruise', 'Bandra-Worli Luxury Stays', 'VIP Club Access', 'Gourmet Dining Experience', 'Colaba Heritage Walk'],
         images: [
@@ -1317,8 +1317,8 @@ export const MOCK_CARAVANS = [
             'https://images.unsplash.com/photo-1529253355930-dd3426cfa92a?q=80&w=1200&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1440778303588-435521a205bc?q=80&w=1200&auto=format&fit=crop'
         ],
-        description1: 'The Mumbai Glamour package offers an elite 2-night perspective of the city that never sleeps. Experience the timeless elegance of Marine Drive and the modern architectural marvel of the Sea Link from the comfort of a luxury sedan as the skyline glitters like a million diamonds. Mumbai is the pulsating heart of modern India—a city of dreams where every street corner has a story of ambition and survival. Let us take you beyond the postcards and into the soul of this high-octane metropolis.',
-        description2: 'Package highlights include a private yacht charter at Gateway of India, stays at Mumbai\'s iconic sea-view hotels, and a curated fine-dining itinerary at some of the world\'s most exclusive restaurants. Walk the heritage lanes of Colaba where Art Deco meets Victorian Gothic, and feel the electric energy of the Maximum City. We provide VIP access to the city\'s most sought-after experiences, ensuring your journey is as fast-paced or relaxed as you desire. Mumbai isn\'t just a destination; it\'s a feeling of infinite possibility.',
+        description1: '',
+        description2: '',
         city: 'Mumbai'
     }
 ];
