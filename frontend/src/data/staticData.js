@@ -73,7 +73,7 @@ export const CITIES = [
     },
     {
         name: 'Chandigarh',
-        image: '/images/chandigarh.jpg',
+        image: '/images/chandigarh_new.png',
         description: 'The City Beautiful',
         coordinates: { lat: 30.7333, lng: 76.7794 },
         comingSoon: true
