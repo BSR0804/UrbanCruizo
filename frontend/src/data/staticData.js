@@ -1319,7 +1319,12 @@ export const MOCK_CARAVANS = [
         ],
         description1: '',
         description2: '',
-        city: 'Mumbai'
+        city: 'Mumbai',
+        organizer: {
+            name: 'UrbanCruizo Luxury Travels',
+            phone: '+91 99887 76655',
+            address: 'Hiranandani Gardens, Powai, Mumbai, MH 400076'
+        }
     }
 ];
 
