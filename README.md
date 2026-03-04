@@ -1,11 +1,11 @@
-# UrbanCruizo - Premium Vehicle & Luxury Caravan Marketplace 🚗💎
+# UrbanCruizo - Premium Vehicle & Luxury Tour Marketplace 🚗💎✨
 
-UrbanCruizo (formerly CarawINN) is a high-performance, full-stack ecosystem designed for the adventurous elite. Built with a focus on security, role-based orchestration, and premium UX, it provides a seamless bridge between local dealers and luxury travelers across India.
+UrbanCruizo is a high-performance, full-stack ecosystem designed for the adventurous elite. Built with a focus on security, role-based orchestration, and premium UX, it provides a seamless bridge between local dealers and luxury travelers across India.
 
 ## 🚀 Live Ecosystem
 - **Main Platform:** [https://caraw-inn.vercel.app/](https://caraw-inn.vercel.app/)
 - **Partner Portal:** [https://caraw-inn.vercel.app/partner](https://caraw-inn.vercel.app/partner)
-- **GitHub Repository:** [BSR0804/CarawINN](https://github.com/BSR0804/CarawINN)
+- **GitHub Repository:** [BSR0804/UrbanCruizo](https://github.com/BSR0804/UrbanCruizo)
 
 ---
 
@@ -28,11 +28,23 @@ UrbanCruizo (formerly CarawINN) is a high-performance, full-stack ecosystem desi
 
 ## ✅ Advanced Features
 
+### 🏺 Premium Tour Packages (New!)
+Beyond simple rentals, we've introduced curated luxury experiences:
+- **Kolkata Heritage & Culture:** A deep dive into the City of Joy with authentic imagery and private guided experiences.
+- **Rajasthan Royal Legacy:** An evocative journey through Jaipur, featuring palace stays and desert safaris, presented through high-impact, story-driven narratives.
+- **Dynamic Organizers:** Each package features localized organizer details, including specific office addresses and direct contact lines for seamless logistics.
+
 ### 🛡️ Authorization Hard-Gate (No Bypass Allowed)
 Implemented a mandatory **interstitial gateway**. Unauthenticated users attempting to access premium features like **Destinations** or **Luxury Caravans** are strictly redirected to a "Choose Your Journey" choice screen. Access is only granted once the user identifies as either a **Traveler** or a **Partner**.
 
 ### 🚪 Global Logout Enforcement
-A centralized session management system ensures that every "Logout" action across all sub-platforms (Main App, Dealer Dashboard, Partner Portal) triggers a mandatory and immediate hardware-level redirect back to the primary landing page at `https://caraw-inn.vercel.app/`.
+A centralized session management system ensures that every "Logout" action across all sub-platforms (Main App, Dealer Dashboard, Partner Portal) triggers a mandatory and immediate hardware-level redirect back to the primary landing page.
+
+### 🗺️ Luxury Map Integration
+Every detail counts. We've integrated dark-themed, premium-styled Google Maps for:
+- **Vehicle Availability:** Locating the nearest premium dealer.
+- **Tour Organizers:** Directing travelers to the localized headquarters of their chosen experience.
+- **Custom Aesthetic:** The maps are custom-filtered (grayscale/invert) to align with UrbanCruizo's premium visual identity.
 
 ### 🏢 Standalone Partner Portal
 A dedicated sub-project for fleet owners that includes:
@@ -53,8 +65,9 @@ UrbanCruizo/
 │   ├── models/             # Mongoose Schemas (User, Vehicle, Booking)
 │   └── server.js           # Production-ready entry point
 ├── frontend/               # Primary Consumer Marketplace
-│   ├── src/pages/          # DestinationGateway, HomePage, VehicleListing
-│   └── src/context/        # Global Auth & Authorization Gate
+│   ├── public/images/      # Managed assets with high-resolution tour imagery
+│   ├── src/pages/          # DestinationGateway, HomePage, VehicleListing, CaravanDetails
+│   └── src/data/           # Static data with dynamic organizer/pricing logic
 ├── partner/                # Standalone Dealer/Fleet Owner Platform
 │   ├── src/pages/          # Landing, Dashboard, ProfileSync
 │   └── src/utils/          # Portal-specific API configuration
