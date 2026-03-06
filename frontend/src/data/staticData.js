@@ -905,7 +905,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 5000,
         securityDeposit: 7500,
         city: 'Jaipur',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/mahindra_xuv700.jpg',
+            '/images/mahindra_xuv700_interior_1.avif',
+            '/images/mahindra_xuv700_interior_2.avif'
+        ],
         location: 'City Palace, Jaipur',
         kmsLimitPerDay: 280,
         description1: 'The Mahindra XUV700 is a masterclass in modern SUV engineering, delivering cutting-edge technology and robust performance. Its powerful mHawk diesel engine and agile driving dynamics make every highway drive a composed experience.',
