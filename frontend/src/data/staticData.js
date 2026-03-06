@@ -934,7 +934,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4500,
         securityDeposit: 6500,
         city: 'Jaipur',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/citroen_c5_aircross.jpg',
+            '/images/citroen_c5_aircross_interior_1.avif',
+            '/images/citroen_c5_aircross_interior_2.jpg'
+        ],
         location: 'Jaipur Mall, Jaipur',
         kmsLimitPerDay: 240,
         description1: 'The Citroen C5 Aircross redefines the "serene" driving experience with its Progressive Hydraulic Cushions and exceptionally silent cabin. It is designed for those who value personal space and unmatched ride comfort on every journey.',
@@ -959,7 +963,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 4000,
         securityDeposit: 5500,
         city: 'Jaipur',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/mg_hector_plus.avif',
+            '/images/mg_hector_interior_1.avif',
+            '/images/mg_hector_interior_2.avif'
+        ],
         location: 'Bani Park, Jaipur',
         kmsLimitPerDay: 240,
         extraKmCharge: 15,
@@ -984,7 +992,11 @@ export const MOCK_VEHICLES = [
         pricePerDay: 9000,
         securityDeposit: 15000,
         city: 'Jaipur',
-        images: ['https://images.unsplash.com/photo-1552820728-8ac41f1ce891?q=80&w=1600&auto=format&fit=crop'],
+        images: [
+            '/images/audi_a4_max.jpeg',
+            '/images/audi_a4_max_interior_1.webp',
+            '/images/audi_a4_max_interior_2.webp'
+        ],
         location: 'Opulent Mall, Jaipur',
         kmsLimitPerDay: 300,
         description1: 'The Audi A4 Max is a sophisticated blend of athletic performance and understated luxury. Its turbocharged engine and standard Quattro AWD system provide a confident and refined drive on both city boulevards and open highways.',
