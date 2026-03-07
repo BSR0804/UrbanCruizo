@@ -98,6 +98,20 @@ const DashboardPage = () => {
     const handleCancelBooking = async () => {
         if (!selectedBooking) return;
         setActionLoading(true);
+
+        if (selectedBooking.isMock) {
+            const mocks = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+            const updatedMocks = mocks.map(b =>
+                b._id === selectedBooking._id ? { ...b, status: 'cancelled' } : b
+            );
+            localStorage.setItem('mock_bookings', JSON.stringify(updatedMocks));
+            toast.success("Demo voyage cancelled successfully.");
+            setIsCancelOpen(false);
+            setActionLoading(false);
+            fetchBookings();
+            return;
+        }
+
         try {
             await axios.put(`bookings/${selectedBooking._id}/cancel`);
             toast.success("Voyage cancelled successfully.");
@@ -111,6 +125,18 @@ const DashboardPage = () => {
     };
 
     const handleUpdateDates = async (bookingId, startDate, endDate) => {
+        if (selectedBooking?.isMock) {
+            const mocks = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+            const updatedMocks = mocks.map(b =>
+                b._id === bookingId ? { ...b, startDate, endDate, status: 'pending_approval' } : b
+            );
+            localStorage.setItem('mock_bookings', JSON.stringify(updatedMocks));
+            toast.success("Demo itinerary updated successfully.");
+            setIsEditOpen(false);
+            fetchBookings();
+            return;
+        }
+
         try {
             await axios.put(`bookings/${bookingId}/dates`, { startDate, endDate });
             toast.success("Journey dates redefined successfully.");
