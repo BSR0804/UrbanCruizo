@@ -55,6 +55,7 @@ const DashboardPage = () => {
 
     const fetchBookings = async () => {
         try {
+            const now = new Date();
             let apiBookings = [];
             try {
                 const { data } = await axios.get('bookings/mybookings');
@@ -62,7 +63,15 @@ const DashboardPage = () => {
             } catch (e) {
                 console.warn("Backend bookings fetch failed, using local only.");
             }
-            const mockBookings = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+
+            // Get and auto-complete mock bookings
+            const mockBookings = JSON.parse(localStorage.getItem('mock_bookings') || '[]').map(b => {
+                if (new Date(b.endDate) < now && (b.status === 'confirmed' || b.status === 'approved')) {
+                    return { ...b, status: 'completed' };
+                }
+                return b;
+            });
+
             const merged = [...mockBookings, ...apiBookings].sort((a, b) =>
                 new Date(b.startDate) - new Date(a.startDate)
             );
@@ -201,7 +210,11 @@ const DashboardPage = () => {
                                                     <h3 className="text-2xl font-serif font-black text-white group-hover:text-primary transition-colors leading-tight">
                                                         {booking.vehicle?.title || 'Premium Experience'}
                                                     </h3>
-                                                    <p className="text-primary text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic">Confirmed Reserveration</p>
+                                                    <p className="text-primary text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic">
+                                                        {booking.status === 'completed' || new Date(booking.endDate) < new Date() ? 'Ride Completed' :
+                                                            booking.status === 'cancelled' ? 'Voyage Cancelled' :
+                                                                booking.status === 'confirmed' ? 'Confirmed Journey' : 'Proposed Reservation'}
+                                                    </p>
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-x-8 gap-y-2">
                                                     <div className="space-y-1">
