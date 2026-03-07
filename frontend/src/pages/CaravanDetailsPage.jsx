@@ -29,10 +29,14 @@ const CaravanDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
-    const [caravan, setCaravan] = useState(null);
+
+    // Initialize with mock data for instant load
+    const [caravan, setCaravan] = useState(() => MOCK_CARAVANS.find(c => c._id === id));
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [loading, setLoading] = useState(true);
+
+    // Only show full-page loading if we don't even have mock data
+    const [loading, setLoading] = useState(!caravan);
     const [error, setError] = useState('');
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -46,14 +50,12 @@ const CaravanDetailsPage = () => {
         const fetchCaravanDetails = async () => {
             try {
                 const { data } = await axios.get(`caravans/${id}`);
-                setCaravan(data);
+                if (data) {
+                    setCaravan(data);
+                }
                 setLoading(false);
             } catch (err) {
-                console.error('API fetch failed, trying mock data:', err);
-                const mockCaravan = MOCK_CARAVANS.find(c => c._id === id);
-                if (mockCaravan) {
-                    setCaravan(mockCaravan);
-                }
+                console.error('API fetch failed, falling back to existing data:', err);
                 setLoading(false);
             }
         };

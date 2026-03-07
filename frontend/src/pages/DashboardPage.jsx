@@ -1,12 +1,43 @@
 import { useState, useEffect } from 'react';
 import axios from '../utils/api';
-import { Clock, CheckCircle2, IndianRupee, History, AlertCircle, CreditCard, XCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Clock,
+    CheckCircle2,
+    IndianRupee,
+    History,
+    AlertCircle,
+    CreditCard,
+    XCircle,
+    ArrowRight
+} from 'lucide-react';
 import PaymentModal from '../components/PaymentModal';
 import toast from 'react-hot-toast';
 
+const SkeletonRow = () => (
+    <div className="p-8 flex flex-col md:flex-row justify-between items-center animate-pulse border-b border-gray-800/50">
+        <div className="flex items-center gap-6 w-full md:w-auto">
+            <div className="w-16 h-16 rounded-2xl bg-gray-800" />
+            <div className="space-y-3 flex-1 md:flex-none md:w-48">
+                <div className="h-6 bg-gray-800 rounded w-3/4" />
+                <div className="h-3 bg-gray-800 rounded w-1/2" />
+                <div className="h-3 bg-gray-800 rounded w-2/3" />
+            </div>
+        </div>
+        <div className="mt-6 md:mt-0 flex flex-col items-end gap-3 w-full md:w-auto">
+            <div className="h-8 bg-gray-800 rounded w-24" />
+            <div className="h-6 bg-gray-800 rounded w-32" />
+        </div>
+    </div>
+);
+
 const DashboardPage = () => {
-    const [bookings, setBookings] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // Initialize from local cache for instant load
+    const [bookings, setBookings] = useState(() => {
+        const local = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
+        return local.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+    });
+    const [loading, setLoading] = useState(bookings.length === 0);
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
@@ -23,7 +54,15 @@ const DashboardPage = () => {
             const merged = [...mockBookings, ...apiBookings].sort((a, b) =>
                 new Date(b.startDate) - new Date(a.startDate)
             );
-            setBookings(merged);
+
+            // Deduplicate by ID
+            const unique = merged.reduce((acc, current) => {
+                const x = acc.find(item => item._id === current._id);
+                if (!x) return acc.concat([current]);
+                return acc;
+            }, []);
+
+            setBookings(unique);
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -41,106 +80,148 @@ const DashboardPage = () => {
         fetchBookings(); // Refresh to show 'confirmed' status
     };
 
-    if (loading) return (
-        <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-4">
-            <Clock className="w-12 h-12 text-primary animate-spin" />
-            <p className="text-textSecondary animate-pulse">Loading your luxury travels...</p>
-        </div>
-    );
-
     return (
         <div className="min-h-screen bg-background text-textPrimary py-12">
             <div className="container mx-auto px-6 max-w-5xl">
-                <div className="flex items-center justify-between mb-12">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center justify-between mb-12"
+                >
                     <div>
-                        <h1 className="text-5xl font-serif font-bold text-white mb-2">My Dashboard</h1>
-                        <p className="text-textSecondary">Manage your premium rentals and travel history.</p>
+                        <h1 className="text-5xl font-serif font-black text-white mb-2 italic">My Citadels</h1>
+                        <p className="text-textSecondary italic">Your journey of excellence, curated and archived.</p>
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-surface rounded-3xl border border-gray-800 shadow-2xl overflow-hidden">
-                    <div className="px-8 py-6 border-b border-gray-800 bg-white/5 flex items-center gap-3">
-                        <History className="w-6 h-6 text-primary" />
-                        <h2 className="text-xl font-bold text-white">Booking History</h2>
-                    </div>
-
-                    {bookings.length === 0 ? (
-                        <div className="p-16 text-center space-y-4">
-                            <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto">
-                                <History className="w-8 h-8 text-gray-600" />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-surface rounded-[2.5rem] border border-gray-800 shadow-2xl overflow-hidden"
+                >
+                    <div className="px-10 py-8 border-b border-gray-800 bg-white/5 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 rounded-2xl bg-primary/10 text-primary">
+                                <History className="w-6 h-6" />
                             </div>
-                            <h3 className="text-xl font-bold text-white">No Bookings Yet</h3>
-                            <p className="text-textSecondary">Your travel story hasn't started. Experience luxury today.</p>
+                            <h2 className="text-2xl font-serif font-bold text-white tracking-tight">Booking History</h2>
                         </div>
-                    ) : (
-                        <div className="divide-y divide-gray-800/50">
-                            {bookings.map((booking) => (
-                                <div key={booking._id} className="p-8 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition-colors group">
-                                    <div className="flex items-center gap-6">
-                                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                                            <CheckCircle2 className="w-8 h-8" />
-                                        </div>
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
-                                                    {booking.vehicle?.title || 'Premium Vehicle'}
-                                                </h3>
+                        {loading && bookings.length > 0 && (
+                            <div className="flex items-center gap-2 text-[10px] uppercase font-black text-primary animate-pulse tracking-widest">
+                                <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
+                                Updating Live
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="divide-y divide-gray-800/50">
+                        {loading && bookings.length === 0 ? (
+                            <>
+                                <SkeletonRow />
+                                <SkeletonRow />
+                                <SkeletonRow />
+                            </>
+                        ) : bookings.length === 0 ? (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="p-24 text-center space-y-6"
+                            >
+                                <div className="w-24 h-24 bg-gray-800/30 rounded-full flex items-center justify-center mx-auto border border-dashed border-gray-700">
+                                    <History className="w-10 h-10 text-gray-700" />
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-3xl font-serif font-black text-white italic">No Voyages Yet</h3>
+                                    <p className="text-textSecondary text-lg max-w-sm mx-auto italic">Your tapestry of premium travels is waiting for its first thread.</p>
+                                </div>
+                                <button onClick={() => window.location.href = '/home'} className="btn-primary px-10 py-4 text-xs font-black uppercase tracking-widest rounded-2xl group flex items-center gap-3 mx-auto">
+                                    Begin Your Discovery <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </motion.div>
+                        ) : (
+                            <AnimatePresence mode="popLayout">
+                                {bookings.map((booking, idx) => (
+                                    <motion.div
+                                        layout
+                                        key={booking._id}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="p-10 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition-all group relative border-b border-gray-800/30 last:border-b-0"
+                                    >
+                                        <div className="flex items-center gap-8 w-full md:w-auto">
+                                            <div className="relative">
+                                                <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-xl shadow-primary/5 group-hover:scale-110 transition-transform duration-500">
+                                                    <CheckCircle2 className="w-10 h-10" />
+                                                </div>
                                                 {booking.isMock && (
-                                                    <span className="text-[10px] uppercase bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold">Demo</span>
+                                                    <div className="absolute -top-2 -right-2 bg-primary text-background text-[8px] font-black px-2 py-1 rounded-full border border-surface shadow-lg tracking-tighter">DEMO</div>
                                                 )}
                                             </div>
-                                            <div className="text-sm text-textSecondary space-y-1">
-                                                <p className="flex items-center gap-2">
-                                                    <span className="font-bold text-white/40 uppercase text-[10px] tracking-widest min-w-[50px]">From:</span>
-                                                    {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                    <span className="w-1 h-1 bg-gray-600 rounded-full" />
-                                                    <span className="text-primary font-medium">{new Date(booking.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                </p>
-                                                <p className="flex items-center gap-2">
-                                                    <span className="font-bold text-white/40 uppercase text-[10px] tracking-widest min-w-[50px]">To:</span>
-                                                    {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                    <span className="w-1 h-1 bg-gray-600 rounded-full" />
-                                                    <span className="text-primary font-medium">{new Date(booking.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                </p>
+                                            <div>
+                                                <div className="flex flex-col mb-3">
+                                                    <h3 className="text-2xl font-serif font-black text-white group-hover:text-primary transition-colors leading-tight">
+                                                        {booking.vehicle?.title || 'Premium Experience'}
+                                                    </h3>
+                                                    <p className="text-primary text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic">Confirmed Reserveration</p>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                                                    <div className="space-y-1">
+                                                        <p className="text-[10px] text-textSecondary uppercase font-black tracking-widest opacity-40">Departure</p>
+                                                        <p className="text-white font-medium flex items-center gap-2">
+                                                            {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                            <span className="text-primary font-black">·</span>
+                                                            <span className="text-xs opacity-80">{new Date(booking.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="text-[10px] text-textSecondary uppercase font-black tracking-widest opacity-40">Return</p>
+                                                        <p className="text-white font-medium flex items-center gap-2">
+                                                            {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                            <span className="text-primary font-black">·</span>
+                                                            <span className="text-xs opacity-80">{new Date(booking.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="mt-6 md:mt-0 flex flex-col items-end gap-3">
-                                        <div className="text-2xl font-bold text-white flex items-center justify-end gap-1">
-                                            <IndianRupee className="w-5 h-5 text-primary" />
-                                            {Number(booking.finalAmount || booking.totalPrice).toLocaleString('en-IN')}
+                                        <div className="mt-8 md:mt-0 flex flex-col items-center md:items-end gap-5 w-full md:w-auto">
+                                            <div className="text-4xl font-black text-white flex items-center justify-end gap-1 tracking-tighter">
+                                                <IndianRupee className="w-5 h-5 text-primary" />
+                                                {Number(booking.finalAmount || booking.totalPrice).toLocaleString('en-IN')}
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                {(booking.status === 'approved' || (booking.isMock && booking.status === 'approved')) && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedBooking(booking);
+                                                            setIsPaymentOpen(true);
+                                                        }}
+                                                        className="flex items-center gap-3 bg-primary text-background px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20 active:scale-95"
+                                                    >
+                                                        <CreditCard className="w-4 h-4" />
+                                                        Complete Payment
+                                                    </button>
+                                                )}
+                                                <span className={`px-6 py-2.5 text-[10px] font-black rounded-full uppercase tracking-widest flex items-center gap-2 border italic shadow-lg ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                                        booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                                                            booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' :
+                                                                booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                                                                    'bg-gray-500/10 text-gray-500 border-gray-500/20'
+                                                    }`}>
+                                                    {booking.status === 'pending_approval' && <Clock className="w-3.5 h-3.5" />}
+                                                    {booking.status === 'approved' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                                                    {booking.status === 'rejected' && <XCircle className="w-3.5 h-3.5" />}
+                                                    {booking.status.replace('_', ' ')}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-3">
-                                            {(booking.status === 'approved' || (booking.isMock && booking.status === 'approved')) && (
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedBooking(booking);
-                                                        setIsPaymentOpen(true);
-                                                    }}
-                                                    className="flex items-center gap-2 bg-primary text-background px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition-transform"
-                                                >
-                                                    <CreditCard className="w-3.5 h-3.5" />
-                                                    Pay Now
-                                                </button>
-                                            )}
-                                            <span className={`px-4 py-1.5 text-[10px] font-bold rounded-full uppercase tracking-widest flex items-center gap-1.5 ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border border-green-500/20' :
-                                                booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
-                                                    booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border border-orange-500/20' :
-                                                        booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
-                                                            'bg-gray-500/10 text-gray-500 border border-gray-500/20'
-                                                }`}>
-                                                {booking.status === 'pending_approval' && <Clock className="w-3 h-3" />}
-                                                {booking.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
-                                                {booking.status === 'rejected' && <XCircle className="w-3 h-3" />}
-                                                {booking.status.replace('_', ' ')}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        )}
+                    </div>
+                </motion.div>
             </div>
 
             {selectedBooking && (
