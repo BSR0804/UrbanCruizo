@@ -189,4 +189,6 @@ const CaravanListingPage = () => {
     );
 };
 
+export default CaravanListingPage;
+
 
