@@ -281,15 +281,15 @@ const DashboardPage = () => {
                                                     </button>
                                                 )}
 
-                                                <span className={`px-4 py-2 text-[9px] font-black rounded-xl uppercase tracking-widest flex items-center gap-2 border italic shadow-sm h-full ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                                                <span className={`px-4 py-2 text-[9px] font-black rounded-xl uppercase tracking-widest flex items-center gap-2 border italic shadow-sm h-full ${booking.status === 'confirmed' || booking.status === 'completed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                                                         booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
                                                             booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' :
-                                                                booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                                                                booking.status === 'rejected' || booking.status === 'cancelled' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                                                                     'bg-gray-500/10 text-gray-500 border-gray-500/20'
                                                     }`}>
                                                     {booking.status === 'pending_approval' && <Clock className="w-3 h-3" />}
-                                                    {booking.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
-                                                    {booking.status === 'rejected' && <XCircle className="w-3 h-3" />}
+                                                    {(booking.status === 'approved' || booking.status === 'confirmed' || booking.status === 'completed') && <CheckCircle2 className="w-3 h-3" />}
+                                                    {(booking.status === 'rejected' || booking.status === 'cancelled') && <XCircle className="w-3 h-3" />}
                                                     {booking.status.replace('_', ' ')}
                                                 </span>
                                             </div>

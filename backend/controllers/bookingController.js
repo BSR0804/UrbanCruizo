@@ -113,6 +113,18 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
 
 // @desc    Get My Bookings
 const getMyBookings = asyncHandler(async (req, res) => {
+    const now = new Date();
+
+    // Auto-complete finished bookings
+    await Booking.updateMany(
+        {
+            user: req.user._id,
+            status: { $in: ['confirmed', 'ongoing'] },
+            endDate: { $lt: now }
+        },
+        { $set: { status: 'completed' } }
+    );
+
     const bookings = await Booking.find({ user: req.user._id })
         .populate({
             path: 'vehicle',
@@ -193,6 +205,7 @@ const updateBookingDates = asyncHandler(async (req, res) => {
 // @desc    Get All Bookings (Admin/Dealer View)
 const getBookings = asyncHandler(async (req, res) => {
     let query = {};
+    const now = new Date();
 
     // If dealer, only show bookings for their vehicles
     if (req.user.role === 'dealer') {
@@ -200,6 +213,16 @@ const getBookings = asyncHandler(async (req, res) => {
         const vehicleIds = vehicles.map(v => v._id);
         query.vehicle = { $in: vehicleIds };
     }
+
+    // Auto-complete finished bookings for the relevant query
+    await Booking.updateMany(
+        {
+            ...query,
+            status: { $in: ['confirmed', 'ongoing'] },
+            endDate: { $lt: now }
+        },
+        { $set: { status: 'completed' } }
+    );
 
     const bookings = await Booking.find(query)
         .populate('user', 'name email')
