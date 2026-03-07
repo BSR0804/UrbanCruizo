@@ -606,7 +606,6 @@ const VehicleDetailsPage = () => {
                 onSubmit={submitApplication}
                 packageName={vehicle.title}
                 price={priceBreakdown?.total || 0}
-                isPackage={false}
             />
 
             <PaymentModal

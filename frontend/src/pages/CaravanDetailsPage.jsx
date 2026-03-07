@@ -95,8 +95,7 @@ const CaravanDetailsPage = () => {
 
     const handleFormSubmit = async (formData) => {
         const basePrice = (caravan.packagePrice || caravan.pricePerDay);
-        const guests = formData.guests || 1;
-        const newTotal = (basePrice * guests); // Service fee is now "Included" in the premium UI
+        const newTotal = (basePrice * formData.guests) + 499; // Correctly multiply base price and add fixed service fee
         setTotalAmount(newTotal);
         setBookingData(formData);
         setIsFormModalOpen(false);
@@ -455,7 +454,6 @@ const CaravanDetailsPage = () => {
                 onSubmit={handleFormSubmit}
                 packageName={caravan.title}
                 price={totalAmount}
-                isPackage={true}
             />
 
             <PaymentModal
