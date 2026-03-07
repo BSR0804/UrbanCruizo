@@ -9,9 +9,15 @@ import {
     AlertCircle,
     CreditCard,
     XCircle,
-    ArrowRight
+    ArrowRight,
+    Eye,
+    CalendarDays,
+    Trash2
 } from 'lucide-react';
 import PaymentModal from '../components/PaymentModal';
+import BookingDetailsModal from '../components/BookingDetailsModal';
+import EditDatesModal from '../components/EditDatesModal';
+import ConfirmActionModal from '../components/ConfirmActionModal';
 import toast from 'react-hot-toast';
 
 const SkeletonRow = () => (
@@ -38,8 +44,14 @@ const DashboardPage = () => {
         return local.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
     });
     const [loading, setLoading] = useState(bookings.length === 0);
+    const [actionLoading, setActionLoading] = useState(false);
+
+    // Modal States
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isCancelOpen, setIsCancelOpen] = useState(false);
 
     const fetchBookings = async () => {
         try {
@@ -73,6 +85,32 @@ const DashboardPage = () => {
     useEffect(() => {
         fetchBookings();
     }, []);
+
+    const handleCancelBooking = async () => {
+        if (!selectedBooking) return;
+        setActionLoading(true);
+        try {
+            await axios.put(`bookings/${selectedBooking._id}/cancel`);
+            toast.success("Voyage cancelled successfully.");
+            setIsCancelOpen(false);
+            fetchBookings();
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Cancellation failed");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleUpdateDates = async (bookingId, startDate, endDate) => {
+        try {
+            await axios.put(`bookings/${bookingId}/dates`, { startDate, endDate });
+            toast.success("Journey dates redefined successfully.");
+            setIsEditOpen(false);
+            fetchBookings();
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Date update failed");
+        }
+    };
 
     const handlePaymentSuccess = async () => {
         toast.success("Payment successful! Booking confirmed.");
@@ -147,10 +185,10 @@ const DashboardPage = () => {
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: idx * 0.05 }}
-                                        className="p-10 flex flex-col md:flex-row justify-between items-center hover:bg-white/5 transition-all group relative border-b border-gray-800/30 last:border-b-0"
+                                        className="p-10 flex flex-col lg:flex-row justify-between items-center hover:bg-white/5 transition-all group relative border-b border-gray-800/30 last:border-b-0 gap-8"
                                     >
-                                        <div className="flex items-center gap-8 w-full md:w-auto">
-                                            <div className="relative">
+                                        <div className="flex items-center gap-8 w-full lg:w-auto">
+                                            <div className="relative shrink-0">
                                                 <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-xl shadow-primary/5 group-hover:scale-110 transition-transform duration-500">
                                                     <CheckCircle2 className="w-10 h-10" />
                                                 </div>
@@ -158,7 +196,7 @@ const DashboardPage = () => {
                                                     <div className="absolute -top-2 -right-2 bg-primary text-background text-[8px] font-black px-2 py-1 rounded-full border border-surface shadow-lg tracking-tighter">DEMO</div>
                                                 )}
                                             </div>
-                                            <div>
+                                            <div className="flex-grow">
                                                 <div className="flex flex-col mb-3">
                                                     <h3 className="text-2xl font-serif font-black text-white group-hover:text-primary transition-colors leading-tight">
                                                         {booking.vehicle?.title || 'Premium Experience'}
@@ -169,49 +207,89 @@ const DashboardPage = () => {
                                                     <div className="space-y-1">
                                                         <p className="text-[10px] text-textSecondary uppercase font-black tracking-widest opacity-40">Departure</p>
                                                         <p className="text-white font-medium flex items-center gap-2">
-                                                            {new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                            <span className="text-xs">{new Date(booking.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                                             <span className="text-primary font-black">·</span>
-                                                            <span className="text-xs opacity-80">{new Date(booking.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                            <span className="text-[10px] opacity-80">{new Date(booking.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                         </p>
                                                     </div>
                                                     <div className="space-y-1">
                                                         <p className="text-[10px] text-textSecondary uppercase font-black tracking-widest opacity-40">Return</p>
                                                         <p className="text-white font-medium flex items-center gap-2">
-                                                            {new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                            <span className="text-xs">{new Date(booking.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                                             <span className="text-primary font-black">·</span>
-                                                            <span className="text-xs opacity-80">{new Date(booking.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                            <span className="text-[10px] opacity-80">{new Date(booking.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="mt-8 md:mt-0 flex flex-col items-center md:items-end gap-5 w-full md:w-auto">
+
+                                        <div className="flex flex-col md:flex-row lg:flex-col items-center md:items-end gap-6 w-full lg:w-auto">
                                             <div className="text-4xl font-black text-white flex items-center justify-end gap-1 tracking-tighter">
                                                 <IndianRupee className="w-5 h-5 text-primary" />
                                                 {Number(booking.finalAmount || booking.totalPrice).toLocaleString('en-IN')}
                                             </div>
-                                            <div className="flex items-center gap-4">
+
+                                            <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 transition-all">
+                                                {/* Action Buttons */}
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedBooking(booking);
+                                                        setIsDetailsOpen(true);
+                                                    }}
+                                                    className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border border-gray-800 transition-all active:scale-95"
+                                                    title="View Details"
+                                                >
+                                                    <Eye className="w-3.5 h-3.5" /> Details
+                                                </button>
+
+                                                {(booking.status !== 'cancelled' && booking.status !== 'rejected') && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedBooking(booking);
+                                                            setIsEditOpen(true);
+                                                        }}
+                                                        className="flex items-center gap-2 bg-white/5 hover:bg-primary/10 hover:text-primary hover:border-primary/30 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border border-gray-800 transition-all active:scale-95"
+                                                        title="Change Dates"
+                                                    >
+                                                        <CalendarDays className="w-3.5 h-3.5" /> Reschedule
+                                                    </button>
+                                                )}
+
                                                 {(booking.status === 'approved' || (booking.isMock && booking.status === 'approved')) && (
                                                     <button
                                                         onClick={() => {
                                                             setSelectedBooking(booking);
                                                             setIsPaymentOpen(true);
                                                         }}
-                                                        className="flex items-center gap-3 bg-primary text-background px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20 active:scale-95"
+                                                        className="flex items-center gap-2 bg-primary text-background px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/20 active:scale-95"
                                                     >
-                                                        <CreditCard className="w-4 h-4" />
-                                                        Complete Payment
+                                                        <CreditCard className="w-3.5 h-3.5" /> Pay
                                                     </button>
                                                 )}
-                                                <span className={`px-6 py-2.5 text-[10px] font-black rounded-full uppercase tracking-widest flex items-center gap-2 border italic shadow-lg ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+
+                                                {(booking.status === 'pending_approval' || booking.status === 'approved') && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedBooking(booking);
+                                                            setIsCancelOpen(true);
+                                                        }}
+                                                        className="flex items-center gap-2 bg-red-500/5 hover:bg-red-500/10 text-red-500 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border border-red-500/10 transition-all active:scale-95"
+                                                        title="Cancel Booking"
+                                                    >
+                                                        <Trash2 className="w-3.5 h-3.5" /> Cancel
+                                                    </button>
+                                                )}
+
+                                                <span className={`px-4 py-2 text-[9px] font-black rounded-xl uppercase tracking-widest flex items-center gap-2 border italic shadow-sm h-full ${booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                                                         booking.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
                                                             booking.status === 'pending_approval' ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' :
                                                                 booking.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                                                                     'bg-gray-500/10 text-gray-500 border-gray-500/20'
                                                     }`}>
-                                                    {booking.status === 'pending_approval' && <Clock className="w-3.5 h-3.5" />}
-                                                    {booking.status === 'approved' && <CheckCircle2 className="w-3.5 h-3.5" />}
-                                                    {booking.status === 'rejected' && <XCircle className="w-3.5 h-3.5" />}
+                                                    {booking.status === 'pending_approval' && <Clock className="w-3 h-3" />}
+                                                    {booking.status === 'approved' && <CheckCircle2 className="w-3 h-3" />}
+                                                    {booking.status === 'rejected' && <XCircle className="w-3 h-3" />}
                                                     {booking.status.replace('_', ' ')}
                                                 </span>
                                             </div>
@@ -224,19 +302,40 @@ const DashboardPage = () => {
                 </motion.div>
             </div>
 
-            {selectedBooking && (
-                <PaymentModal
-                    isOpen={isPaymentOpen}
-                    onClose={() => setIsPaymentOpen(false)}
-                    amount={selectedBooking.finalAmount || selectedBooking.totalPrice}
-                    vehicleId={selectedBooking.vehicle?._id}
-                    bookingId={selectedBooking._id}
-                    onPaymentSuccess={handlePaymentSuccess}
-                />
-            )}
+            {/* Modals */}
+            <PaymentModal
+                isOpen={isPaymentOpen}
+                onClose={() => setIsPaymentOpen(false)}
+                amount={selectedBooking?.finalAmount || selectedBooking?.totalPrice}
+                vehicleId={selectedBooking?.vehicle?._id}
+                bookingId={selectedBooking?._id}
+                onPaymentSuccess={handlePaymentSuccess}
+            />
+
+            <BookingDetailsModal
+                isOpen={isDetailsOpen}
+                onClose={() => setIsDetailsOpen(false)}
+                booking={selectedBooking}
+            />
+
+            <EditDatesModal
+                isOpen={isEditOpen}
+                onClose={() => setIsEditOpen(false)}
+                booking={selectedBooking}
+                onUpdate={handleUpdateDates}
+            />
+
+            <ConfirmActionModal
+                isOpen={isCancelOpen}
+                onClose={() => setIsCancelOpen(false)}
+                onConfirm={handleCancelBooking}
+                loading={actionLoading}
+                title="Discard This Voyage?"
+                message="Are you certain you wish to cancel this premium reservation? This action cannot be undone."
+                confirmText="Cancel Reservation"
+            />
         </div>
     );
 };
 
 export default DashboardPage;
-
