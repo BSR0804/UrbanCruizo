@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Mail, Phone, MapPin, CreditCard, FileText, Upload, CheckCircle2, AlertCircle, Loader2, Users } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => {
     const [formData, setFormData] = useState({
@@ -41,7 +42,7 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
         }
     };
 
-    const dynamicPrice = (price * formData.guests);
+    const dynamicPrice = (price ? (price * formData.guests) : 0);
 
     if (!isOpen) return null;
 
@@ -171,7 +172,7 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                             <div className="p-6 bg-surface/50 border border-gray-800 rounded-[2rem] space-y-4">
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-textSecondary">Base Package ({formData.guests} Traveler{formData.guests > 1 ? 's' : ''})</span>
-                                    <span className="text-white font-medium">₹{price.toLocaleString('en-IN')} × {formData.guests}</span>
+                                    <span className="text-white font-medium">₹{(price || 0).toLocaleString('en-IN')} × {formData.guests}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm pb-4 border-b border-gray-800/50">
                                     <span className="text-textSecondary">Service & Documentation</span>

@@ -51,7 +51,7 @@ const VehicleDetailsPage = () => {
     useEffect(() => {
         const fetchVehicle = async () => {
             try {
-                const { data } = await axios.get(`vehicles/${id}`);
+                const { data } = await axios.get(`vehicles / ${id} `);
                 setVehicle(data);
                 setLoading(false);
             } catch (error) {
@@ -73,8 +73,8 @@ const VehicleDetailsPage = () => {
             return;
         }
 
-        const start = new Date(`${startDate}T${startTime}`);
-        const end = new Date(`${endDate}T${endTime}`);
+        const start = new Date(`${startDate}T${startTime} `);
+        const end = new Date(`${endDate}T${endTime} `);
         const diffMs = end - start;
 
         if (diffMs <= 0) {
@@ -131,8 +131,8 @@ const VehicleDetailsPage = () => {
         try {
             await axios.post('bookings', {
                 vehicleId: id,
-                startDate: `${startDate}T${startTime}`,
-                endDate: `${endDate}T${endTime}`,
+                startDate: `${startDate}T${startTime} `,
+                endDate: `${endDate}T${endTime} `,
                 rentalType,
                 ...formData
             });
@@ -143,10 +143,10 @@ const VehicleDetailsPage = () => {
             // Fallback for Mock/ID issues
             if (id.length < 10) {
                 const mockBooking = {
-                    _id: `mock_app_${Date.now()}`,
+                    _id: `mock_app_${Date.now()} `,
                     vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
-                    startDate: `${startDate}T${startTime}`,
-                    endDate: `${endDate}T${endTime}`,
+                    startDate: `${startDate}T${startTime} `,
+                    endDate: `${endDate}T${endTime} `,
                     totalPrice: priceBreakdown?.total || 0,
                     status: 'pending_approval',
                     isMock: true
@@ -166,8 +166,8 @@ const VehicleDetailsPage = () => {
             setBookingLoading(true);
             await axios.post('bookings', {
                 vehicleId: id,
-                startDate: `${startDate}T${startTime}`,
-                endDate: `${endDate}T${endTime}`,
+                startDate: `${startDate}T${startTime} `,
+                endDate: `${endDate}T${endTime} `,
                 rentalType
             });
             toast.success('Payment Received! Booking confirmed.', { duration: 5000 });
@@ -179,10 +179,10 @@ const VehicleDetailsPage = () => {
             if (id.length < 10 || error.response?.status === 400 || error.response?.status === 404) {
                 // Save locally for demo
                 const mockBooking = {
-                    _id: `mock_b_${Date.now()}`,
+                    _id: `mock_b_${Date.now()} `,
                     vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
-                    startDate: `${startDate}T${startTime}`,
-                    endDate: `${endDate}T${endTime}`,
+                    startDate: `${startDate}T${startTime} `,
+                    endDate: `${endDate}T${endTime} `,
                     totalPrice: priceBreakdown?.total || 0,
                     status: 'confirmed',
                     isMock: true
@@ -246,7 +246,7 @@ const VehicleDetailsPage = () => {
                                 <motion.img
                                     key={currentImageIndex}
                                     src={images[currentImageIndex]}
-                                    alt={`${vehicle.title} - view ${currentImageIndex + 1}`}
+                                    alt={`${vehicle.title} - view ${currentImageIndex + 1} `}
                                     initial={{ opacity: 0, scale: 1.1 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
@@ -277,7 +277,7 @@ const VehicleDetailsPage = () => {
                                             <button
                                                 key={idx}
                                                 onClick={() => setCurrentImageIndex(idx)}
-                                                className={`w-2 h-2 rounded-full transition-all ${idx === currentImageIndex ? 'bg-primary w-6' : 'bg-white/50'}`}
+                                                className={`w - 2 h - 2 rounded - full transition - all ${idx === currentImageIndex ? 'bg-primary w-6' : 'bg-white/50'} `}
                                             />
                                         ))}
                                     </div>
@@ -292,7 +292,7 @@ const VehicleDetailsPage = () => {
                                     <button
                                         key={idx}
                                         onClick={() => setCurrentImageIndex(idx)}
-                                        className={`aspect-video rounded-xl overflow-hidden border-2 transition-all ${idx === currentImageIndex ? 'border-primary ring-2 ring-primary/20' : 'border-gray-800 opacity-60 hover:opacity-100'}`}
+                                        className={`aspect - video rounded - xl overflow - hidden border - 2 transition - all ${idx === currentImageIndex ? 'border-primary ring-2 ring-primary/20' : 'border-gray-800 opacity-60 hover:opacity-100'} `}
                                     >
                                         <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
                                     </button>
@@ -303,11 +303,11 @@ const VehicleDetailsPage = () => {
                         <div className="bg-surface p-8 rounded-3xl border border-gray-800 mt-8 shadow-inner">
                             <h3 className="text-2xl font-serif font-bold text-white mb-4">Inside the Experience</h3>
                             <p className="text-textSecondary leading-relaxed mb-4">
-                                {vehicle.description1 || `This premium ${vehicle.brand} ${vehicle.model} embodies ultimate refinement and performance. Meticulously maintained to the highest standards, it offers an unparalleled driving experience for both city commutes and scenic long-drives across ${vehicle.city}.`}
+                                {vehicle.description1 || `This premium ${vehicle.brand} ${vehicle.model} embodies ultimate refinement and performance.Meticulously maintained to the highest standards, it offers an unparalleled driving experience for both city commutes and scenic long - drives across ${vehicle.city}.`}
                             </p>
                             <p className="text-textSecondary leading-relaxed mb-8">
-                                {vehicle.description2 || `Designed with the modern traveler in mind, this ${vehicle.year} edition features advanced safety systems, intuitive controls, and a suite of smart connectivity options. Whether you're heading for a business meeting or a weekend getaway, expect nothing less than absolute comfort and reliability.`}
-                            </p>
+                                {vehicle.description2 || `Designed with the modern traveler in mind, this ${vehicle.year} edition features advanced safety systems, intuitive controls, and a suite of smart connectivity options.Whether you're heading for a business meeting or a weekend getaway, expect nothing less than absolute comfort and reliability.`}
+                            </p >
 
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
                                 <div className="space-y-4">
@@ -349,16 +349,16 @@ const VehicleDetailsPage = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div >
 
                         {/* Trip Planner Feature */}
-                        <div className="mt-8">
+                        < div className="mt-8" >
                             <TripPlanner vehicle={vehicle} />
-                        </div>
-                    </div>
+                        </div >
+                    </div >
 
                     {/* Right: Details & Booking Section */}
-                    <div className="space-y-8">
+                    < div className="space-y-8" >
                         <div>
                             <div className="flex items-center gap-2 text-primary mb-2 uppercase tracking-widest text-xs font-bold">
                                 <span>{vehicle.brand}</span>
@@ -588,16 +588,16 @@ const VehicleDetailsPage = () => {
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div >
+                </div >
+            </div >
 
             <BookingFormModal
                 isOpen={isBookingModalOpen}
                 onClose={() => setIsBookingModalOpen(false)}
                 onSubmit={submitApplication}
-                vehicle={vehicle}
-                priceBreakdown={priceBreakdown}
+                packageName={vehicle.title}
+                price={priceBreakdown?.total || 0}
             />
 
             <PaymentModal
