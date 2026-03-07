@@ -51,7 +51,7 @@ const VehicleDetailsPage = () => {
     useEffect(() => {
         const fetchVehicle = async () => {
             try {
-                const { data } = await axios.get(`vehicles / ${id} `);
+                const { data } = await axios.get(`vehicles/${id}`);
                 setVehicle(data);
                 setLoading(false);
             } catch (error) {
@@ -73,8 +73,15 @@ const VehicleDetailsPage = () => {
             return;
         }
 
-        const start = new Date(`${startDate}T${startTime} `);
-        const end = new Date(`${endDate}T${endTime} `);
+        const start = new Date(`${startDate}T${startTime}`);
+        const end = new Date(`${endDate}T${endTime}`);
+        const now = new Date();
+
+        if (start < now) {
+            setPriceBreakdown({ error: 'Pickup time cannot be in the past. Please select a future time.' });
+            return;
+        }
+
         const diffMs = end - start;
 
         if (diffMs <= 0) {
@@ -131,8 +138,8 @@ const VehicleDetailsPage = () => {
         try {
             await axios.post('bookings', {
                 vehicleId: id,
-                startDate: `${startDate}T${startTime} `,
-                endDate: `${endDate}T${endTime} `,
+                startDate: `${startDate}T${startTime}`,
+                endDate: `${endDate}T${endTime}`,
                 rentalType,
                 ...formData
             });
@@ -143,10 +150,10 @@ const VehicleDetailsPage = () => {
             // Fallback for Mock/ID issues
             if (id.length < 10) {
                 const mockBooking = {
-                    _id: `mock_app_${Date.now()} `,
+                    _id: `mock_app_${Date.now()}`,
                     vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
-                    startDate: `${startDate}T${startTime} `,
-                    endDate: `${endDate}T${endTime} `,
+                    startDate: `${startDate}T${startTime}`,
+                    endDate: `${endDate}T${endTime}`,
                     totalPrice: priceBreakdown?.total || 0,
                     status: 'pending_approval',
                     isMock: true
@@ -166,8 +173,8 @@ const VehicleDetailsPage = () => {
             setBookingLoading(true);
             await axios.post('bookings', {
                 vehicleId: id,
-                startDate: `${startDate}T${startTime} `,
-                endDate: `${endDate}T${endTime} `,
+                startDate: `${startDate}T${startTime}`,
+                endDate: `${endDate}T${endTime}`,
                 rentalType
             });
             toast.success('Payment Received! Booking confirmed.', { duration: 5000 });
@@ -179,10 +186,11 @@ const VehicleDetailsPage = () => {
             if (id.length < 10 || error.response?.status === 400 || error.response?.status === 404) {
                 // Save locally for demo
                 const mockBooking = {
-                    _id: `mock_b_${Date.now()} `,
+                    _id: `mock_b_${Date.now()}`,
+                    vehicleId: id,
                     vehicle: { title: vehicle.title, brand: vehicle.brand, model: vehicle.model },
-                    startDate: `${startDate}T${startTime} `,
-                    endDate: `${endDate}T${endTime} `,
+                    startDate: `${startDate}T${startTime}`,
+                    endDate: `${endDate}T${endTime}`,
                     totalPrice: priceBreakdown?.total || 0,
                     status: 'confirmed',
                     isMock: true
@@ -246,7 +254,7 @@ const VehicleDetailsPage = () => {
                                 <motion.img
                                     key={currentImageIndex}
                                     src={images[currentImageIndex]}
-                                    alt={`${vehicle.title} - view ${currentImageIndex + 1} `}
+                                    alt={`${vehicle.title} - view ${currentImageIndex + 1}`}
                                     initial={{ opacity: 0, scale: 1.1 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
@@ -277,7 +285,7 @@ const VehicleDetailsPage = () => {
                                             <button
                                                 key={idx}
                                                 onClick={() => setCurrentImageIndex(idx)}
-                                                className={`w - 2 h - 2 rounded - full transition - all ${idx === currentImageIndex ? 'bg-primary w-6' : 'bg-white/50'} `}
+                                                className={`w-2 h-2 rounded-full transition-all ${idx === currentImageIndex ? 'bg-primary w-6' : 'bg-white/50'}`}
                                             />
                                         ))}
                                     </div>
@@ -292,7 +300,7 @@ const VehicleDetailsPage = () => {
                                     <button
                                         key={idx}
                                         onClick={() => setCurrentImageIndex(idx)}
-                                        className={`aspect - video rounded - xl overflow - hidden border - 2 transition - all ${idx === currentImageIndex ? 'border-primary ring-2 ring-primary/20' : 'border-gray-800 opacity-60 hover:opacity-100'} `}
+                                        className={`aspect-video rounded-xl overflow-hidden border-2 transition-all ${idx === currentImageIndex ? 'border-primary ring-2 ring-primary/20' : 'border-gray-800 opacity-60 hover:opacity-100'}`}
                                     >
                                         <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
                                     </button>
