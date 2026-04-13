@@ -282,7 +282,7 @@ const Dashboard = () => {
                                         <div><h2 className="text-2xl font-serif font-bold text-white">Your Premium Fleet</h2><p className="text-xs text-textSecondary italic mt-1 uppercase tracking-widest">Manage your listings location-wise</p></div>
                                         <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
                                             <div className="relative flex-1 md:w-64"><MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/60" /><input type="text" placeholder="Search by city/area..." className="w-full bg-background border border-gray-800 rounded-xl py-3 pl-12 pr-4 text-sm text-white focus:border-primary/50 outline-none font-medium" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
-                                            <button onClick={() => { if (!isAuthenticated) { toast.error('Please login to add vehicles'); return; } if (!displayUser.isProfileComplete) { toast.error('Complete your profile first!'); setShowProfileForm(true); return; } setEditingVehicle(null); setVehicleFormData({ title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true }); setShowAddModal(true); }} className="bg-primary text-background px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"><Plus className="w-5 h-5" /> Add Vehicle</button>
+                                            <button onClick={() => { if (!isAuthenticated) { toast.error('Please login to add vehicles'); return; } if (!displayUser.isProfileComplete) { toast.error('Complete your profile first!'); setShowProfileForm(true); return; } setEditingVehicle(null); setVehicleFormData({ title: '', brand: '', model: '', year: '', type: 'car', category: 'hatchback', pricePerDay: '', securityDeposit: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true }); setShowAddModal(true); }} className="bg-primary text-background px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform"><Plus className="w-5 h-5" /> Add Vehicle</button>
                                         </div>
                                     </div>
                                     <div className="grid md:grid-cols-2 gap-6">
@@ -486,15 +486,52 @@ const Dashboard = () => {
                         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="w-full max-w-2xl bg-surface border border-gray-800 rounded-[2.5rem] p-10 max-h-[90vh] overflow-y-auto">
                             <div className="flex justify-between items-center mb-8"><h2 className="text-3xl font-serif font-bold text-primary">{editingVehicle ? 'Edit Listing' : 'List New Vehicle'}</h2><button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-white/5 rounded-full"><X className="w-6 h-6" /></button></div>
                             <form onSubmit={handleVehicleSubmit} className="grid grid-cols-2 gap-6">
-                                <div className="col-span-2 md:col-span-1 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Title</label><input type="text" required className="input-field" value={vehicleFormData.title} onChange={(e) => setVehicleFormData({ ...vehicleFormData, title: e.target.value })} /></div>
-                                <div className="col-span-2 md:col-span-1 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Brand</label><input type="text" required className="input-field" value={vehicleFormData.brand} onChange={(e) => setVehicleFormData({ ...vehicleFormData, brand: e.target.value })} /></div>
-                                <div className="col-span-2 md:col-span-1 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Model</label><input type="text" required className="input-field" value={vehicleFormData.model} onChange={(e) => setVehicleFormData({ ...vehicleFormData, model: e.target.value })} /></div>
-                                <div className="col-span-2 md:col-span-1 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Year</label><input type="number" required className="input-field" value={vehicleFormData.year} onChange={(e) => setVehicleFormData({ ...vehicleFormData, year: e.target.value })} /></div>
-                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Price Per Day (₹)</label><input type="number" required className="input-field" value={vehicleFormData.pricePerDay} onChange={(e) => setVehicleFormData({ ...vehicleFormData, pricePerDay: e.target.value })} /></div>
-                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">City</label><input type="text" required className="input-field" value={vehicleFormData.city} onChange={(e) => setVehicleFormData({ ...vehicleFormData, city: e.target.value })} /></div>
-                                <div className="col-span-2 md:col-span-1 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Location / Area</label><input type="text" required className="input-field" value={vehicleFormData.location} onChange={(e) => setVehicleFormData({ ...vehicleFormData, location: e.target.value })} /></div>
-                                <div className="col-span-2 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Images (comma separated URLs)</label><textarea className="input-field h-24" value={vehicleFormData.images} onChange={(e) => setVehicleFormData({ ...vehicleFormData, images: e.target.value })} /></div>
-                                <button type="submit" className="col-span-2 btn-primary py-4 rounded-xl mt-4">{editingVehicle ? 'Update Listing' : 'Publish to Marketplace'}</button>
+                                <div className="col-span-2 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Title</label><input type="text" required className="input-field" placeholder="e.g. Maruti Suzuki Swift" value={vehicleFormData.title} onChange={(e) => setVehicleFormData({ ...vehicleFormData, title: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Brand</label><input type="text" required className="input-field" placeholder="e.g. Hyundai" value={vehicleFormData.brand} onChange={(e) => setVehicleFormData({ ...vehicleFormData, brand: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Model</label><input type="text" required className="input-field" placeholder="e.g. Creta SX" value={vehicleFormData.model} onChange={(e) => setVehicleFormData({ ...vehicleFormData, model: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Year</label><input type="number" required className="input-field" placeholder="2023" value={vehicleFormData.year} onChange={(e) => setVehicleFormData({ ...vehicleFormData, year: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Seats</label><input type="number" required className="input-field" placeholder="5" value={vehicleFormData.seats} onChange={(e) => setVehicleFormData({ ...vehicleFormData, seats: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Type</label>
+                                    <select required className="input-field" value={vehicleFormData.type} onChange={(e) => setVehicleFormData({ ...vehicleFormData, type: e.target.value })}>
+                                        <option value="car">Car</option>
+                                        <option value="bike">Bike</option>
+                                        <option value="caravan">Caravan</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Category</label>
+                                    <select required className="input-field" value={vehicleFormData.category} onChange={(e) => setVehicleFormData({ ...vehicleFormData, category: e.target.value })}>
+                                        <option value="hatchback">Hatchback</option>
+                                        <option value="sedan">Sedan</option>
+                                        <option value="suv">SUV</option>
+                                        <option value="luxury">Luxury</option>
+                                        <option value="commuter">Commuter</option>
+                                        <option value="sports">Sports</option>
+                                        <option value="royal-enfield">Royal Enfield</option>
+                                        <option value="standard">Standard</option>
+                                        <option value="premium">Premium</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Transmission</label>
+                                    <select required className="input-field" value={vehicleFormData.transmission} onChange={(e) => setVehicleFormData({ ...vehicleFormData, transmission: e.target.value })}>
+                                        <option value="Automatic">Automatic</option>
+                                        <option value="Manual">Manual</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fuel Type</label>
+                                    <select required className="input-field" value={vehicleFormData.fuelType} onChange={(e) => setVehicleFormData({ ...vehicleFormData, fuelType: e.target.value })}>
+                                        <option value="Petrol">Petrol</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="Electric">Electric</option>
+                                        <option value="CNG">CNG</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Price Per Day (₹)</label><input type="number" required className="input-field" placeholder="2500" value={vehicleFormData.pricePerDay} onChange={(e) => setVehicleFormData({ ...vehicleFormData, pricePerDay: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Security Deposit (₹)</label><input type="number" className="input-field" placeholder="3000" value={vehicleFormData.securityDeposit || ''} onChange={(e) => setVehicleFormData({ ...vehicleFormData, securityDeposit: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">City</label><input type="text" required className="input-field" placeholder="e.g. Delhi" value={vehicleFormData.city} onChange={(e) => setVehicleFormData({ ...vehicleFormData, city: e.target.value })} /></div>
+                                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Location / Area</label><input type="text" required className="input-field" placeholder="e.g. Karol Bagh" value={vehicleFormData.location} onChange={(e) => setVehicleFormData({ ...vehicleFormData, location: e.target.value })} /></div>
+                                <div className="col-span-2 space-y-2"><label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Image URLs (comma separated)</label><textarea className="input-field h-20" placeholder="https://example.com/car.jpg, https://example.com/interior.jpg" value={vehicleFormData.images} onChange={(e) => setVehicleFormData({ ...vehicleFormData, images: e.target.value })} /></div>
+                                <button type="submit" className="col-span-2 btn-primary py-4 rounded-xl mt-2">{editingVehicle ? 'Update Listing' : 'Publish to Marketplace'}</button>
                             </form>
                         </motion.div>
                     </motion.div>
