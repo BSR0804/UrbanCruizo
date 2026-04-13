@@ -332,12 +332,7 @@ const DealerDashboard = () => {
                                             <p className="text-background/80 max-w-lg leading-relaxed font-medium">
                                                 Your fleet is performing exceptionally well this month. You've earned ₹{stats?.totalEarnings?.toLocaleString()} after commission.
                                             </p>
-                                            <button
-                                                onClick={() => setShowProfileForm(true)}
-                                                className="mt-6 px-6 py-3 bg-background text-primary rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-all shadow-xl"
-                                            >
-                                                <Edit className="w-4 h-4" /> Manage Profile
-                                            </button>
+
                                         </div>
                                     </div>
 
