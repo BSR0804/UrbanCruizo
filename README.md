@@ -1,122 +1,202 @@
-# UrbanCruizo - Premium Vehicle & Luxury Tour Marketplace 🚗💎✨
+# UrbanCruizo — Premium Vehicle Rental & Luxury Tour Marketplace
 
-UrbanCruizo is a high-performance, full-stack ecosystem designed for the adventurous elite. Built with a focus on security, role-based orchestration, and premium UX, it provides a seamless bridge between local dealers and luxury travelers across India.
-
-## 🚀 Live Ecosystem
-- **Main Platform:** [https://caraw-inn.vercel.app/](https://caraw-inn.vercel.app/)
-- **Partner Portal:** [https://caraw-inn.vercel.app/partner](https://caraw-inn.vercel.app/partner)
-- **GitHub Repository:** [BSR0804/UrbanCruizo](https://github.com/BSR0804/UrbanCruizo)
+UrbanCruizo is a full-stack vehicle rental platform connecting premium fleet owners (dealers) with travelers across India. It features a customer-facing marketplace, a dedicated partner portal for dealers, and a Node.js/MongoDB backend with role-based access control.
 
 ---
 
-## 🛠️ Tech Stack
+## Live Deployments
 
-### Backend (State-of-the-art Logic)
-- **Runtime:** Node.js (Express.js)
-- **Database:** MongoDB with Mongoose ODM
-- **Security:** JWT (JSON Web Tokens) with strictly enforced role-based middleware
-- **Encryption:** Bcrypt.js for military-grade password hashing
-- **Payments:** End-to-end Razorpay integration with signature verification
-
-### Frontend (Premium UI/UX)
-- **Framework:** React.js (Vite)
-- **Styling:** Vanilla CSS & Tailwind with **Framer Motion** for liquid animations
-- **Icons:** Lucide-React for a modern aesthetic
-- **Auth Flow:** Google OAuth 2.0 & Custom JWT integration
+| App | URL |
+| :--- | :--- |
+| Customer Marketplace | [caraw-inn.vercel.app](https://caraw-inn.vercel.app/) |
+| Partner Portal | [carawinn-partner.vercel.app](https://carawinn-partner.vercel.app/) |
+| Backend API | [carawinn.onrender.com/api/v1](https://carawinn.onrender.com/api/v1) |
+| GitHub | [BSR0804/UrbanCruizo](https://github.com/BSR0804/UrbanCruizo) |
 
 ---
 
-## ✅ Advanced Features
+## Tech Stack
 
-### 🏺 Premium Tour Packages (New!)
-Beyond simple rentals, we've introduced curated luxury experiences:
-- **Kolkata Heritage & Culture:** A deep dive into the City of Joy with authentic imagery and private guided experiences.
-- **Rajasthan Royal Legacy:** An evocative journey through Jaipur, featuring palace stays and desert safaris, presented through high-impact, story-driven narratives.
-- **Dynamic Organizers:** Each package features localized organizer details, including specific office addresses and direct contact lines for seamless logistics.
+### Backend
+- **Runtime:** Node.js with Express.js
+- **Database:** MongoDB Atlas with Mongoose ODM
+- **Auth:** JWT (30-day tokens) + Google OAuth 2.0 via access token verification
+- **Passwords:** Bcrypt.js
+- **Payments:** Razorpay (order creation + signature verification)
 
-### 🛡️ Authorization Hard-Gate (No Bypass Allowed)
-Implemented a mandatory **interstitial gateway**. Unauthenticated users attempting to access premium features like **Destinations** or **Luxury Caravans** are strictly redirected to a "Choose Your Journey" choice screen. Access is only granted once the user identifies as either a **Traveler** or a **Partner**.
+### Frontend (Customer Marketplace)
+- **Framework:** React 19 + Vite 7
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Auth:** `@react-oauth/google` + custom JWT context
 
-### 🚪 Global Logout Enforcement
-A centralized session management system ensures that every "Logout" action across all sub-platforms (Main App, Dealer Dashboard, Partner Portal) triggers a mandatory and immediate hardware-level redirect back to the primary landing page.
-
-### 🗺️ Luxury Map Integration
-Every detail counts. We've integrated dark-themed, premium-styled Google Maps for:
-- **Vehicle Availability:** Locating the nearest premium dealer.
-- **Tour Organizers:** Directing travelers to the localized headquarters of their chosen experience.
-- **Custom Aesthetic:** The maps are custom-filtered (grayscale/invert) to align with UrbanCruizo's premium visual identity.
-
-### 🏢 Standalone Partner Portal
-A dedicated sub-project for fleet owners that includes:
-- **First-time Profile Sync:** Mandatory profile completion flow for new dealers.
-- **Fleet Management:** Full CRUD for vehicles (Cars, Bikes, Caravans).
-- **Booking Orchestration:** Real-time approval/denial of rental requests.
-- **Earnings Analytics:** Automated commission calculations and payout history.
+### Partner Portal
+- Standalone React + Vite app (separate Vercel deployment)
+- Isolated session storage (`uc_partner` key, separate from `uc_user`)
+- Same backend API, dealer-scoped endpoints
 
 ---
 
-## 📂 Project Architecture
+## Project Structure
 
-```text
+```
 UrbanCruizo/
-├── backend/                # Core API & Business Logic
-│   ├── controllers/        # Route logic (Auth, Dealer, Vehicle, Booking)
-│   ├── middleware/         # RBAC (Admin/Dealer/User) & Security
-│   ├── models/             # Mongoose Schemas (User, Vehicle, Booking)
-│   └── server.js           # Production-ready entry point
-├── frontend/               # Primary Consumer Marketplace
-│   ├── public/images/      # Managed assets with high-resolution tour imagery
-│   ├── src/pages/          # DestinationGateway, HomePage, VehicleListing, CaravanDetails
-│   └── src/data/           # Static data with dynamic organizer/pricing logic
-├── partner/                # Standalone Dealer/Fleet Owner Platform
-│   ├── src/pages/          # Landing, Dashboard, ProfileSync
-│   └── src/utils/          # Portal-specific API configuration
+├── backend/
+│   ├── controllers/
+│   │   ├── authController.js           # Login, register, Google OAuth
+│   │   ├── dealerController.js         # Public dealer listing & profiles
+│   │   ├── dealerDashboardController.js # Dealer-auth: profile, fleet, bookings, earnings
+│   │   ├── vehicleController.js        # Vehicle CRUD
+│   │   ├── bookingController.js        # Booking lifecycle
+│   │   ├── caravanController.js        # Tour packages (TourPackage model)
+│   │   └── paymentController.js        # Razorpay integration
+│   ├── middleware/
+│   │   └── authMiddleware.js           # protect, dealer, admin guards
+│   ├── models/
+│   │   ├── User.js                     # Customers + dealer user accounts
+│   │   ├── Dealer.js                   # Public dealer listing (separate collection)
+│   │   ├── Vehicle.js                  # Fleet (owner → Dealer._id)
+│   │   ├── Booking.js                  # Rental bookings
+│   │   ├── TourPackage.js              # Curated tour packages
+│   │   └── CarRequest.js               # Customer vehicle requests
+│   ├── routes/
+│   │   └── v1.js                       # API v1 router
+│   ├── seeder.js                       # Seed 16 dealers, 45 vehicles, 3 tour packages
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── pages/                      # Full marketplace page set
+│   │   ├── components/                 # BookingFormModal, PaymentModal, TripPlanner, etc.
+│   │   ├── context/AuthContext.jsx     # uc_user localStorage key
+│   │   ├── utils/api.js                # Axios instance with uc_user token
+│   │   └── data/staticData.js          # Mock fallback data
+│   └── public/images/                  # Vehicle & tour imagery
+├── partner/
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Landing.jsx             # Partner landing page
+│   │   │   ├── Login.jsx               # Dealer login
+│   │   │   ├── Register.jsx            # Dealer registration
+│   │   │   └── Dashboard.jsx           # Fleet, bookings, earnings, notifications
+│   │   ├── context/AuthContext.jsx     # uc_partner localStorage key
+│   │   └── utils/api.js                # Axios instance with uc_partner token
+│   └── vercel.json
 └── README.md
 ```
 
 ---
 
-## ⚙️ Getting Started
+## Key Features
 
-### 1. Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas Cluster
-- Razorpay API Keys
+### Dealer Flow
+1. Partner registers via `/register?role=dealer`
+2. Completes business profile → `Dealer` document auto-created (upsert)
+3. Dealer card appears live on customer marketplace under their city
+4. Dealer lists vehicles → immediately visible on dealer's fleet page
+5. Customers book → dealer approves/denies from dashboard
 
-### 2. Environment Configuration
-Create a `.env` in the `backend` folder:
+### Auth System
+- **Email/password** login with Bcrypt comparison
+- **Google OAuth** via access token (`googleapis.com/oauth2/v3/userinfo`)
+- Accounts created via Google cannot use email/password login (explicit error message)
+- Role-based routing: `admin → /admin`, `dealer → /partner`, `user → /dashboard`
+- Separate localStorage keys prevent customer/partner session conflicts
+
+### Partner Dashboard
+- Fleet management: add, edit, remove vehicles with full spec forms
+- Booking requests: approve or deny with one click
+- Earnings overview with commission tracking
+- Live notification bell: shows pending booking count, pulsing indicator
+
+### Tour Packages
+- Stored in `TourPackage` collection (replaces legacy `Caravan` model)
+- Served via `/api/v1/caravans` routes (backwards-compatible)
+- Includes: pricing, duration, city, amenities, images, organizer contact
+
+### Payments
+- Razorpay order created on backend, verified by signature on completion
+- Security deposit captured separately from rental cost
+
+---
+
+## API Reference
+
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/v1/auth/login` | Email/password login | Public |
+| `POST` | `/api/v1/auth/register` | Register new account | Public |
+| `POST` | `/api/v1/auth/google` | Google OAuth login | Public |
+| `GET` | `/api/v1/dealers` | List all dealers (filterable by city) | Public |
+| `GET` | `/api/v1/dealers/:id` | Dealer public profile | Public |
+| `GET` | `/api/v1/dealers/:id/vehicles` | Vehicles by dealer | Public |
+| `PUT` | `/api/v1/dealers/profile` | Update dealer profile + sync Dealer doc | Dealer |
+| `GET` | `/api/v1/vehicles` | Browse all vehicles | Public |
+| `GET` | `/api/v1/vehicles/:id` | Vehicle details | Public |
+| `POST` | `/api/v1/vehicles` | List a new vehicle | Dealer |
+| `PUT` | `/api/v1/vehicles/:id` | Edit vehicle | Dealer |
+| `DELETE` | `/api/v1/vehicles/:id` | Remove vehicle | Dealer |
+| `POST` | `/api/v1/bookings` | Create booking | User |
+| `GET` | `/api/v1/bookings/dealer` | Dealer's incoming bookings | Dealer |
+| `PUT` | `/api/v1/bookings/:id/review` | Approve or deny booking | Dealer |
+| `GET` | `/api/v1/caravans` | List tour packages | Public |
+| `POST` | `/api/v1/payment/order` | Create Razorpay order | User |
+| `POST` | `/api/v1/payment/verify` | Verify payment signature | User |
+
+---
+
+## Environment Variables
+
+### Backend (`backend/.env`)
 ```env
-MONGO_URI=your_mongodb_uri
+MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-RAZORPAY_KEY_ID=your_razorpay_id
-RAZORPAY_KEY_SECRET=your_razorpay_secret
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+GOOGLE_CLIENT_ID=your_google_client_id
+PORT=5000
 ```
 
-### 3. Quick Start
+### Frontend (`frontend/.env`)
+```env
+VITE_API_URL=https://carawinn.onrender.com/api/v1
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+```
+
+### Partner Portal (`partner/.env`)
+```env
+VITE_API_URL=https://carawinn.onrender.com/api/v1
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+---
+
+## Local Development
+
 ```bash
-# Start Backend
-cd backend && npm install && npm run dev
+# Backend
+cd backend
+npm install
+npm run dev        # runs on :5000
 
-# Start Marketplace
-cd frontend && npm install && npm run dev
+# Customer Marketplace
+cd frontend
+npm install
+npm run dev        # runs on :5173
 
-# Start Partner Portal (Optional)
-cd partner && npm install && npm run dev
+# Partner Portal
+cd partner
+npm install
+npm run dev        # runs on :5174
+```
+
+To seed the database with demo dealers, vehicles, and tour packages:
+```bash
+cd backend
+node seeder.js
 ```
 
 ---
 
-## 📖 API Documentation (V1)
-
-| Method | Endpoint | Description | Role Required |
-| :--- | :---- | :--- | :--- |
-| `POST` | `/api/v1/auth/login` | Secure JWT Authentication | Public |
-| `PUT` | `/api/v1/dealers/profile` | Sync Dealer Profile Details | Dealer |
-| `GET` | `/api/v1/vehicles` | Filtered Fleet Discovery | Public |
-| `POST` | `/api/v1/bookings` | Initiate Premium Rental | User |
-| `PUT` | `/api/v1/bookings/:id/review` | Approve/Deny Booking | Dealer |
-
----
-
-**Built for the high-end mobility market.**  
-**Developed by Bhaskar Shamo Ray**
+**Built by Bhaskar Shamo Ray**
