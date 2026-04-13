@@ -88,14 +88,16 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
             return;
         }
 
+        // Selfie always required
+        if (!files.selfie) {
+            toast.error('Please upload a selfie');
+            return;
+        }
+
         if (!isForeigner) {
             // Indian national
             if (!files.aadhaarDoc) {
                 toast.error('Please upload your Aadhaar document');
-                return;
-            }
-            if (!files.selfie) {
-                toast.error('Please upload a selfie');
                 return;
             }
         } else {
@@ -310,29 +312,6 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                             onChange={handleFile('aadhaarDoc')}
                                         />
 
-                                        {/* Selfie */}
-                                        <div className="space-y-2">
-                                            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
-                                                <Camera className="w-3.5 h-3.5 text-primary/60" />
-                                                Selfie
-                                            </label>
-                                            <button
-                                                type="button"
-                                                onClick={() => document.getElementById('selfie-input').click()}
-                                                className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/50 transition-all group"
-                                            >
-                                                <Camera className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
-                                                <span className={`text-sm truncate ${files.selfie ? 'text-white' : 'text-gray-600'}`}>
-                                                    {files.selfie ? files.selfie.name : 'Click to upload a clear selfie'}
-                                                </span>
-                                                {files.selfie && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
-                                            </button>
-                                            <input id="selfie-input" type="file" accept="image/*" capture="user"
-                                                className="hidden"
-                                                onChange={(e) => handleFile('selfie')(e.target.files[0] || null)} />
-                                            <p className="text-[11px] text-textSecondary pl-1">Make sure your face is clearly visible and matches your ID.</p>
-                                        </div>
-
                                         {/* Passport optional for Indians */}
                                         <FileUploadField
                                             label="Passport"
@@ -383,6 +362,29 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                         <p className="text-[11px] text-textSecondary pl-1">Upload the photo page of your passport clearly showing your name and photo.</p>
                                     </div>
                                 )}
+
+                                {/* Selfie — always required */}
+                                <div className="space-y-2">
+                                    <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
+                                        <Camera className="w-3.5 h-3.5 text-primary/60" />
+                                        Selfie
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={() => document.getElementById('selfie-input').click()}
+                                        className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/50 transition-all group"
+                                    >
+                                        <Camera className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
+                                        <span className={`text-sm truncate ${files.selfie ? 'text-white' : 'text-gray-600'}`}>
+                                            {files.selfie ? files.selfie.name : 'Click to upload a clear selfie'}
+                                        </span>
+                                        {files.selfie && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
+                                    </button>
+                                    <input id="selfie-input" type="file" accept="image/*" capture="user"
+                                        className="hidden"
+                                        onChange={(e) => handleFile('selfie')(e.target.files[0] || null)} />
+                                    <p className="text-[11px] text-textSecondary pl-1">Make sure your face is clearly visible and matches your ID.</p>
+                                </div>
                             </div>
 
                             {/* ── Price Summary ── */}
