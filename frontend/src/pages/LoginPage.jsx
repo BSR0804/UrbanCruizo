@@ -23,16 +23,9 @@ const LoginPage = () => {
             console.log("Attempting backend authentication with access token...");
             const result = await googleLogin(tokenResponse.access_token, loginType);
             if (result.success) {
-                // Check role if loginType is dealer
-                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                if (loginType === 'dealer' && userInfo.role !== 'dealer') {
-                    setError('This account is not registered as a partner.');
-                    toast.error('This account is not registered as a partner.');
-                    // Optionally logout if we want to force them out
-                    return;
-                }
+                const userInfo = JSON.parse(localStorage.getItem('uc_user'));
                 toast.success('Welcome back!');
-                const target = redirectPath || (userInfo.role === 'dealer' ? '/partner' : '/dashboard');
+                const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/partner' : '/dashboard');
                 console.log('Google Auth Target:', target);
                 navigate(target);
             } else {
@@ -60,13 +53,9 @@ const LoginPage = () => {
         // Pass the intended loginType so backend can optionally react to dealer intent
         const result = await login(email, password, loginType);
         if (result.success) {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            console.log('userInfo from localStorage:', userInfo);
-            console.log('userInfo.role:', userInfo.role);
-
+            const userInfo = JSON.parse(localStorage.getItem('uc_user'));
             toast.success('Welcome back!');
-            const target = redirectPath || (userInfo.role === 'admin' ? '/admin' : (userInfo.role === 'dealer' ? '/partner' : '/dashboard'));
-            console.log('Login Submit Target:', target);
+            const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/partner' : '/dashboard');
             navigate(target);
         } else {
             setError(result.message);
