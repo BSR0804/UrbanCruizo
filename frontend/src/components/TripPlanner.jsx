@@ -130,29 +130,75 @@ const TripPlanner = ({ vehicle }) => {
     };
 
     const handleCalculate = () => {
-        if (!originRef.current.value || !destRef.current.value) {
+        const originVal = originRef.current?.value || originRef.current?.getPlace?.()?.formatted_address || '';
+        const destVal = destRef.current?.value || destRef.current?.getPlace?.()?.formatted_address || '';
+        if (!originVal || !destVal) {
             setError('Please enter both origin and destination');
             return;
         }
-        setOrigin(originRef.current.value);
-        setDestination(destRef.current.value);
+        setOrigin(originVal);
+        setDestination(destVal);
     };
 
     if (loadError || !apiKey) {
         return (
-            <div className="bg-surface p-10 rounded-3xl border border-primary/20 text-center shadow-2xl">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <AlertCircle className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-white mb-3">Maps Integration Required</h3>
-                <p className="text-textSecondary text-sm mb-6 max-w-md mx-auto">
-                    To enable real-time route planning and fuel estimation, please configure your
-                    <span className="text-primary font-bold"> Google Maps API Key </span>
-                    in the environment variables.
-                </p>
-                <div className="inline-block p-4 bg-background rounded-2xl border border-gray-800 text-left">
-                    <code className="text-[10px] text-primary block mb-1">Step 1: Create API Key in Google Cloud Console</code>
-                    <code className="text-textSecondary text-[10px]">Step 2: Add VITE_GOOGLE_MAPS_API_KEY to frontend/.env</code>
+            <div className="space-y-6">
+                <div className="bg-surface p-8 rounded-3xl border border-gray-800 shadow-xl">
+                    <div className="flex items-center justify-between mb-8">
+                        <h3 className="text-2xl font-serif font-bold text-white flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
+                                <Navigation className="w-6 h-6" />
+                            </div>
+                            Journey & Fuel Planner
+                        </h3>
+                        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10">
+                            <Info className="w-4 h-4 text-primary" />
+                            <span className="text-[10px] text-primary uppercase font-bold tracking-wider">Dynamic Estimation</span>
+                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                        <div className="space-y-4">
+                            <label className="block text-xs text-textSecondary uppercase tracking-widest font-bold ml-1">Starting From</label>
+                            <div className="relative group">
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                                <input
+                                    ref={originRef}
+                                    type="text"
+                                    placeholder="Enter origin (e.g., Karol Bagh, Delhi)"
+                                    className="input-field pl-12 h-14 text-sm bg-background border-gray-800 focus:border-primary transition-all rounded-2xl w-full"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <label className="block text-xs text-textSecondary uppercase tracking-widest font-bold ml-1">Ending At</label>
+                            <div className="relative group">
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                                <input
+                                    ref={destRef}
+                                    type="text"
+                                    placeholder="Enter destination (e.g., Agra, UP)"
+                                    className="input-field pl-12 h-14 text-sm bg-background border-gray-800 focus:border-primary transition-all rounded-2xl w-full"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        onClick={handleCalculate}
+                        className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-3 group rounded-2xl transition-all hover:scale-[1.02]"
+                    >
+                        <Navigation className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+                        Calculate Route & Estimation
+                    </button>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="mt-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center gap-3"
+                        >
+                            <AlertCircle className="w-5 h-5 shrink-0" />
+                            <p className="text-sm font-medium">{error}</p>
+                        </motion.div>
+                    )}
                 </div>
             </div>
         );
