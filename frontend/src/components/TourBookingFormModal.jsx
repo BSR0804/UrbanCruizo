@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
     X, User, Mail, Phone, Calendar, Users, MapPin,
     CreditCard, Upload, CheckCircle2, Loader2,
-    ShieldCheck, Utensils, MessageSquare, Globe
+    ShieldCheck, Utensils, MessageSquare
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -62,6 +62,7 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
         dietaryPreference: '',
         specialRequests: '',
         aadhaarNumber: '',
+        country: '',
     });
 
     const [files, setFiles] = useState({
@@ -280,7 +281,7 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                         onClick={() => {
                                             setIsForeigner(prev => !prev);
                                             // clear aadhaar fields when switching
-                                            setFormData(prev => ({ ...prev, aadhaarNumber: '' }));
+                                            setFormData(prev => ({ ...prev, aadhaarNumber: '', country: '' }));
                                             setFiles(prev => ({ ...prev, aadhaarFront: null, aadhaarBack: null }));
                                         }}
                                         className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all ${isForeigner ? 'border-primary/50 bg-primary/5' : 'border-gray-800 bg-background hover:border-gray-700'}`}
@@ -293,10 +294,9 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                                 </svg>
                                             )}
                                         </div>
-                                        <Globe className={`w-5 h-5 shrink-0 transition-colors ${isForeigner ? 'text-primary' : 'text-gray-600'}`} />
                                         <div className="text-left">
                                             <p className={`text-sm font-bold transition-colors ${isForeigner ? 'text-white' : 'text-textSecondary'}`}>I am a Foreign National</p>
-                                            <p className="text-[11px] text-textSecondary mt-0.5">Aadhaar not required — passport upload becomes mandatory</p>
+                                            <p className="text-[11px] text-textSecondary mt-0.5">Please upload a valid passport to proceed</p>
                                         </div>
                                     </button>
 
@@ -358,9 +358,84 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                     {/* ── Foreign National: Passport mandatory ── */}
                                     {isForeigner && (
                                         <div className="space-y-5">
-                                            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20">
-                                                <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Foreign National Mode</p>
-                                                <p className="text-[11px] text-textSecondary">Aadhaar is not required. Please upload a valid passport to proceed.</p>
+                                            {/* Country Dropdown */}
+                                            <div className="space-y-2">
+                                                <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Country / Nationality</label>
+                                                <div className="relative">
+                                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
+                                                    <select
+                                                        name="country"
+                                                        required
+                                                        className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all appearance-none"
+                                                        value={formData.country || ''}
+                                                        onChange={handleChange}
+                                                    >
+                                                        <option value="">Select your country</option>
+                                                        <option value="Afghanistan">Afghanistan</option>
+                                                        <option value="Albania">Albania</option>
+                                                        <option value="Algeria">Algeria</option>
+                                                        <option value="Argentina">Argentina</option>
+                                                        <option value="Australia">Australia</option>
+                                                        <option value="Austria">Austria</option>
+                                                        <option value="Bangladesh">Bangladesh</option>
+                                                        <option value="Belgium">Belgium</option>
+                                                        <option value="Brazil">Brazil</option>
+                                                        <option value="Canada">Canada</option>
+                                                        <option value="Chile">Chile</option>
+                                                        <option value="China">China</option>
+                                                        <option value="Colombia">Colombia</option>
+                                                        <option value="Czech Republic">Czech Republic</option>
+                                                        <option value="Denmark">Denmark</option>
+                                                        <option value="Egypt">Egypt</option>
+                                                        <option value="Ethiopia">Ethiopia</option>
+                                                        <option value="Finland">Finland</option>
+                                                        <option value="France">France</option>
+                                                        <option value="Germany">Germany</option>
+                                                        <option value="Ghana">Ghana</option>
+                                                        <option value="Greece">Greece</option>
+                                                        <option value="Hungary">Hungary</option>
+                                                        <option value="Indonesia">Indonesia</option>
+                                                        <option value="Iran">Iran</option>
+                                                        <option value="Iraq">Iraq</option>
+                                                        <option value="Ireland">Ireland</option>
+                                                        <option value="Israel">Israel</option>
+                                                        <option value="Italy">Italy</option>
+                                                        <option value="Japan">Japan</option>
+                                                        <option value="Jordan">Jordan</option>
+                                                        <option value="Kenya">Kenya</option>
+                                                        <option value="Malaysia">Malaysia</option>
+                                                        <option value="Mexico">Mexico</option>
+                                                        <option value="Morocco">Morocco</option>
+                                                        <option value="Myanmar">Myanmar</option>
+                                                        <option value="Nepal">Nepal</option>
+                                                        <option value="Netherlands">Netherlands</option>
+                                                        <option value="New Zealand">New Zealand</option>
+                                                        <option value="Nigeria">Nigeria</option>
+                                                        <option value="Norway">Norway</option>
+                                                        <option value="Pakistan">Pakistan</option>
+                                                        <option value="Philippines">Philippines</option>
+                                                        <option value="Poland">Poland</option>
+                                                        <option value="Portugal">Portugal</option>
+                                                        <option value="Romania">Romania</option>
+                                                        <option value="Russia">Russia</option>
+                                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                                        <option value="Singapore">Singapore</option>
+                                                        <option value="South Africa">South Africa</option>
+                                                        <option value="South Korea">South Korea</option>
+                                                        <option value="Spain">Spain</option>
+                                                        <option value="Sri Lanka">Sri Lanka</option>
+                                                        <option value="Sweden">Sweden</option>
+                                                        <option value="Switzerland">Switzerland</option>
+                                                        <option value="Thailand">Thailand</option>
+                                                        <option value="Turkey">Turkey</option>
+                                                        <option value="Ukraine">Ukraine</option>
+                                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                                        <option value="United Kingdom">United Kingdom</option>
+                                                        <option value="United States">United States</option>
+                                                        <option value="Vietnam">Vietnam</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <FileUploadField
