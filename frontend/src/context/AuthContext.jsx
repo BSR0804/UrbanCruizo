@@ -8,9 +8,9 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userInfo = localStorage.getItem('userInfo');
-        if (userInfo) {
-            setUser(JSON.parse(userInfo));
+        const uc_user = localStorage.getItem('uc_user');
+        if (uc_user) {
+            setUser(JSON.parse(uc_user));
         }
         setLoading(false);
     }, []);
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const { data } = await axios.post('auth/login', { email, password, role });
             setUser(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('uc_user', JSON.stringify(data));
             return {
                 success: true,
                 role: data.role,
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
                 role
             });
             setUser(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('uc_user', JSON.stringify(data));
             return {
                 success: true,
                 role: data.role,
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const { data } = await axios.post('auth/google', { token, role });
             setUser(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('uc_user', JSON.stringify(data));
             return {
                 success: true,
                 role: data.role,
@@ -78,11 +78,11 @@ export const AuthProvider = ({ children }) => {
     const updateUser = (updatedData) => {
         const newUser = { ...user, ...updatedData };
         setUser(newUser);
-        localStorage.setItem('userInfo', JSON.stringify(newUser));
+        localStorage.setItem('uc_user', JSON.stringify(newUser));
     };
 
     const logout = () => {
-        localStorage.removeItem('userInfo');
+        localStorage.removeItem('uc_user');
         setUser(null);
         window.location.replace('https://caraw-inn.vercel.app/');
     };

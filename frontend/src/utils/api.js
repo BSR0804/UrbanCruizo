@@ -17,7 +17,7 @@ if (import.meta.env.PROD) {
 // Add a request interceptor to include the token in headers
 api.interceptors.request.use(
     (config) => {
-        const userInfo = localStorage.getItem('userInfo');
+        const userInfo = localStorage.getItem('uc_user');
         if (userInfo) {
             const { token } = JSON.parse(userInfo);
             config.headers.Authorization = `Bearer ${token}`;
