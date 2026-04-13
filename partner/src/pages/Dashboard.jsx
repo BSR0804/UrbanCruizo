@@ -62,7 +62,6 @@ const Dashboard = () => {
 
     const fetchData = async () => {
         if (!isAuthenticated) {
-            // Use demo data
             setStats(demoStats);
             setVehicles(demoVehicles);
             setBookings(demoBookings);
@@ -71,6 +70,8 @@ const Dashboard = () => {
             return;
         }
         setLoading(true);
+        // Safety timeout — never hang forever
+        const timeout = setTimeout(() => setLoading(false), 8000);
         try {
             const [statsRes, vehiclesRes, bookingsRes, requestsRes] = await Promise.all([
                 axios.get('dealers/dashboard/stats'),
@@ -78,6 +79,7 @@ const Dashboard = () => {
                 axios.get('dealers/dashboard/bookings'),
                 axios.get('dealers/dashboard/car-requests')
             ]);
+            clearTimeout(timeout);
             setStats(statsRes.data);
             setVehicles(vehiclesRes.data);
             setBookings(bookingsRes.data);
@@ -85,6 +87,7 @@ const Dashboard = () => {
             if (!user.isProfileComplete) setShowProfileForm(true);
             setLoading(false);
         } catch (error) {
+            clearTimeout(timeout);
             console.error('Dashboard error:', error);
             setLoading(false);
         }
