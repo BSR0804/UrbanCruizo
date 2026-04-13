@@ -1,17 +1,33 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Mail, Phone, Calendar, CreditCard, Upload, CheckCircle2, Loader2, Camera, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { X, User, Mail, Phone, Calendar, CreditCard, Upload, CheckCircle2, Loader2, Camera, ShieldCheck, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const FileUploadField = ({ label, hint, accept, onChange, value }) => {
+const COUNTRIES = [
+    'Afghanistan','Albania','Algeria','Argentina','Australia','Austria','Bangladesh','Belgium',
+    'Brazil','Canada','Chile','China','Colombia','Czech Republic','Denmark','Egypt','Ethiopia',
+    'Finland','France','Germany','Ghana','Greece','Hungary','Indonesia','Iran','Iraq','Ireland',
+    'Israel','Italy','Japan','Jordan','Kenya','Malaysia','Mexico','Morocco','Myanmar','Nepal',
+    'Netherlands','New Zealand','Nigeria','Norway','Pakistan','Philippines','Poland','Portugal',
+    'Romania','Russia','Saudi Arabia','Singapore','South Africa','South Korea','Spain','Sri Lanka',
+    'Sweden','Switzerland','Thailand','Turkey','Ukraine','United Arab Emirates','United Kingdom',
+    'United States','Vietnam','Other'
+];
+
+const FileUploadField = ({ label, hint, accept, onChange, value, optional = false, dashed = false }) => {
     const inputRef = useRef();
     return (
         <div className="space-y-2">
-            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">{label}</label>
+            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
+                {label}
+                {optional && (
+                    <span className="px-2 py-0.5 rounded-full bg-gray-800 text-gray-500 text-[9px] uppercase tracking-wider font-bold">Optional</span>
+                )}
+            </label>
             <button
                 type="button"
                 onClick={() => inputRef.current.click()}
-                className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 text-left flex items-center gap-3 hover:border-primary/50 transition-all group"
+                className={`w-full bg-background rounded-2xl py-4 px-4 text-left flex items-center gap-3 transition-all group ${dashed ? 'border border-dashed border-gray-700 hover:border-primary/40' : 'border border-gray-800 hover:border-primary/50'}`}
             >
                 <Upload className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
                 <span className={`text-sm truncate ${value ? 'text-white' : 'text-gray-600'}`}>
@@ -31,6 +47,8 @@ const FileUploadField = ({ label, hint, accept, onChange, value }) => {
 };
 
 const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => {
+    const [isForeigner, setIsForeigner] = useState(false);
+
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -38,6 +56,7 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
         age: '',
         drivingLicenseNumber: '',
         aadhaarNumber: '',
+        country: '',
     });
 
     const [files, setFiles] = useState({
@@ -63,22 +82,37 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Driving License always required
         if (!files.licenseFront || !files.licenseBack) {
             toast.error('Please upload both sides of your Driving License');
             return;
         }
-        if (!files.aadhaarDoc) {
-            toast.error('Please upload your Aadhaar document');
-            return;
-        }
-        if (!files.selfie) {
-            toast.error('Please upload a selfie');
-            return;
+
+        if (!isForeigner) {
+            // Indian national
+            if (!files.aadhaarDoc) {
+                toast.error('Please upload your Aadhaar document');
+                return;
+            }
+            if (!files.selfie) {
+                toast.error('Please upload a selfie');
+                return;
+            }
+        } else {
+            // Foreign national
+            if (!formData.country) {
+                toast.error('Please select your country');
+                return;
+            }
+            if (!files.passport) {
+                toast.error('Passport upload is required for foreign nationals');
+                return;
+            }
         }
 
         setLoading(true);
         try {
-            await onSubmit({ ...formData, files });
+            await onSubmit({ ...formData, isForeigner, files });
             setSuccess(true);
             setTimeout(() => {
                 onClose();
@@ -138,73 +172,47 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
 
                             {/* ── Personal Details ── */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Full Name */}
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Full Name</label>
                                     <div className="relative">
                                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="text"
-                                            name="fullName"
-                                            required
+                                        <input type="text" name="fullName" required
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                             placeholder="Enter your name"
-                                            value={formData.fullName}
-                                            onChange={handleChange}
-                                        />
+                                            value={formData.fullName} onChange={handleChange} />
                                     </div>
                                 </div>
 
-                                {/* Email */}
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Email Address</label>
                                     <div className="relative">
                                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            required
+                                        <input type="email" name="email" required
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                             placeholder="example@email.com"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                        />
+                                            value={formData.email} onChange={handleChange} />
                                     </div>
                                 </div>
 
-                                {/* Phone */}
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Phone Number</label>
                                     <div className="relative">
                                         <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="tel"
-                                            name="phone"
-                                            required
+                                        <input type="tel" name="phone" required
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                             placeholder="+91 98765 43210"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                        />
+                                            value={formData.phone} onChange={handleChange} />
                                     </div>
                                 </div>
 
-                                {/* Age */}
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Age</label>
                                     <div className="relative">
                                         <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="number"
-                                            name="age"
-                                            required
-                                            min="18"
-                                            max="100"
+                                        <input type="number" name="age" required min="18" max="100"
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                             placeholder="e.g. 28"
-                                            value={formData.age}
-                                            onChange={handleChange}
-                                        />
+                                            value={formData.age} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
@@ -218,24 +226,41 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                     <span className="text-[10px] text-primary/60 uppercase tracking-wider">India-Specific</span>
                                 </div>
 
-                                {/* Driving License Number */}
+                                {/* Foreign National Toggle */}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsForeigner(prev => !prev);
+                                        setFormData(prev => ({ ...prev, aadhaarNumber: '', country: '' }));
+                                        setFiles(prev => ({ ...prev, aadhaarDoc: null, selfie: null }));
+                                    }}
+                                    className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all ${isForeigner ? 'border-primary/50 bg-primary/5' : 'border-gray-800 bg-background hover:border-gray-700'}`}
+                                >
+                                    <div className={`w-5 h-5 rounded flex items-center justify-center border-2 shrink-0 transition-all ${isForeigner ? 'bg-primary border-primary' : 'border-gray-600 bg-transparent'}`}>
+                                        {isForeigner && (
+                                            <svg className="w-3 h-3 text-background" fill="none" viewBox="0 0 12 12">
+                                                <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        )}
+                                    </div>
+                                    <div className="text-left">
+                                        <p className={`text-sm font-bold transition-colors ${isForeigner ? 'text-white' : 'text-textSecondary'}`}>I am a Foreign National</p>
+                                        <p className="text-[11px] text-textSecondary mt-0.5">Please upload a valid passport to proceed</p>
+                                    </div>
+                                </button>
+
+                                {/* Driving License — always required */}
                                 <div className="space-y-2">
                                     <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Driving License Number</label>
                                     <div className="relative">
                                         <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="text"
-                                            name="drivingLicenseNumber"
-                                            required
+                                        <input type="text" name="drivingLicenseNumber" required
                                             className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all tracking-widest"
                                             placeholder="e.g. DL-0420110012345"
-                                            value={formData.drivingLicenseNumber}
-                                            onChange={handleChange}
-                                        />
+                                            value={formData.drivingLicenseNumber} onChange={handleChange} />
                                     </div>
                                 </div>
 
-                                {/* License Upload — Front + Back */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <FileUploadField
                                         label="Upload License (Front)"
@@ -253,93 +278,111 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                     />
                                 </div>
 
-                                {/* Aadhaar Number */}
-                                <div className="space-y-2">
-                                    <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Aadhaar Number</label>
-                                    <div className="relative">
-                                        <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                        <input
-                                            type="text"
-                                            name="aadhaarNumber"
-                                            required
-                                            maxLength={14}
-                                            className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all tracking-widest"
-                                            placeholder="XXXX XXXX XXXX"
-                                            value={formData.aadhaarNumber}
-                                            onChange={(e) => {
-                                                // auto-format: insert space every 4 digits
-                                                const raw = e.target.value.replace(/\D/g, '').slice(0, 12);
-                                                const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
-                                                setFormData(prev => ({ ...prev, aadhaarNumber: formatted }));
-                                            }}
+                                {/* ── Indian National fields ── */}
+                                {!isForeigner && (
+                                    <div className="space-y-5">
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Aadhaar Number</label>
+                                            <div className="relative">
+                                                <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
+                                                <input
+                                                    type="text"
+                                                    name="aadhaarNumber"
+                                                    required
+                                                    maxLength={14}
+                                                    className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all tracking-widest"
+                                                    placeholder="XXXX XXXX XXXX"
+                                                    value={formData.aadhaarNumber}
+                                                    onChange={(e) => {
+                                                        const raw = e.target.value.replace(/\D/g, '').slice(0, 12);
+                                                        const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
+                                                        setFormData(prev => ({ ...prev, aadhaarNumber: formatted }));
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <FileUploadField
+                                            label="Upload Aadhaar"
+                                            hint="Click to upload Aadhaar card (front)"
+                                            accept="image/*,application/pdf"
+                                            value={files.aadhaarDoc}
+                                            onChange={handleFile('aadhaarDoc')}
                                         />
+
+                                        {/* Selfie */}
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
+                                                <Camera className="w-3.5 h-3.5 text-primary/60" />
+                                                Selfie
+                                            </label>
+                                            <button
+                                                type="button"
+                                                onClick={() => document.getElementById('selfie-input').click()}
+                                                className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/50 transition-all group"
+                                            >
+                                                <Camera className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
+                                                <span className={`text-sm truncate ${files.selfie ? 'text-white' : 'text-gray-600'}`}>
+                                                    {files.selfie ? files.selfie.name : 'Click to upload a clear selfie'}
+                                                </span>
+                                                {files.selfie && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
+                                            </button>
+                                            <input id="selfie-input" type="file" accept="image/*" capture="user"
+                                                className="hidden"
+                                                onChange={(e) => handleFile('selfie')(e.target.files[0] || null)} />
+                                            <p className="text-[11px] text-textSecondary pl-1">Make sure your face is clearly visible and matches your ID.</p>
+                                        </div>
+
+                                        {/* Passport optional for Indians */}
+                                        <FileUploadField
+                                            label="Passport"
+                                            hint="Upload passport (if available)"
+                                            accept="image/*,application/pdf"
+                                            value={files.passport}
+                                            onChange={handleFile('passport')}
+                                            optional={true}
+                                            dashed={true}
+                                        />
+                                        <p className="text-[11px] text-textSecondary pl-1 -mt-3">Required only for international travelers or if renting in border areas.</p>
                                     </div>
-                                </div>
+                                )}
 
-                                {/* Aadhaar Upload */}
-                                <FileUploadField
-                                    label="Upload Aadhaar"
-                                    hint="Click to upload Aadhaar card (front)"
-                                    accept="image/*,application/pdf"
-                                    value={files.aadhaarDoc}
-                                    onChange={handleFile('aadhaarDoc')}
-                                />
+                                {/* ── Foreign National fields ── */}
+                                {isForeigner && (
+                                    <div className="space-y-5">
+                                        <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20">
+                                            <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Foreign National Mode</p>
+                                            <p className="text-[11px] text-textSecondary">Aadhaar is not required. Please upload a valid passport to proceed.</p>
+                                        </div>
 
-                                {/* Selfie */}
-                                <div className="space-y-2">
-                                    <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
-                                        <Camera className="w-3.5 h-3.5 text-primary/60" />
-                                        Selfie
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={() => document.getElementById('selfie-input').click()}
-                                        className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/50 transition-all group"
-                                    >
-                                        <Camera className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
-                                        <span className={`text-sm truncate ${files.selfie ? 'text-white' : 'text-gray-600'}`}>
-                                            {files.selfie ? files.selfie.name : 'Click to upload a clear selfie'}
-                                        </span>
-                                        {files.selfie && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
-                                    </button>
-                                    <input
-                                        id="selfie-input"
-                                        type="file"
-                                        accept="image/*"
-                                        capture="user"
-                                        className="hidden"
-                                        onChange={(e) => handleFile('selfie')(e.target.files[0] || null)}
-                                    />
-                                    <p className="text-[11px] text-textSecondary pl-1">Make sure your face is clearly visible and matches your ID.</p>
-                                </div>
+                                        {/* Country dropdown */}
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Country / Nationality</label>
+                                            <div className="relative">
+                                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40 pointer-events-none" />
+                                                <select
+                                                    name="country"
+                                                    required
+                                                    className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all appearance-none"
+                                                    value={formData.country}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="">Select your country</option>
+                                                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                {/* Passport — Optional */}
-                                <div className="space-y-2">
-                                    <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
-                                        <CreditCard className="w-3.5 h-3.5 text-primary/60" />
-                                        Passport
-                                        <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-800 text-gray-500 text-[9px] uppercase tracking-wider font-bold">Optional</span>
-                                    </label>
-                                    <button
-                                        type="button"
-                                        onClick={() => document.getElementById('passport-input').click()}
-                                        className="w-full bg-background border border-dashed border-gray-700 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/40 transition-all group"
-                                    >
-                                        <Upload className="w-4 h-4 text-primary/30 group-hover:text-primary shrink-0 transition-colors" />
-                                        <span className={`text-sm truncate ${files.passport ? 'text-white' : 'text-gray-600'}`}>
-                                            {files.passport ? files.passport.name : 'Upload passport (if available)'}
-                                        </span>
-                                        {files.passport && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
-                                    </button>
-                                    <input
-                                        id="passport-input"
-                                        type="file"
-                                        accept="image/*,application/pdf"
-                                        className="hidden"
-                                        onChange={(e) => handleFile('passport')(e.target.files[0] || null)}
-                                    />
-                                    <p className="text-[11px] text-textSecondary pl-1">Required only for international travelers or if renting in border areas.</p>
-                                </div>
+                                        <FileUploadField
+                                            label="Passport"
+                                            hint="Click to upload your passport"
+                                            accept="image/*,application/pdf"
+                                            value={files.passport}
+                                            onChange={handleFile('passport')}
+                                        />
+                                        <p className="text-[11px] text-textSecondary pl-1">Upload the photo page of your passport clearly showing your name and photo.</p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* ── Price Summary ── */}

@@ -106,7 +106,11 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                     return false;
                 }
             } else {
-                // Foreign national — Passport is mandatory
+                // Foreign national — Country + Passport are mandatory
+                if (!formData.country) {
+                    toast.error('Please select your country');
+                    return false;
+                }
                 if (!files.passport) {
                     toast.error('Passport upload is required for foreign nationals');
                     return false;
@@ -439,7 +443,7 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                             </div>
 
                                             <FileUploadField
-                                                label="Passport (Mandatory)"
+                                                label="Passport"
                                                 hint="Click to upload your passport"
                                                 accept="image/*,application/pdf"
                                                 value={files.passport}
