@@ -2,12 +2,15 @@ const asyncHandler = require('express-async-handler');
 const Vehicle = require('../models/Vehicle');
 const Booking = require('../models/Booking');
 const User = require('../models/User');
+const Dealer = require('../models/Dealer');
 
 // @desc    Get dealer dashboard statistics
 // @route   GET /api/dealers/dashboard/stats
 // @access  Private/Dealer
 const getDashboardStats = asyncHandler(async (req, res) => {
-    const dealerId = req.user._id;
+    // Resolve Dealer doc so vehicle ownership (which refs Dealer._id) is found correctly
+    const dealerDoc = await Dealer.findOne({ email: req.user.email });
+    const dealerId = dealerDoc ? dealerDoc._id : req.user._id;
 
     // Get all vehicles owned by this dealer
     const vehicles = await Vehicle.find({ owner: dealerId });
@@ -49,7 +52,9 @@ const getDashboardStats = asyncHandler(async (req, res) => {
 // @route   GET /api/dealers/dashboard/vehicles
 // @access  Private/Dealer
 const getDealerVehicles = asyncHandler(async (req, res) => {
-    const vehicles = await Vehicle.find({ owner: req.user._id });
+    const dealerDoc = await Dealer.findOne({ email: req.user.email });
+    const dealerId = dealerDoc ? dealerDoc._id : req.user._id;
+    const vehicles = await Vehicle.find({ owner: dealerId });
     res.json(vehicles);
 });
 
@@ -57,7 +62,9 @@ const getDealerVehicles = asyncHandler(async (req, res) => {
 // @route   GET /api/dealers/dashboard/bookings
 // @access  Private/Dealer
 const getDealerBookings = asyncHandler(async (req, res) => {
-    const vehicles = await Vehicle.find({ owner: req.user._id });
+    const dealerDoc = await Dealer.findOne({ email: req.user.email });
+    const dealerId = dealerDoc ? dealerDoc._id : req.user._id;
+    const vehicles = await Vehicle.find({ owner: dealerId });
     const vehicleIds = vehicles.map(v => v._id);
 
     const bookings = await Booking.find({ vehicle: { $in: vehicleIds } })
@@ -74,37 +81,53 @@ const getDealerBookings = asyncHandler(async (req, res) => {
 const updateDealerProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
-    if (user) {
-        user.name = req.body.name || user.name;
-        user.phone = req.body.phone || user.phone;
-        user.businessName = req.body.businessName || user.businessName;
-        user.city = req.body.city || user.city;
-        user.location = req.body.location || user.location;
-        user.aadhaarNumber = req.body.aadhaarNumber || user.aadhaarNumber;
-        user.licenseNumber = req.body.licenseNumber || user.licenseNumber;
-
-        // Mark profile as complete if required fields are provided
-        if (req.body.phone && req.body.city && req.body.location && req.body.businessName) {
-            user.isProfileComplete = true;
-        }
-
-        const updatedUser = await user.save();
-
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            role: updatedUser.role,
-            isProfileComplete: updatedUser.isProfileComplete,
-            phone: updatedUser.phone,
-            businessName: updatedUser.businessName,
-            city: updatedUser.city,
-            location: updatedUser.location
-        });
-    } else {
+    if (!user) {
         res.status(404);
         throw new Error('User not found');
     }
+
+    user.name = req.body.name || user.name;
+    user.phone = req.body.phone || user.phone;
+    user.businessName = req.body.businessName || user.businessName;
+    user.city = req.body.city || user.city;
+    user.location = req.body.location || user.location;
+    user.aadhaarNumber = req.body.aadhaarNumber || user.aadhaarNumber;
+    user.licenseNumber = req.body.licenseNumber || user.licenseNumber;
+
+    if (req.body.phone && req.body.city && req.body.location && req.body.businessName) {
+        user.isProfileComplete = true;
+    }
+
+    const updatedUser = await user.save();
+
+    // Sync to public Dealer collection so the dealer card appears on the listing page
+    if (updatedUser.isProfileComplete) {
+        await Dealer.findOneAndUpdate(
+            { email: updatedUser.email },
+            {
+                name: updatedUser.businessName || updatedUser.name,
+                email: updatedUser.email,
+                phone: updatedUser.phone,
+                city: updatedUser.city,
+                location: updatedUser.location,
+                verified: true,
+                userId: updatedUser._id,
+            },
+            { upsert: true, new: true }
+        );
+    }
+
+    res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        isProfileComplete: updatedUser.isProfileComplete,
+        phone: updatedUser.phone,
+        businessName: updatedUser.businessName,
+        city: updatedUser.city,
+        location: updatedUser.location
+    });
 });
 
 module.exports = {

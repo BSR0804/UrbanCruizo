@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Vehicle = require('../models/Vehicle');
 const Booking = require('../models/Booking');
+const Dealer = require('../models/Dealer');
 const mongoose = require('mongoose');
 
 // @desc    Fetch all vehicles with filters (Including City)
@@ -62,9 +63,15 @@ const getVehicleById = asyncHandler(async (req, res) => {
 
 // @desc    Create Vehicle (Admin/Dealer)
 const createVehicle = asyncHandler(async (req, res) => {
+    // Resolve Dealer doc from the logged-in user's email so owner refs Dealer._id
+    const dealerDoc = await Dealer.findOne({ email: req.user.email });
+    if (!dealerDoc) {
+        res.status(400);
+        throw new Error('Complete your dealer profile before listing vehicles.');
+    }
     const vehicle = new Vehicle({
         ...req.body,
-        owner: req.body.owner || req.user._id // Assign owner
+        owner: dealerDoc._id
     });
     const createdVehicle = await vehicle.save();
     res.status(201).json(createdVehicle);

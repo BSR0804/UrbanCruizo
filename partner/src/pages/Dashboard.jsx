@@ -30,7 +30,7 @@ const Dashboard = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingVehicle, setEditingVehicle] = useState(null);
     const [vehicleFormData, setVehicleFormData] = useState({
-        title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
+        title: '', brand: '', model: '', year: '', type: 'car', category: 'hatchback', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
     });
 
     // Demo data for unauthenticated preview
