@@ -92,10 +92,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchData();
-        if (isAuthenticated) {
-            const interval = setInterval(fetchData, 60000);
-            return () => clearInterval(interval);
-        }
     }, [user]);
 
     const handleProfileSubmit = async (e) => {
