@@ -45,6 +45,10 @@ const authUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 isProfileComplete: user.isProfileComplete,
+                phone: user.phone,
+                businessName: user.businessName,
+                city: user.city,
+                location: user.location,
                 token: generateToken(user._id),
             });
         } else {
@@ -139,6 +143,10 @@ const googleAuth = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 isProfileComplete: user.isProfileComplete,
+                phone: user.phone,
+                businessName: user.businessName,
+                city: user.city,
+                location: user.location,
                 token: generateToken(user._id),
             });
         } else {
