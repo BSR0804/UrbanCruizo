@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     LayoutDashboard, Car, CalendarCheck, Wallet, Bell, Settings, Plus, TrendingUp, Users, MapPin, Trash2, Edit, Check, X, Eye, RefreshCw, Lock, ChevronRight
@@ -25,6 +25,10 @@ const Dashboard = () => {
         city: user?.city || '',
         location: user?.location || '',
     });
+
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [notifSeen, setNotifSeen] = useState(false);
+    const notifRef = useRef(null);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingVehicle, setEditingVehicle] = useState(null);
@@ -88,6 +92,16 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (notifRef.current && !notifRef.current.contains(e.target)) {
+                setShowNotifications(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const handleProfileSubmit = async (e) => {
@@ -158,7 +172,67 @@ const Dashboard = () => {
                     </div>
                     <div className="flex items-center gap-4">
                         <button onClick={fetchData} className="p-3 bg-surface rounded-xl border border-gray-800 text-textSecondary hover:text-primary transition-all"><RefreshCw className="w-5 h-5" /></button>
-                        <button className="p-3 bg-surface rounded-xl border border-gray-800 text-textSecondary hover:text-primary transition-all relative"><Bell className="w-5 h-5" /><span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" /></button>
+                        <div className="relative" ref={notifRef}>
+                            <button
+                                onClick={() => { setShowNotifications(!showNotifications); setNotifSeen(true); }}
+                                className="p-3 bg-surface rounded-xl border border-gray-800 text-textSecondary hover:text-primary transition-all relative"
+                            >
+                                <Bell className="w-5 h-5" />
+                                {!notifSeen && (stats?.recentActivity?.length > 0 || bookings.filter(b => b.status === 'pending_approval').length > 0) && (
+                                    <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                )}
+                            </button>
+
+                            {showNotifications && (
+                                <div className="absolute right-0 top-14 w-80 bg-surface border border-gray-800 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden">
+                                    <div className="flex justify-between items-center px-5 py-4 border-b border-gray-800">
+                                        <h3 className="text-sm font-bold text-white">Notifications</h3>
+                                        <span className="text-[10px] uppercase tracking-widest text-primary font-black">
+                                            {bookings.filter(b => b.status === 'pending_approval').length} Pending
+                                        </span>
+                                    </div>
+                                    <div className="max-h-80 overflow-y-auto divide-y divide-gray-800/50">
+                                        {bookings.filter(b => b.status === 'pending_approval').length > 0 ? (
+                                            bookings.filter(b => b.status === 'pending_approval').map(b => (
+                                                <div
+                                                    key={b._id}
+                                                    onClick={() => { setActiveTab('bookings'); setShowNotifications(false); }}
+                                                    className="px-5 py-4 hover:bg-primary/5 cursor-pointer transition-colors"
+                                                >
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                                                            <Bell className="w-3.5 h-3.5 text-orange-400" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-sm text-white font-medium leading-snug">
+                                                                New booking for <span className="text-primary font-bold">{b.vehicle?.title || 'a vehicle'}</span>
+                                                            </p>
+                                                            <p className="text-xs text-textSecondary mt-1">
+                                                                by {b.user?.name || b.bookingName || 'a customer'} · {new Date(b.createdAt).toLocaleDateString()}
+                                                            </p>
+                                                            <span className="inline-block mt-1.5 text-[9px] uppercase tracking-widest font-black text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded-full">Awaiting Approval</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="px-5 py-10 text-center">
+                                                <Bell className="w-8 h-8 text-gray-700 mx-auto mb-3" />
+                                                <p className="text-textSecondary text-sm italic">No new notifications</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="px-5 py-3 border-t border-gray-800">
+                                        <button
+                                            onClick={() => { setActiveTab('bookings'); setShowNotifications(false); }}
+                                            className="w-full text-center text-[10px] uppercase tracking-widest font-black text-primary hover:underline"
+                                        >
+                                            View All Bookings
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         <div className="h-10 w-[1px] bg-gray-800" />
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
