@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ChevronLeft,
@@ -229,9 +229,9 @@ const VehicleDetailsPage = () => {
             <div className="bg-surface p-12 rounded-3xl border border-gray-800 shadow-2xl">
                 <h1 className="text-4xl font-serif text-red-500 mb-4">Vehicle Not Found</h1>
                 <p className="text-textSecondary mb-8">The vehicle you are looking for might have been moved or removed.</p>
-                <Link to="/vehicles" className="btn-primary px-8 py-3">
+                <a href="https://caraw-inn.vercel.app/vehicles" className="btn-primary px-8 py-3">
                     Back to Fleet
-                </Link>
+                </a>
             </div>
         </div>
     );
@@ -241,9 +241,12 @@ const VehicleDetailsPage = () => {
     return (
         <div className="min-h-screen bg-background text-textPrimary py-12">
             <div className="container mx-auto px-6">
-                <Link to="/vehicles" className="inline-flex items-center gap-2 text-textSecondary hover:text-primary mb-8 transition-colors group">
+                <a
+                    href={vehicle?.owner ? `https://caraw-inn.vercel.app/dealers/${vehicle.owner}/vehicles` : 'https://caraw-inn.vercel.app/vehicles'}
+                    className="inline-flex items-center gap-2 text-textSecondary hover:text-primary mb-8 transition-colors group"
+                >
                     <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> Back to Fleet
-                </Link>
+                </a>
 
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
 
