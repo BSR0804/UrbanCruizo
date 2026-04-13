@@ -65,6 +65,7 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
         aadhaarFront: null,
         aadhaarBack: null,
         selfie: null,
+        passport: null,
     });
 
     const [loading, setLoading] = useState(false);
@@ -366,6 +367,34 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                             onChange={(e) => handleFile('selfie')(e.target.files[0] || null)}
                                         />
                                         <p className="text-[11px] text-textSecondary pl-1">Your face must be clearly visible and match the uploaded Aadhaar photo.</p>
+                                    </div>
+
+                                    {/* Passport — Optional */}
+                                    <div className="space-y-2">
+                                        <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
+                                            <CreditCard className="w-3.5 h-3.5 text-primary/60" />
+                                            Passport
+                                            <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-800 text-gray-500 text-[9px] uppercase tracking-wider font-bold">Optional</span>
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => document.getElementById('tour-passport-input').click()}
+                                            className="w-full bg-background border border-dashed border-gray-700 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/40 transition-all group"
+                                        >
+                                            <Upload className="w-4 h-4 text-primary/30 group-hover:text-primary shrink-0 transition-colors" />
+                                            <span className={`text-sm truncate ${files.passport ? 'text-white' : 'text-gray-600'}`}>
+                                                {files.passport ? files.passport.name : 'Upload passport (if available)'}
+                                            </span>
+                                            {files.passport && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
+                                        </button>
+                                        <input
+                                            id="tour-passport-input"
+                                            type="file"
+                                            accept="image/*,application/pdf"
+                                            className="hidden"
+                                            onChange={(e) => handleFile('passport')(e.target.files[0] || null)}
+                                        />
+                                        <p className="text-[11px] text-textSecondary pl-1">Required only for international travelers or cross-border tour routes.</p>
                                     </div>
                                 </div>
                             )}
