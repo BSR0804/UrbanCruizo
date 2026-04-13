@@ -2,20 +2,25 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
     X, User, Mail, Phone, Calendar, Users, MapPin,
-    CreditCard, Upload, CheckCircle2, Loader2, Camera,
-    ShieldCheck, Utensils, MessageSquare
+    CreditCard, Upload, CheckCircle2, Loader2,
+    ShieldCheck, Utensils, MessageSquare, Globe
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const FileUploadField = ({ label, hint, accept, onChange, value }) => {
+const FileUploadField = ({ label, hint, accept, onChange, value, optional = false, dashed = false }) => {
     const inputRef = useRef();
     return (
         <div className="space-y-2">
-            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">{label}</label>
+            <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
+                {label}
+                {optional && (
+                    <span className="px-2 py-0.5 rounded-full bg-gray-800 text-gray-500 text-[9px] uppercase tracking-wider font-bold">Optional</span>
+                )}
+            </label>
             <button
                 type="button"
                 onClick={() => inputRef.current.click()}
-                className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 text-left flex items-center gap-3 hover:border-primary/50 transition-all group"
+                className={`w-full bg-background rounded-2xl py-4 px-4 text-left flex items-center gap-3 transition-all group ${dashed ? 'border border-dashed border-gray-700 hover:border-primary/40' : 'border border-gray-800 hover:border-primary/50'}`}
             >
                 <Upload className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
                 <span className={`text-sm truncate ${value ? 'text-white' : 'text-gray-600'}`}>
@@ -44,27 +49,24 @@ const SectionHeader = ({ icon: Icon, title, subtitle }) => (
 );
 
 const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, duration }) => {
-    const [step, setStep] = useState(1); // 1 = Personal, 2 = ID & Verification, 3 = Tour Preferences
+    const [step, setStep] = useState(1);
+    const [isForeigner, setIsForeigner] = useState(false);
 
     const [formData, setFormData] = useState({
-        // Personal
         fullName: '',
         email: '',
         phone: '',
         age: '',
-        // Group
         groupSize: 1,
         pickupLocation: '',
         dietaryPreference: '',
         specialRequests: '',
-        // ID
         aadhaarNumber: '',
     });
 
     const [files, setFiles] = useState({
         aadhaarFront: null,
         aadhaarBack: null,
-        selfie: null,
         passport: null,
     });
 
@@ -92,17 +94,22 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
             }
         }
         if (step === 2) {
-            if (!formData.aadhaarNumber || formData.aadhaarNumber.replace(/\s/g, '').length < 12) {
-                toast.error('Please enter a valid 12-digit Aadhaar number');
-                return false;
-            }
-            if (!files.aadhaarFront || !files.aadhaarBack) {
-                toast.error('Please upload both sides of your Aadhaar card');
-                return false;
-            }
-            if (!files.selfie) {
-                toast.error('Please upload a selfie for identity verification');
-                return false;
+            if (!isForeigner) {
+                // Indian national — Aadhaar is mandatory
+                if (!formData.aadhaarNumber || formData.aadhaarNumber.replace(/\s/g, '').length < 12) {
+                    toast.error('Please enter a valid 12-digit Aadhaar number');
+                    return false;
+                }
+                if (!files.aadhaarFront || !files.aadhaarBack) {
+                    toast.error('Please upload both sides of your Aadhaar card');
+                    return false;
+                }
+            } else {
+                // Foreign national — Passport is mandatory
+                if (!files.passport) {
+                    toast.error('Passport upload is required for foreign nationals');
+                    return false;
+                }
             }
         }
         return true;
@@ -122,7 +129,7 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
         }
         setLoading(true);
         try {
-            await onSubmit({ ...formData, files });
+            await onSubmit({ ...formData, isForeigner, files });
             setSuccess(true);
             setTimeout(() => {
                 onClose();
@@ -139,7 +146,6 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
     if (!isOpen) return null;
 
     const totalPayable = (price || 0) + 499;
-
     const stepLabels = ['Personal Details', 'ID Verification', 'Tour Preferences'];
 
     return (
@@ -205,91 +211,57 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                 <div className="space-y-6">
                                     <SectionHeader icon={User} title="Personal Details" />
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        {/* Full Name */}
                                         <div className="space-y-2">
                                             <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Full Name</label>
                                             <div className="relative">
                                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                                <input
-                                                    type="text"
-                                                    name="fullName"
-                                                    required
+                                                <input type="text" name="fullName" required
                                                     className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                                     placeholder="Enter your full name"
-                                                    value={formData.fullName}
-                                                    onChange={handleChange}
-                                                />
+                                                    value={formData.fullName} onChange={handleChange} />
                                             </div>
                                         </div>
 
-                                        {/* Age */}
                                         <div className="space-y-2">
                                             <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Age</label>
                                             <div className="relative">
                                                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                                <input
-                                                    type="number"
-                                                    name="age"
-                                                    min="18"
-                                                    max="100"
-                                                    required
+                                                <input type="number" name="age" min="18" max="100" required
                                                     className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                                     placeholder="e.g. 28"
-                                                    value={formData.age}
-                                                    onChange={handleChange}
-                                                />
+                                                    value={formData.age} onChange={handleChange} />
                                             </div>
                                         </div>
 
-                                        {/* Email */}
                                         <div className="space-y-2">
                                             <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Email Address</label>
                                             <div className="relative">
                                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    required
+                                                <input type="email" name="email" required
                                                     className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                                     placeholder="example@email.com"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                />
+                                                    value={formData.email} onChange={handleChange} />
                                             </div>
                                         </div>
 
-                                        {/* Phone */}
                                         <div className="space-y-2">
                                             <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Phone Number</label>
                                             <div className="relative">
                                                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                                <input
-                                                    type="tel"
-                                                    name="phone"
-                                                    required
+                                                <input type="tel" name="phone" required
                                                     className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                                     placeholder="+91 98765 43210"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                />
+                                                    value={formData.phone} onChange={handleChange} />
                                             </div>
                                         </div>
 
-                                        {/* Group Size */}
                                         <div className="space-y-2 md:col-span-2">
                                             <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Group Size (including yourself)</label>
                                             <div className="relative">
                                                 <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                                <input
-                                                    type="number"
-                                                    name="groupSize"
-                                                    min="1"
-                                                    max="20"
-                                                    required
+                                                <input type="number" name="groupSize" min="1" max="20" required
                                                     className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
-                                                    value={formData.groupSize}
-                                                    onChange={handleChange}
-                                                />
+                                                    value={formData.groupSize} onChange={handleChange} />
                                             </div>
                                             <p className="text-[11px] text-textSecondary pl-1">All group members must carry valid government ID during the tour.</p>
                                         </div>
@@ -302,100 +274,105 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                 <div className="space-y-6">
                                     <SectionHeader icon={ShieldCheck} title="ID & Verification" subtitle="India-Specific" />
 
-                                    {/* Aadhaar Number */}
-                                    <div className="space-y-2">
-                                        <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Aadhaar Number</label>
-                                        <div className="relative">
-                                            <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                            <input
-                                                type="text"
-                                                name="aadhaarNumber"
-                                                required
-                                                maxLength={14}
-                                                className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all tracking-widest"
-                                                placeholder="XXXX XXXX XXXX"
-                                                value={formData.aadhaarNumber}
-                                                onChange={(e) => {
-                                                    const raw = e.target.value.replace(/\D/g, '').slice(0, 12);
-                                                    const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
-                                                    setFormData(prev => ({ ...prev, aadhaarNumber: formatted }));
-                                                }}
-                                            />
+                                    {/* Foreign National Toggle */}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsForeigner(prev => !prev);
+                                            // clear aadhaar fields when switching
+                                            setFormData(prev => ({ ...prev, aadhaarNumber: '' }));
+                                            setFiles(prev => ({ ...prev, aadhaarFront: null, aadhaarBack: null }));
+                                        }}
+                                        className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all ${isForeigner ? 'border-primary/50 bg-primary/5' : 'border-gray-800 bg-background hover:border-gray-700'}`}
+                                    >
+                                        {/* Custom checkbox */}
+                                        <div className={`w-5 h-5 rounded flex items-center justify-center border-2 shrink-0 transition-all ${isForeigner ? 'bg-primary border-primary' : 'border-gray-600 bg-transparent'}`}>
+                                            {isForeigner && (
+                                                <svg className="w-3 h-3 text-background" fill="none" viewBox="0 0 12 12">
+                                                    <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            )}
                                         </div>
-                                    </div>
+                                        <Globe className={`w-5 h-5 shrink-0 transition-colors ${isForeigner ? 'text-primary' : 'text-gray-600'}`} />
+                                        <div className="text-left">
+                                            <p className={`text-sm font-bold transition-colors ${isForeigner ? 'text-white' : 'text-textSecondary'}`}>I am a Foreign National</p>
+                                            <p className="text-[11px] text-textSecondary mt-0.5">Aadhaar not required — passport upload becomes mandatory</p>
+                                        </div>
+                                    </button>
 
-                                    {/* Aadhaar Upload — Front + Back */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <FileUploadField
-                                            label="Upload Aadhaar (Front)"
-                                            hint="Click to upload front side"
-                                            accept="image/*,application/pdf"
-                                            value={files.aadhaarFront}
-                                            onChange={handleFile('aadhaarFront')}
-                                        />
-                                        <FileUploadField
-                                            label="Upload Aadhaar (Back)"
-                                            hint="Click to upload back side"
-                                            accept="image/*,application/pdf"
-                                            value={files.aadhaarBack}
-                                            onChange={handleFile('aadhaarBack')}
-                                        />
-                                    </div>
+                                    {/* ── Indian National: Aadhaar fields ── */}
+                                    {!isForeigner && (
+                                        <div className="space-y-5">
+                                            <div className="space-y-2">
+                                                <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Aadhaar Number</label>
+                                                <div className="relative">
+                                                    <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
+                                                    <input
+                                                        type="text"
+                                                        name="aadhaarNumber"
+                                                        required
+                                                        maxLength={14}
+                                                        className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all tracking-widest"
+                                                        placeholder="XXXX XXXX XXXX"
+                                                        value={formData.aadhaarNumber}
+                                                        onChange={(e) => {
+                                                            const raw = e.target.value.replace(/\D/g, '').slice(0, 12);
+                                                            const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
+                                                            setFormData(prev => ({ ...prev, aadhaarNumber: formatted }));
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
 
-                                    {/* Selfie */}
-                                    <div className="space-y-2">
-                                        <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
-                                            <Camera className="w-3.5 h-3.5 text-primary/60" /> Selfie for Verification
-                                        </label>
-                                        <button
-                                            type="button"
-                                            onClick={() => document.getElementById('tour-selfie-input').click()}
-                                            className="w-full bg-background border border-gray-800 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/50 transition-all group"
-                                        >
-                                            <Camera className="w-4 h-4 text-primary/40 group-hover:text-primary shrink-0 transition-colors" />
-                                            <span className={`text-sm truncate ${files.selfie ? 'text-white' : 'text-gray-600'}`}>
-                                                {files.selfie ? files.selfie.name : 'Click to upload a clear selfie'}
-                                            </span>
-                                            {files.selfie && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
-                                        </button>
-                                        <input
-                                            id="tour-selfie-input"
-                                            type="file"
-                                            accept="image/*"
-                                            capture="user"
-                                            className="hidden"
-                                            onChange={(e) => handleFile('selfie')(e.target.files[0] || null)}
-                                        />
-                                        <p className="text-[11px] text-textSecondary pl-1">Your face must be clearly visible and match the uploaded Aadhaar photo.</p>
-                                    </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <FileUploadField
+                                                    label="Upload Aadhaar (Front)"
+                                                    hint="Click to upload front side"
+                                                    accept="image/*,application/pdf"
+                                                    value={files.aadhaarFront}
+                                                    onChange={handleFile('aadhaarFront')}
+                                                />
+                                                <FileUploadField
+                                                    label="Upload Aadhaar (Back)"
+                                                    hint="Click to upload back side"
+                                                    accept="image/*,application/pdf"
+                                                    value={files.aadhaarBack}
+                                                    onChange={handleFile('aadhaarBack')}
+                                                />
+                                            </div>
 
-                                    {/* Passport — Optional */}
-                                    <div className="space-y-2">
-                                        <label className="text-xs text-textSecondary uppercase tracking-widest pl-1 flex items-center gap-2">
-                                            <CreditCard className="w-3.5 h-3.5 text-primary/60" />
-                                            Passport
-                                            <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-800 text-gray-500 text-[9px] uppercase tracking-wider font-bold">Optional</span>
-                                        </label>
-                                        <button
-                                            type="button"
-                                            onClick={() => document.getElementById('tour-passport-input').click()}
-                                            className="w-full bg-background border border-dashed border-gray-700 rounded-2xl py-4 px-4 flex items-center gap-3 hover:border-primary/40 transition-all group"
-                                        >
-                                            <Upload className="w-4 h-4 text-primary/30 group-hover:text-primary shrink-0 transition-colors" />
-                                            <span className={`text-sm truncate ${files.passport ? 'text-white' : 'text-gray-600'}`}>
-                                                {files.passport ? files.passport.name : 'Upload passport (if available)'}
-                                            </span>
-                                            {files.passport && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto shrink-0" />}
-                                        </button>
-                                        <input
-                                            id="tour-passport-input"
-                                            type="file"
-                                            accept="image/*,application/pdf"
-                                            className="hidden"
-                                            onChange={(e) => handleFile('passport')(e.target.files[0] || null)}
-                                        />
-                                        <p className="text-[11px] text-textSecondary pl-1">Required only for international travelers or cross-border tour routes.</p>
-                                    </div>
+                                            {/* Passport optional for Indians */}
+                                            <FileUploadField
+                                                label="Passport"
+                                                hint="Upload passport (if available)"
+                                                accept="image/*,application/pdf"
+                                                value={files.passport}
+                                                onChange={handleFile('passport')}
+                                                optional={true}
+                                                dashed={true}
+                                            />
+                                            <p className="text-[11px] text-textSecondary pl-1 -mt-3">Required only for international travelers or cross-border tour routes.</p>
+                                        </div>
+                                    )}
+
+                                    {/* ── Foreign National: Passport mandatory ── */}
+                                    {isForeigner && (
+                                        <div className="space-y-5">
+                                            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20">
+                                                <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Foreign National Mode</p>
+                                                <p className="text-[11px] text-textSecondary">Aadhaar is not required. Please upload a valid passport to proceed.</p>
+                                            </div>
+
+                                            <FileUploadField
+                                                label="Passport (Mandatory)"
+                                                hint="Click to upload your passport"
+                                                accept="image/*,application/pdf"
+                                                value={files.passport}
+                                                onChange={handleFile('passport')}
+                                            />
+                                            <p className="text-[11px] text-textSecondary pl-1">Upload the photo page of your passport clearly showing your name and photo.</p>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
@@ -404,35 +381,25 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                 <div className="space-y-6">
                                     <SectionHeader icon={MapPin} title="Tour Preferences" />
 
-                                    {/* Pickup Location */}
                                     <div className="space-y-2">
                                         <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Pickup Location</label>
                                         <div className="relative">
                                             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                            <input
-                                                type="text"
-                                                name="pickupLocation"
-                                                required
+                                            <input type="text" name="pickupLocation" required
                                                 className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all"
                                                 placeholder="e.g. Hotel Taj, MG Road, Jaipur"
-                                                value={formData.pickupLocation}
-                                                onChange={handleChange}
-                                            />
+                                                value={formData.pickupLocation} onChange={handleChange} />
                                         </div>
                                         <p className="text-[11px] text-textSecondary pl-1">Our team will pick you up from this location on the departure date.</p>
                                     </div>
 
-                                    {/* Dietary Preference */}
                                     <div className="space-y-2">
                                         <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Dietary Preference</label>
                                         <div className="relative">
                                             <Utensils className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/40" />
-                                            <select
-                                                name="dietaryPreference"
+                                            <select name="dietaryPreference"
                                                 className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all appearance-none"
-                                                value={formData.dietaryPreference}
-                                                onChange={handleChange}
-                                            >
+                                                value={formData.dietaryPreference} onChange={handleChange}>
                                                 <option value="">Select preference</option>
                                                 <option value="vegetarian">Vegetarian</option>
                                                 <option value="non-vegetarian">Non-Vegetarian</option>
@@ -443,19 +410,14 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                                         </div>
                                     </div>
 
-                                    {/* Special Requests */}
                                     <div className="space-y-2">
                                         <label className="text-xs text-textSecondary uppercase tracking-widest pl-1">Special Requests</label>
                                         <div className="relative">
                                             <MessageSquare className="absolute left-4 top-5 w-4 h-4 text-primary/40" />
-                                            <textarea
-                                                name="specialRequests"
-                                                rows={4}
+                                            <textarea name="specialRequests" rows={4}
                                                 className="w-full bg-background border border-gray-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-primary/50 outline-none transition-all resize-none"
                                                 placeholder="Accessibility needs, anniversary surprises, extra luggage, etc."
-                                                value={formData.specialRequests}
-                                                onChange={handleChange}
-                                            />
+                                                value={formData.specialRequests} onChange={handleChange} />
                                         </div>
                                     </div>
 
@@ -483,28 +445,19 @@ const TourBookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price, d
                             {/* Navigation Buttons */}
                             <div className="flex gap-4 pt-2">
                                 {step > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={handleBack}
-                                        className="flex-1 py-4 rounded-2xl border border-gray-700 text-textSecondary font-bold hover:border-primary/40 hover:text-white transition-all"
-                                    >
+                                    <button type="button" onClick={handleBack}
+                                        className="flex-1 py-4 rounded-2xl border border-gray-700 text-textSecondary font-bold hover:border-primary/40 hover:text-white transition-all">
                                         Back
                                     </button>
                                 )}
                                 {step < 3 ? (
-                                    <button
-                                        type="button"
-                                        onClick={handleNext}
-                                        className="flex-1 bg-primary text-background font-bold py-4 rounded-2xl transition-all hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]"
-                                    >
+                                    <button type="button" onClick={handleNext}
+                                        className="flex-1 bg-primary text-background font-bold py-4 rounded-2xl transition-all hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">
                                         Continue
                                     </button>
                                 ) : (
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className="flex-1 bg-primary text-background font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)] disabled:opacity-50"
-                                    >
+                                    <button type="submit" disabled={loading}
+                                        className="flex-1 bg-primary text-background font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)] disabled:opacity-50">
                                         {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Confirm & Proceed to Pay'}
                                     </button>
                                 )}
