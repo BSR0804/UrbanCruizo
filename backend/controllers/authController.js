@@ -22,6 +22,11 @@ const authUser = async (req, res) => {
         console.log('user found:', !!user);
         if (user) console.log('user.role in DB:', user.role);
 
+        // Account exists but was registered via Google (no password set)
+        if (user && !user.password) {
+            return res.status(401).json({ message: 'This account was created with Google. Please use "Continue with Google" to sign in.' });
+        }
+
         if (user && (await user.matchPassword(password))) {
             console.log('password matched');
             // If logging in through partner portal and user is currently 'user', upgrade to requested role
