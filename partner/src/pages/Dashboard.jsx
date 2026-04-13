@@ -92,7 +92,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchData();
-    }, [user]);
+    }, []);
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
