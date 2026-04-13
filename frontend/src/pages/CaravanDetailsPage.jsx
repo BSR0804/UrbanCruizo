@@ -22,7 +22,7 @@ import axios from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { MOCK_CARAVANS } from '../data/staticData';
 import PaymentModal from '../components/PaymentModal';
-import BookingFormModal from '../components/BookingFormModal';
+import TourBookingFormModal from '../components/TourBookingFormModal';
 import toast from 'react-hot-toast';
 
 const CaravanDetailsPage = () => {
@@ -95,7 +95,7 @@ const CaravanDetailsPage = () => {
 
     const handleFormSubmit = async (formData) => {
         const basePrice = (caravan.packagePrice || caravan.pricePerDay);
-        const newTotal = (basePrice * formData.guests) + 499; // Correctly multiply base price and add fixed service fee
+        const newTotal = basePrice + 499;
         setTotalAmount(newTotal);
         setBookingData(formData);
         setIsFormModalOpen(false);
@@ -448,12 +448,13 @@ const CaravanDetailsPage = () => {
                 </div>
             </div>
 
-            <BookingFormModal
+            <TourBookingFormModal
                 isOpen={isFormModalOpen}
                 onClose={() => setIsFormModalOpen(false)}
                 onSubmit={handleFormSubmit}
                 packageName={caravan.title}
                 price={totalAmount}
+                duration={caravan.duration}
             />
 
             <PaymentModal
