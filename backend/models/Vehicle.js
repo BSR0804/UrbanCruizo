@@ -23,7 +23,7 @@ const vehicleSchema = mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: 'Dealer'
     },
 }, { timestamps: true });
 

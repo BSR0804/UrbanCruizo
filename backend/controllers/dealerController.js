@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const User = require('../models/User');
+const Dealer = require('../models/Dealer');
 const Vehicle = require('../models/Vehicle');
 const mongoose = require('mongoose');
 
@@ -8,15 +8,14 @@ const mongoose = require('mongoose');
 // @access  Public
 const getDealers = asyncHandler(async (req, res) => {
     const { city } = req.query;
-    let query = { role: 'dealer' };
+    let query = {};
 
     if (city && city !== 'All') {
         query.city = city;
     }
 
-    const dealers = await User.find(query).select('-password');
+    const dealers = await Dealer.find(query);
 
-    // Attach vehicle counts to each dealer
     const dealersWithCounts = await Promise.all(dealers.map(async (dealer) => {
         const vehicleCount = await Vehicle.countDocuments({ owner: dealer._id });
         return {
@@ -36,7 +35,7 @@ const getDealerById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('Dealer not found (Invalid ID)');
     }
-    const dealer = await User.findOne({ _id: req.params.id, role: 'dealer' }).select('-password');
+    const dealer = await Dealer.findById(req.params.id);
 
     if (dealer) {
         const vehicleCount = await Vehicle.countDocuments({ owner: dealer._id });

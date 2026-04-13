@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Caravan = require('../models/Caravan');
+const Caravan = require('../models/TourPackage');
 
 // @desc    Fetch all caravans
 const getCaravans = asyncHandler(async (req, res) => {
