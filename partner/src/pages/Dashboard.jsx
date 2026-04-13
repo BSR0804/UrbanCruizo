@@ -51,10 +51,7 @@ const Dashboard = () => {
         { _id: 'b1', vehicle: { title: 'Mercedes-Benz C-Class', images: [] }, user: { name: 'Rahul Sharma' }, bookingName: 'Rahul Sharma', startDate: '2026-03-05', endDate: '2026-03-08', totalPrice: 25500, status: 'pending_approval', createdAt: new Date().toISOString() },
         { _id: 'b2', vehicle: { title: 'Hyundai Creta', images: [] }, user: { name: 'Sneha Reddy' }, bookingName: 'Sneha Reddy', startDate: '2026-03-10', endDate: '2026-03-12', totalPrice: 7000, status: 'confirmed', createdAt: new Date(Date.now() - 86400000).toISOString() },
     ];
-    const demoRequests = [
-        { _id: 'r1', name: 'Vikram Singh', email: 'vikram@email.com', phone: '+91 98765 43210', city: 'Hyderabad', vehicleType: 'SUV', requirements: 'Need a luxury SUV for a wedding event, 3 days', createdAt: new Date().toISOString() },
-        { _id: 'r2', name: 'Ananya Rao', email: 'ananya@email.com', phone: '+91 91234 56789', city: 'Bangalore', vehicleType: 'Sedan', requirements: 'Looking for a premium sedan with chauffeur for airport transfers', createdAt: new Date(Date.now() - 43200000).toISOString() },
-    ];
+
 
     const isAuthenticated = user && user.role === 'dealer';
     const displayUser = isAuthenticated ? user : { name: 'Demo Partner', email: 'demo@urbancruizo.com', businessName: 'Elite Motors', city: 'Hyderabad', isProfileComplete: true };

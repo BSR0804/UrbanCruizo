@@ -16,7 +16,6 @@ import {
     Check,
     X,
     Eye,
-    MessageSquare,
     RefreshCw,
     Lock
 } from 'lucide-react';
@@ -32,7 +31,6 @@ const DealerDashboard = () => {
     const [stats, setStats] = useState(null);
     const [vehicles, setVehicles] = useState([]);
     const [bookings, setBookings] = useState([]);
-    const [carRequests, setCarRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [showProfileForm, setShowProfileForm] = useState(false);
@@ -80,17 +78,15 @@ const DealerDashboard = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [statsRes, vehiclesRes, bookingsRes, requestsRes] = await Promise.all([
+            const [statsRes, vehiclesRes, bookingsRes] = await Promise.all([
                 axios.get('dealers/dashboard/stats'),
                 axios.get('dealers/dashboard/vehicles'),
-                axios.get('dealers/dashboard/bookings'),
-                axios.get('dealers/dashboard/car-requests')
+                axios.get('dealers/dashboard/bookings')
             ]);
 
             setStats(statsRes.data);
             setVehicles(vehiclesRes.data);
             setBookings(bookingsRes.data);
-            setCarRequests(requestsRes.data);
 
             if (user && !user.isProfileComplete) {
                 setShowProfileForm(true);
@@ -131,9 +127,6 @@ const DealerDashboard = () => {
             ]);
             setBookings([
                 { _id: 'b1', vehicle: { title: 'Range Rover Vogue' }, bookingName: 'Rahul Singh', startDate: new Date(), endDate: new Date(Date.now() + 86400000 * 3), finalAmount: 135000, status: 'pending_approval' }
-            ]);
-            setCarRequests([
-                { _id: 'r1', requirements: 'Need a white Rolls Royce for a wedding', vehicleType: 'Luxury', name: 'Alok Gupta', city: 'Delhi', phone: '9876543210', email: 'alok@example.com', createdAt: new Date().toISOString() }
             ]);
             setLoading(false);
         }
@@ -297,7 +290,6 @@ const DealerDashboard = () => {
                             { id: 'overview', icon: <LayoutDashboard />, label: 'Overview' },
                             { id: 'vehicles', icon: <Car />, label: 'My Vehicles' },
                             { id: 'bookings', icon: <CalendarCheck />, label: 'Booking Requests' },
-                            { id: 'requests', icon: <MessageSquare />, label: 'Car Requests' },
                             { id: 'earnings', icon: <Wallet />, label: 'Earnings' },
                             { id: 'settings', icon: <Settings />, label: 'Settings' }
                         ].map(item => (
@@ -590,56 +582,7 @@ const DealerDashboard = () => {
                                 </motion.div>
                             )}
 
-                            {activeTab === 'requests' && (
-                                <motion.div
-                                    key="requests"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="space-y-8"
-                                >
-                                    <h2 className="text-2xl font-serif font-bold text-white">General Car Requests</h2>
-                                    <p className="text-sm text-textSecondary italic bg-primary/5 p-4 rounded-xl border border-primary/10">
-                                        These are custom requests from users who couldn't find exactly what they were looking for. Reach out to them to strike a deal!
-                                    </p>
-                                    <div className="space-y-6">
-                                        {carRequests.length > 0 ? carRequests.map(req => (
-                                            req && (
-                                                <div key={req._id} className={`bg-background border border-gray-800 rounded-3xl p-6 relative group border-l-4 transition-all ${req.city?.toLowerCase() === user?.city?.toLowerCase() ? 'border-l-primary shadow-xl shadow-primary/5' : 'border-l-gray-800 opacity-80 hover:opacity-100'}`}>
-                                                    {req.city?.toLowerCase() === user?.city?.toLowerCase() && (
-                                                        <div className="absolute top-4 right-16 bg-primary/20 text-primary border border-primary/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest italic animate-pulse">
-                                                            City Match
-                                                        </div>
-                                                    )}
-                                                    <div className="flex justify-between items-start mb-4">
-                                                        <div>
-                                                            <h3 className="text-lg font-serif font-black text-white italic">{req.requirements}</h3>
-                                                            <p className="text-[10px] text-primary uppercase tracking-widest font-black mt-1 italic">Type: {req.vehicleType}</p>
-                                                        </div>
-                                                        <span className="text-[10px] text-textSecondary bg-surface px-2 py-1 rounded-md uppercase tracking-widest font-bold">{new Date(req.createdAt).toLocaleDateString()}</span>
-                                                    </div>
-                                                    <div className="grid grid-cols-2 gap-4 text-xs text-textSecondary pt-4 border-t border-gray-800 font-medium">
-                                                        <p><span className="text-white opacity-60">Customer:</span> {req.name}</p>
-                                                        <p><span className="text-white opacity-60">City:</span> {req.city}</p>
-                                                        <p><span className="text-white opacity-60">Contact:</span> {req.phone}</p>
-                                                        <p><span className="text-white opacity-60">Email:</span> {req.email}</p>
-                                                    </div>
-                                                    <button
-                                                        onClick={() => window.open(`tel:${req.phone}`)}
-                                                        className="w-full mt-6 py-3 bg-surface hover:bg-primary hover:text-background transition-all rounded-xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2"
-                                                    >
-                                                        Contact Lead <MessageSquare className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            )
-                                        )) : (
-                                            <div className="text-center py-20 bg-background/50 rounded-3xl border border-dashed border-gray-800">
-                                                <MessageSquare className="w-12 h-12 text-gray-800 mx-auto mb-4" />
-                                                <p className="text-textSecondary italic">No general requests at the moment. When users submit custom forms, you'll see them here.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            )}
+
 
                             {activeTab === 'earnings' && (
                                 <motion.div
