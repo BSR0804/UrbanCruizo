@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import axios from '../utils/api';
 import { useCity } from '../context/CityContext';
-import { MOCK_DEALERS } from '../data/staticData';
+import { MOCK_DEALERS, MOCK_VEHICLES } from '../data/staticData';
 import CarRequestModal from '../components/CarRequestModal';
 
 const CITY_COORDINATES = {
@@ -47,8 +47,13 @@ const VehicleListingPage = () => {
                     ? MOCK_DEALERS.filter(dealer => dealer.city.toLowerCase() === normalizedCity.toLowerCase())
                     : MOCK_DEALERS;
 
-                // Final safety: even if normalized filter fails, show something
-                setDealers(filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS);
+                const base = filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS;
+                // Compute real vehicle count from MOCK_VEHICLES instead of using the stale hardcoded field
+                const withRealCount = base.map(d => ({
+                    ...d,
+                    vehicleCount: MOCK_VEHICLES.filter(v => v.dealerId === d._id).length
+                }));
+                setDealers(withRealCount);
             } else {
                 setDealers(data);
             }
@@ -60,7 +65,11 @@ const VehicleListingPage = () => {
             const filteredMockDealers = normalizedCity
                 ? MOCK_DEALERS.filter(dealer => dealer.city.toLowerCase() === normalizedCity.toLowerCase())
                 : MOCK_DEALERS;
-            setDealers(filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS);
+            const base = filteredMockDealers.length > 0 ? filteredMockDealers : MOCK_DEALERS;
+            setDealers(base.map(d => ({
+                ...d,
+                vehicleCount: MOCK_VEHICLES.filter(v => v.dealerId === d._id).length
+            })));
             setLoading(false);
         }
     };
