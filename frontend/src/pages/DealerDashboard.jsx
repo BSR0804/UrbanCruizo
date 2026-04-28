@@ -211,7 +211,9 @@ const DealerDashboard = () => {
         e.preventDefault();
         const imagesArray = uploadedImages.length > 0
             ? uploadedImages
-            : vehicleFormData.images.split(',').map(img => img.trim()).filter(Boolean);
+            : (typeof vehicleFormData.images === 'string'
+                ? vehicleFormData.images.split(',').map(img => img.trim()).filter(Boolean)
+                : []);
         try {
             const { description, ...dataToSubmit } = { ...vehicleFormData, images: imagesArray };
 
@@ -567,7 +569,7 @@ const DealerDashboard = () => {
                                                                 onClick={() => {
                                                                     setEditingVehicle(vehicle);
                                                                     setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
-                                                                    setUploadedImages([]);
+                                                                    setUploadedImages(vehicle.images || []);
                                                                     setShowAddModal(true);
                                                                 }}
                                                                 className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
@@ -1038,9 +1040,6 @@ const DealerDashboard = () => {
                                                 </div>
                                             ))}
                                         </div>
-                                    )}
-                                    {editingVehicle && uploadedImages.length === 0 && vehicleFormData.images && (
-                                        <p className="text-[10px] text-textSecondary italic">Keeping existing images. Upload new ones to replace them.</p>
                                     )}
                                 </div>
 
