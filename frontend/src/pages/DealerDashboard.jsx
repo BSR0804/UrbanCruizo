@@ -595,55 +595,131 @@ const DealerDashboard = () => {
                                     className="space-y-8"
                                 >
                                     <h2 className="text-2xl font-serif font-bold text-white">Rental Applications</h2>
-                                    <div className="space-y-6">
-                                        {bookings.length > 0 ? bookings.map(booking => (
-                                            <div key={booking._id} className="bg-background border border-gray-800 rounded-3xl p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden group">
-                                                {/* Status Badge */}
-                                                <div className={`absolute top-0 right-0 px-6 py-2 rounded-bl-3xl text-[10px] uppercase font-black italic tracking-widest ${booking.status === 'pending_approval' ? 'bg-orange-500 text-white' :
-                                                    booking.status === 'confirmed' ? 'bg-green-500 text-white' : 'bg-gray-800 text-gray-400'
-                                                    }`}>
-                                                    {booking.status.replace('_', ' ')}
+
+                                    {/* Three sections */}
+                                    {[
+                                        {
+                                            label: 'Requests',
+                                            statuses: ['pending_approval'],
+                                            color: 'orange',
+                                            emptyMsg: 'No pending requests.',
+                                        },
+                                        {
+                                            label: 'Approved',
+                                            statuses: ['approved', 'confirmed', 'ongoing', 'completed'],
+                                            color: 'green',
+                                            emptyMsg: 'No approved bookings yet.',
+                                        },
+                                        {
+                                            label: 'Rejected',
+                                            statuses: ['rejected', 'cancelled'],
+                                            color: 'red',
+                                            emptyMsg: 'No rejected bookings.',
+                                        },
+                                    ].map(section => {
+                                        const sectionBookings = bookings.filter(b => section.statuses.includes(b.status));
+                                        const colorMap = {
+                                            orange: { border: 'border-orange-500/30', dot: 'bg-orange-500', text: 'text-orange-400', bg: 'bg-orange-500/10' },
+                                            green: { border: 'border-green-500/30', dot: 'bg-green-500', text: 'text-green-400', bg: 'bg-green-500/10' },
+                                            red: { border: 'border-red-500/30', dot: 'bg-red-500', text: 'text-red-400', bg: 'bg-red-500/10' },
+                                        }[section.color];
+
+                                        return (
+                                            <div key={section.label} className={`border ${colorMap.border} rounded-3xl overflow-hidden`}>
+                                                {/* Section Header */}
+                                                <div className="flex items-center gap-3 px-6 py-4 bg-background/50 border-b border-gray-800">
+                                                    <span className={`w-2.5 h-2.5 rounded-full ${colorMap.dot}`} />
+                                                    <h3 className={`font-black uppercase tracking-widest text-xs ${colorMap.text}`}>{section.label}</h3>
+                                                    <span className={`ml-auto text-[10px] font-black px-3 py-1 rounded-full ${colorMap.bg} ${colorMap.text}`}>{sectionBookings.length}</span>
                                                 </div>
 
-                                                <div className="w-full md:w-32 h-32 bg-surface rounded-2xl shrink-0 flex items-center justify-center overflow-hidden border border-gray-800">
-                                                    {booking.vehicle?.images?.[0] ? (
-                                                        <img src={booking.vehicle.images[0]} className="w-full h-full object-cover" />
-                                                    ) : <Car className="w-10 h-10 text-gray-800" />}
-                                                </div>
+                                                {/* Booking Cards */}
+                                                <div className="divide-y divide-gray-800/50">
+                                                    {sectionBookings.length === 0 ? (
+                                                        <p className="text-center text-textSecondary italic text-sm py-10">{section.emptyMsg}</p>
+                                                    ) : sectionBookings.map(booking => (
+                                                        <div key={booking._id} className="p-6 flex flex-col gap-5">
 
-                                                <div className="flex-grow">
-                                                    <h3 className="text-xl font-bold text-white mb-2">{booking.vehicle?.title || 'Unknown Vehicle'}</h3>
-                                                    <div className="space-y-1 text-sm text-textSecondary mb-4">
-                                                        <p className="flex items-center gap-2"><Users className="w-3 h-3 text-primary" /> {booking.user?.name || booking.bookingName}</p>
-                                                        <p className="flex items-center gap-2"><CalendarCheck className="w-3 h-3 text-primary" /> {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}</p>
-                                                        <p className="flex items-center gap-2 font-bold text-primary">₹{(booking.finalAmount || booking.totalPrice)?.toLocaleString('en-IN')}</p>
-                                                    </div>
+                                                            {/* Top row: vehicle image + main info + actions */}
+                                                            <div className="flex flex-col md:flex-row gap-5">
+                                                                <div className="w-full md:w-28 h-24 bg-surface rounded-2xl shrink-0 overflow-hidden border border-gray-800 flex items-center justify-center">
+                                                                    {booking.vehicle?.images?.[0]
+                                                                        ? <img src={booking.vehicle.images[0]} className="w-full h-full object-cover" alt="" />
+                                                                        : <Car className="w-8 h-8 text-gray-700" />}
+                                                                </div>
 
-                                                    {booking.status === 'pending_approval' && (
-                                                        <div className="flex gap-4">
-                                                            <button
-                                                                onClick={() => handleBookingStatus(booking._id, 'approved')}
-                                                                className="flex-1 bg-green-500/10 text-green-500 border border-green-500/20 py-2 rounded-xl text-xs font-bold hover:bg-green-500 hover:text-white transition-all"
-                                                            >
-                                                                Approve
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleBookingStatus(booking._id, 'rejected')}
-                                                                className="flex-1 bg-red-500/10 text-red-500 border border-red-500/20 py-2 rounded-xl text-xs font-bold hover:bg-red-500 hover:text-white transition-all"
-                                                            >
-                                                                Deny
-                                                            </button>
+                                                                <div className="flex-grow space-y-1">
+                                                                    <h3 className="text-lg font-bold text-white">{booking.vehicle?.title || 'Unknown Vehicle'}</h3>
+                                                                    <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-textSecondary mt-2">
+                                                                        <p><span className="text-primary font-bold">Customer:</span> {booking.user?.name || booking.bookingName || '—'}</p>
+                                                                        <p><span className="text-primary font-bold">Phone:</span> {booking.user?.phone || booking.bookingPhone || '—'}</p>
+                                                                        <p><span className="text-primary font-bold">Email:</span> {booking.user?.email || booking.bookingEmail || '—'}</p>
+                                                                        <p><span className="text-primary font-bold">Amount:</span> ₹{(booking.finalAmount || booking.totalPrice)?.toLocaleString('en-IN')}</p>
+                                                                        <p><span className="text-primary font-bold">From:</span> {new Date(booking.startDate).toLocaleDateString()}</p>
+                                                                        <p><span className="text-primary font-bold">To:</span> {new Date(booking.endDate).toLocaleDateString()}</p>
+                                                                        {booking.bookingAddress && <p className="col-span-2"><span className="text-primary font-bold">Address:</span> {booking.bookingAddress}</p>}
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Approve / Reject buttons only on pending */}
+                                                                {booking.status === 'pending_approval' && (
+                                                                    <div className="flex md:flex-col gap-3 shrink-0 justify-end">
+                                                                        <button
+                                                                            onClick={() => handleBookingStatus(booking._id, 'approved')}
+                                                                            className="px-5 py-2 bg-green-500/10 text-green-400 border border-green-500/20 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-green-500 hover:text-white transition-all"
+                                                                        >
+                                                                            Approve
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleBookingStatus(booking._id, 'rejected')}
+                                                                            className="px-5 py-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
+                                                                        >
+                                                                            Reject
+                                                                        </button>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Documents row — view only, no download */}
+                                                            {(booking.aadhaarImage || booking.licenseImage) && (
+                                                                <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-800/50">
+                                                                    <p className="w-full text-[10px] uppercase tracking-widest text-textSecondary font-black mb-1">Documents</p>
+                                                                    {booking.licenseImage && (
+                                                                        <a
+                                                                            href={booking.licenseImage}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
+                                                                            onClick={e => {
+                                                                                e.preventDefault();
+                                                                                window.open(booking.licenseImage, '_blank', 'noopener,noreferrer');
+                                                                            }}
+                                                                        >
+                                                                            <Eye className="w-3.5 h-3.5" /> Driving License
+                                                                        </a>
+                                                                    )}
+                                                                    {booking.aadhaarImage && (
+                                                                        <a
+                                                                            href={booking.aadhaarImage}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
+                                                                            onClick={e => {
+                                                                                e.preventDefault();
+                                                                                window.open(booking.aadhaarImage, '_blank', 'noopener,noreferrer');
+                                                                            }}
+                                                                        >
+                                                                            <Eye className="w-3.5 h-3.5" /> Aadhaar / ID
+                                                                        </a>
+                                                                    )}
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
+                                                    ))}
                                                 </div>
                                             </div>
-                                        )) : (
-                                            <div className="text-center py-20 bg-background/50 rounded-3xl border border-dashed border-gray-800">
-                                                <CalendarCheck className="w-12 h-12 text-gray-800 mx-auto mb-4" />
-                                                <p className="text-textSecondary italic">No booking requests yet. Once users apply for your cars, they'll appear here.</p>
-                                            </div>
-                                        )}
-                                    </div>
+                                        );
+                                    })}
                                 </motion.div>
                             )}
 
