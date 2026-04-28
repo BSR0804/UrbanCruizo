@@ -12,6 +12,7 @@ const Login = () => {
     const [selectedRole, setSelectedRole] = useState('dealer');
     const [isLoading, setIsLoading] = useState(false);
     const { login, googleLogin } = useAuth();
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const redirectPath = queryParams.get('redirect');
@@ -61,7 +62,10 @@ const Login = () => {
                 toast.error(res.message);
             }
         },
-        onError: () => toast.error('Google Login Failed'),
+        onError: (err) => {
+            console.error('Google OAuth Error:', err);
+            toast.error(err?.error_description || err?.error || 'Google Login Failed');
+        },
     });
 
     return (
