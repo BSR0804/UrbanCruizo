@@ -85,8 +85,13 @@ const updateVehicle = asyncHandler(async (req, res) => {
         throw new Error('Vehicle not found');
     }
 
-    // Authorization: Owner or Admin
-    if (req.user.role !== 'admin' && vehicle.owner?.toString() !== req.user._id.toString()) {
+    // Authorization: Owner (via Dealer profile) or Admin
+    let isOwner = false;
+    if (req.user.role !== 'admin') {
+        const dealerDoc = await Dealer.findOne({ email: req.user.email });
+        isOwner = dealerDoc && vehicle.owner?.toString() === dealerDoc._id.toString();
+    }
+    if (req.user.role !== 'admin' && !isOwner) {
         res.status(401);
         throw new Error('Not authorized to update this vehicle');
     }
@@ -104,8 +109,13 @@ const deleteVehicle = asyncHandler(async (req, res) => {
         throw new Error('Vehicle not found');
     }
 
-    // Authorization: Owner or Admin
-    if (req.user.role !== 'admin' && vehicle.owner?.toString() !== req.user._id.toString()) {
+    // Authorization: Owner (via Dealer profile) or Admin
+    let isOwner = false;
+    if (req.user.role !== 'admin') {
+        const dealerDoc = await Dealer.findOne({ email: req.user.email });
+        isOwner = dealerDoc && vehicle.owner?.toString() === dealerDoc._id.toString();
+    }
+    if (req.user.role !== 'admin' && !isOwner) {
         res.status(401);
         throw new Error('Not authorized to remove this vehicle');
     }
