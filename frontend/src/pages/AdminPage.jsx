@@ -8,7 +8,6 @@ const AdminPage = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
-        description: 'Standard vehicle description',
         pricePerDay: '',
         type: 'car',
         category: 'normal',
@@ -78,7 +77,6 @@ const AdminPage = () => {
             // Reset Form
             setFormData({
                 title: '',
-                description: 'Standard vehicle description',
                 pricePerDay: '',
                 type: 'car',
                 category: 'normal',

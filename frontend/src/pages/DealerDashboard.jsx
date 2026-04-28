@@ -77,7 +77,6 @@ const DealerDashboard = () => {
         location: '',
         city: '',
         images: '',
-        description: '',
         availability: true
     });
     const [uploadedImages, setUploadedImages] = useState([]);
@@ -214,7 +213,7 @@ const DealerDashboard = () => {
             ? uploadedImages
             : vehicleFormData.images.split(',').map(img => img.trim()).filter(Boolean);
         try {
-            const dataToSubmit = { ...vehicleFormData, images: imagesArray };
+            const { description, ...dataToSubmit } = { ...vehicleFormData, images: imagesArray };
 
             if (isAuthenticated) {
                 if (editingVehicle) {
@@ -567,7 +566,7 @@ const DealerDashboard = () => {
                                                             <button
                                                                 onClick={() => {
                                                                     setEditingVehicle(vehicle);
-                                                                    setVehicleFormData({ ...vehicle, images: vehicle.images.join(', '), description: vehicle.description || '' });
+                                                                    setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
                                                                     setUploadedImages([]);
                                                                     setShowAddModal(true);
                                                                 }}
