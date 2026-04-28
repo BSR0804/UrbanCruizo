@@ -67,7 +67,7 @@ const DealerDashboard = () => {
         model: '',
         year: '',
         type: 'car',
-        category: 'normal',
+        category: 'standard',
         pricePerDay: '',
         transmission: 'Automatic',
         fuelType: 'Petrol',
@@ -955,10 +955,20 @@ const DealerDashboard = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Category</label>
                                     <select className="input-field" value={vehicleFormData.category} onChange={(e) => setVehicleFormData({ ...vehicleFormData, category: e.target.value })}>
-                                        <option value="normal">Standard</option>
+                                        <option value="hatchback">Hatchback</option>
+                                        <option value="sedan">Sedan</option>
+                                        <option value="suv">SUV</option>
                                         <option value="luxury">Luxury Elite</option>
+                                        <option value="commuter">Commuter</option>
+                                        <option value="sports">Sports</option>
+                                        <option value="royal-enfield">Royal Enfield</option>
+                                        <option value="standard">Standard</option>
                                         <option value="premium">Premium</option>
                                     </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Number of Seats</label>
+                                    <input type="number" required className="input-field" placeholder="5" min="1" value={vehicleFormData.seats} onChange={(e) => setVehicleFormData({ ...vehicleFormData, seats: e.target.value })} />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fair (₹) Per Day</label>
