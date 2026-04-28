@@ -1012,15 +1012,6 @@ const DealerDashboard = () => {
                                     <input type="text" required className="input-field" placeholder="Ex: Jubilee Hills" value={vehicleFormData.location} onChange={(e) => setVehicleFormData({ ...vehicleFormData, location: e.target.value })} />
                                 </div>
 
-                                <div className="col-span-2 space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Description</label>
-                                    <textarea
-                                        className="input-field h-24 resize-none"
-                                        placeholder="Describe the vehicle — features, condition, special highlights..."
-                                        value={vehicleFormData.description}
-                                        onChange={(e) => setVehicleFormData({ ...vehicleFormData, description: e.target.value })}
-                                    />
-                                </div>
 
                                 <div className="col-span-2 space-y-3">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Images</label>
