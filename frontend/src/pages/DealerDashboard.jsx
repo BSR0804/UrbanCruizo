@@ -112,8 +112,6 @@ const DealerDashboard = () => {
     useEffect(() => {
         if (isAuthenticated && user.role === 'dealer') {
             fetchData();
-            const interval = setInterval(fetchData, 60000);
-            return () => clearInterval(interval);
         } else if (!isAuthenticated || user.role !== 'dealer') {
             // Set demo data for unauthenticated or non-dealer users
             // This allows anyone coming from the PartnerLanding to see the dashboard experience
