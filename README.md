@@ -45,9 +45,10 @@ UrbanCruizo/
 ├── backend/
 │   ├── controllers/
 │   │   ├── authController.js           # Login, register, Google OAuth
+│   │   ├── CarRequestController.js     # Customer vehicle requests
 │   │   ├── dealerController.js         # Public dealer listing & profiles
 │   │   ├── dealerDashboardController.js # Dealer-auth: profile, fleet, bookings, earnings
-│   │   ├── vehicleController.js        # Vehicle CRUD
+│   │   ├── vehicleController.js        # Vehicle CRUD (owner check resolves Dealer via user email)
 │   │   ├── bookingController.js        # Booking lifecycle
 │   │   ├── caravanController.js        # Tour packages (TourPackage model)
 │   │   └── paymentController.js        # Razorpay integration
@@ -59,9 +60,16 @@ UrbanCruizo/
 │   │   ├── Vehicle.js                  # Fleet (owner → Dealer._id) — title, brand, model, year, type, category, transmission, fuelType, seats, capacity, mileage, pricing, images
 │   │   ├── Booking.js                  # Rental bookings
 │   │   ├── TourPackage.js              # Curated tour packages
+│   │   ├── Caravan.js                  # Legacy caravan model (retained for backwards compatibility)
 │   │   └── CarRequest.js               # Customer vehicle requests
 │   ├── routes/
-│   │   └── v1.js                       # API v1 router
+│   │   ├── v1.js                       # API v1 router (mounts all sub-routers)
+│   │   ├── authRoutes.js               # /auth/* endpoints
+│   │   ├── bookingRoutes.js            # /bookings/* endpoints
+│   │   ├── caravanRoutes.js            # /caravans/* endpoints (tour packages)
+│   │   ├── dealerRoutes.js             # /dealers/* endpoints (public + dashboard)
+│   │   ├── paymentRoutes.js            # /payment/* endpoints
+│   │   └── vehicleRoutes.js            # /vehicles/* endpoints
 │   ├── seeder.js                       # Seed 16 dealers, 45 vehicles, 3 tour packages
 │   └── server.js
 ├── frontend/
@@ -70,18 +78,27 @@ UrbanCruizo/
 │   │   ├── components/                 # BookingFormModal, PaymentModal, TripPlanner, etc.
 │   │   ├── context/AuthContext.jsx     # uc_user localStorage key
 │   │   ├── utils/api.js                # Axios instance with uc_user token
-│   │   └── data/staticData.js          # Mock fallback data
+│   │   ├── data/staticData.js          # Mock fallback data
+│   │   ├── assets/                     # Static SVG/asset imports
+│   │   ├── App.jsx, App.css, index.css # Root component & global styles
+│   │   └── main.jsx                    # Vite entry
 │   └── public/images/                  # Vehicle & tour imagery
 ├── partner/
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── Landing.jsx             # Partner landing page
+│   │   │   ├── BenefitsPage.jsx        # Partner benefits showcase
+│   │   │   ├── FeaturesPage.jsx        # Partner features showcase
+│   │   │   ├── PerformancePage.jsx     # Partner performance/metrics page
 │   │   │   ├── Login.jsx               # Dealer login
 │   │   │   ├── Register.jsx            # Dealer registration
 │   │   │   └── Dashboard.jsx           # Fleet, bookings, earnings, notifications
 │   │   ├── context/AuthContext.jsx     # uc_partner localStorage key
-│   │   └── utils/api.js                # Axios instance with uc_partner token
+│   │   ├── utils/api.js                # Axios instance with uc_partner token
+│   │   ├── App.jsx, index.css          # Root component & global styles
+│   │   └── main.jsx                    # Vite entry
 │   └── vercel.json
+├── STATIC_DATA_GUIDE.md                # Documentation for mock/seed data
 └── README.md
 ```
 
@@ -129,26 +146,62 @@ UrbanCruizo/
 
 ## API Reference
 
+All endpoints are prefixed with `/api/v1`.
+
+### Auth
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/auth/login` | Email/password login | Public |
-| `POST` | `/api/v1/auth/register` | Register new account | Public |
-| `POST` | `/api/v1/auth/google` | Google OAuth login | Public |
-| `GET` | `/api/v1/dealers` | List all dealers (filterable by city) | Public |
-| `GET` | `/api/v1/dealers/:id` | Dealer public profile | Public |
-| `GET` | `/api/v1/dealers/:id/vehicles` | Vehicles by dealer | Public |
-| `PUT` | `/api/v1/dealers/profile` | Update dealer profile + sync Dealer doc | Dealer |
-| `GET` | `/api/v1/vehicles` | Browse all vehicles | Public |
-| `GET` | `/api/v1/vehicles/:id` | Vehicle details | Public |
-| `POST` | `/api/v1/vehicles` | List a new vehicle | Dealer |
-| `PUT` | `/api/v1/vehicles/:id` | Edit vehicle | Dealer |
-| `DELETE` | `/api/v1/vehicles/:id` | Remove vehicle | Dealer |
-| `POST` | `/api/v1/bookings` | Create booking | User |
-| `GET` | `/api/v1/bookings/dealer` | Dealer's incoming bookings | Dealer |
-| `PUT` | `/api/v1/bookings/:id/review` | Approve or deny booking | Dealer |
-| `GET` | `/api/v1/caravans` | List tour packages | Public |
-| `POST` | `/api/v1/payment/order` | Create Razorpay order | User |
-| `POST` | `/api/v1/payment/verify` | Verify payment signature | User |
+| `POST` | `/auth/register` | Register new account | Public |
+| `POST` | `/auth/login` | Email/password login | Public |
+| `POST` | `/auth/google` | Google OAuth login (access token) | Public |
+
+### Vehicles
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/vehicles` | Browse all vehicles (city/category/type filters, paginated) | Public |
+| `GET` | `/vehicles/:id` | Vehicle details | Public |
+| `POST` | `/vehicles` | List a new vehicle | Dealer |
+| `PUT` | `/vehicles/:id` | Edit vehicle (owner-scoped via Dealer profile) | Dealer |
+| `DELETE` | `/vehicles/:id` | Remove vehicle (owner-scoped via Dealer profile) | Dealer |
+| `GET` | `/vehicles/stats/dashboard` | Vehicle count stats | Admin |
+
+### Dealers (Public + Dashboard)
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/dealers` | List all dealers (filterable by city) | Public |
+| `GET` | `/dealers/:id` | Dealer public profile | Public |
+| `PUT` | `/dealers/profile` | Update dealer profile + sync Dealer doc | Dealer |
+| `PUT` | `/dealers/dashboard/profile` | Alias for profile update | Dealer |
+| `GET` | `/dealers/dashboard/stats` | Dealer KPIs (vehicles, bookings, earnings) | Dealer |
+| `GET` | `/dealers/dashboard/vehicles` | Dealer's own fleet | Dealer |
+| `GET` | `/dealers/dashboard/bookings` | Dealer's incoming bookings | Dealer |
+| `POST` | `/dealers/dashboard/car-requests` | Submit a customer car request lead | Public |
+| `GET` | `/dealers/dashboard/car-requests` | Read incoming car request leads | Dealer |
+
+### Bookings
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/bookings` | Create booking | User |
+| `GET` | `/bookings` | All bookings on dealer's fleet | Dealer |
+| `GET` | `/bookings/mybookings` | Logged-in user's bookings | User |
+| `PUT` | `/bookings/:id/review` | Approve or deny booking | Dealer |
+| `PUT` | `/bookings/:id/cancel` | Cancel a booking | User |
+| `PUT` | `/bookings/:id/dates` | Modify booking dates | User |
+
+### Tour Packages (Caravans)
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/caravans` | List tour packages | Public |
+| `GET` | `/caravans/:id` | Tour package details | Public |
+| `POST` | `/caravans` | Create tour package | Admin |
+| `PUT` | `/caravans/:id` | Update tour package | Admin |
+| `DELETE` | `/caravans/:id` | Delete tour package | Admin |
+
+### Payments
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/payment/razorpay/order` | Create Razorpay order | User |
+| `POST` | `/payment/razorpay/verify` | Verify payment signature | User |
 
 ---
 
