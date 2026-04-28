@@ -10,6 +10,7 @@ const vehicleSchema = mongoose.Schema({
     transmission: { type: String, required: true, enum: ['Automatic', 'Manual'] },
     fuelType: { type: String, required: true, enum: ['Petrol', 'Diesel', 'Electric', 'CNG', 'Hybrid'] },
     seats: { type: Number, required: true },
+    capacity: { type: Number, default: 0 }, // fuel tank capacity in litres
     pricePerHour: { type: Number, default: 0 },
     pricePerDay: { type: Number, required: true },
     securityDeposit: { type: Number, required: true, default: 0 },

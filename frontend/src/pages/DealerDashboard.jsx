@@ -72,6 +72,8 @@ const DealerDashboard = () => {
         transmission: 'Automatic',
         fuelType: 'Petrol',
         seats: '',
+        capacity: '',
+        mileage: '',
         location: '',
         city: '',
         images: '',
@@ -528,7 +530,7 @@ const DealerDashboard = () => {
                                                 onClick={() => {
                                                     setEditingVehicle(null);
                                                     setVehicleFormData({
-                                                        title: '', brand: '', model: '', year: '', type: 'car', category: 'normal', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', location: '', city: '', images: '', availability: true
+                                                        title: '', brand: '', model: '', year: '', type: 'car', category: 'standard', pricePerDay: '', transmission: 'Automatic', fuelType: 'Petrol', seats: '', capacity: '', mileage: '', location: '', city: '', images: '', availability: true
                                                     });
                                                     setShowAddModal(true);
                                                 }}
@@ -969,6 +971,24 @@ const DealerDashboard = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Number of Seats</label>
                                     <input type="number" required className="input-field" placeholder="5" min="1" value={vehicleFormData.seats} onChange={(e) => setVehicleFormData({ ...vehicleFormData, seats: e.target.value })} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fuel Type</label>
+                                    <select className="input-field" value={vehicleFormData.fuelType} onChange={(e) => setVehicleFormData({ ...vehicleFormData, fuelType: e.target.value })}>
+                                        <option value="Petrol">Petrol</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="CNG">CNG</option>
+                                        <option value="Electric">Electric</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fuel Tank Capacity (Litres)</label>
+                                    <input type="number" className="input-field" placeholder="45" min="0" value={vehicleFormData.capacity} onChange={(e) => setVehicleFormData({ ...vehicleFormData, capacity: e.target.value })} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Mileage (km/ltr)</label>
+                                    <input type="number" className="input-field" placeholder="20" min="0" step="0.1" value={vehicleFormData.mileage} onChange={(e) => setVehicleFormData({ ...vehicleFormData, mileage: e.target.value })} />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fair (₹) Per Day</label>
