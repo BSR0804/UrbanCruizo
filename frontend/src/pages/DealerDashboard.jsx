@@ -980,10 +980,12 @@ const DealerDashboard = () => {
                                         <option value="Hybrid">Hybrid</option>
                                     </select>
                                 </div>
+                                {vehicleFormData.fuelType !== 'Electric' && (
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Fuel Tank Capacity (Litres)</label>
                                     <input type="number" className="input-field" placeholder="45" min="0" value={vehicleFormData.capacity} onChange={(e) => setVehicleFormData({ ...vehicleFormData, capacity: e.target.value })} />
                                 </div>
+                                )}
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Mileage (km/ltr)</label>
                                     <input type="number" className="input-field" placeholder="20" min="0" step="0.1" value={vehicleFormData.mileage} onChange={(e) => setVehicleFormData({ ...vehicleFormData, mileage: e.target.value })} />
