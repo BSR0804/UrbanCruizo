@@ -75,8 +75,10 @@ const DealerDashboard = () => {
         location: '',
         city: '',
         images: '',
+        description: '',
         availability: true
     });
+    const [uploadedImages, setUploadedImages] = useState([]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -195,10 +197,23 @@ const DealerDashboard = () => {
         }
     };
 
+    const handleImageUpload = (files) => {
+        if (!files.length) return;
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUploadedImages(prev => [...prev, reader.result]);
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
     const handleVehicleSubmit = async (e) => {
         e.preventDefault();
+        const imagesArray = uploadedImages.length > 0
+            ? uploadedImages
+            : vehicleFormData.images.split(',').map(img => img.trim()).filter(Boolean);
         try {
-            const imagesArray = vehicleFormData.images.split(',').map(img => img.trim());
             const dataToSubmit = { ...vehicleFormData, images: imagesArray };
 
             if (isAuthenticated) {
@@ -215,6 +230,7 @@ const DealerDashboard = () => {
             }
             setShowAddModal(false);
             setEditingVehicle(null);
+            setUploadedImages([]);
             if (isAuthenticated) fetchData();
         } catch (error) {
             toast.error(error.response?.data?.message || 'Operation failed');
@@ -551,7 +567,8 @@ const DealerDashboard = () => {
                                                             <button
                                                                 onClick={() => {
                                                                     setEditingVehicle(vehicle);
-                                                                    setVehicleFormData({ ...vehicle, images: vehicle.images.join(', ') });
+                                                                    setVehicleFormData({ ...vehicle, images: vehicle.images.join(', '), description: vehicle.description || '' });
+                                                                    setUploadedImages([]);
                                                                     setShowAddModal(true);
                                                                 }}
                                                                 className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
@@ -966,8 +983,45 @@ const DealerDashboard = () => {
                                 </div>
 
                                 <div className="col-span-2 space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Image URLs (comma separated)</label>
-                                    <textarea className="input-field h-24" placeholder="https://image1.jpg, https://image2.jpg" value={vehicleFormData.images} onChange={(e) => setVehicleFormData({ ...vehicleFormData, images: e.target.value })} />
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Description</label>
+                                    <textarea
+                                        className="input-field h-24 resize-none"
+                                        placeholder="Describe the vehicle — features, condition, special highlights..."
+                                        value={vehicleFormData.description}
+                                        onChange={(e) => setVehicleFormData({ ...vehicleFormData, description: e.target.value })}
+                                    />
+                                </div>
+
+                                <div className="col-span-2 space-y-3">
+                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Vehicle Images</label>
+                                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-700 rounded-2xl cursor-pointer transition-all hover:border-primary/50 hover:bg-primary/5">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            className="hidden"
+                                            onChange={(e) => handleImageUpload(e.target.files)}
+                                        />
+                                        <svg className="w-8 h-8 text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        <p className="text-xs text-textSecondary">Click to upload images <span className="text-primary font-bold">(multiple allowed)</span></p>
+                                    </label>
+                                    {uploadedImages.length > 0 && (
+                                        <div className="flex flex-wrap gap-3 mt-2">
+                                            {uploadedImages.map((url, i) => (
+                                                <div key={i} className="relative group">
+                                                    <img src={url} alt="" className="w-20 h-16 object-cover rounded-xl border border-gray-700" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setUploadedImages(prev => prev.filter((_, idx) => idx !== i))}
+                                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >×</button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {editingVehicle && uploadedImages.length === 0 && vehicleFormData.images && (
+                                        <p className="text-[10px] text-textSecondary italic">Keeping existing images. Upload new ones to replace them.</p>
+                                    )}
                                 </div>
 
                                 <button type="submit" className="col-span-2 btn-primary py-4 rounded-xl mt-4">

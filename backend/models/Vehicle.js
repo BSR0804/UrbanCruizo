@@ -14,6 +14,7 @@ const vehicleSchema = mongoose.Schema({
     pricePerDay: { type: Number, required: true },
     securityDeposit: { type: Number, required: true, default: 0 },
     city: { type: String, required: true, index: true }, // 'Delhi', 'Mumbai', etc.
+    description: { type: String, default: '' },
     images: [{ type: String }],
     kmsLimitPerDay: { type: Number, default: 240 }, // Indian standard
     extraKmCharge: { type: Number, default: 0 },
