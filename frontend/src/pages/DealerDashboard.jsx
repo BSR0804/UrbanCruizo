@@ -558,7 +558,7 @@ const DealerDashboard = () => {
                                                     </div>
                                                     <h3 className="text-xl font-bold text-white mb-1">{vehicle.title}</h3>
                                                     <p className="text-sm text-textSecondary flex items-center gap-2 mb-6">
-                                                        <MapPin className="w-4 h-4 text-primary/60" /> {vehicle.location}, {vehicle.city}
+                                                        <MapPin className="w-4 h-4 text-primary/60" /> {[vehicle.location, vehicle.city].filter(Boolean).join(', ')}
                                                     </p>
                                                     <div className="flex justify-between items-center bg-surface/50 p-4 rounded-xl border border-gray-800/50">
                                                         <span className="text-primary font-bold">₹{vehicle.pricePerDay?.toLocaleString('en-IN')}/day</span>
