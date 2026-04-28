@@ -25,7 +25,7 @@ const DestinationGateway = () => {
             icon: <Car className="w-8 h-8" />,
             color: "from-surface to-background",
             tag: "Business Growth",
-            action: () => navigate('/login?role=dealer&redirect=/partner'),
+            action: () => navigate('/login?role=dealer&redirect=/dealer/dashboard'),
             features: ["Real-time Bookings", "Automated Payouts", "Fleet Analytics"]
         }
     ];

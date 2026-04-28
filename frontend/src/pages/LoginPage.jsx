@@ -25,7 +25,7 @@ const LoginPage = () => {
             if (result.success) {
                 const userInfo = JSON.parse(localStorage.getItem('uc_user'));
                 toast.success('Welcome back!');
-                const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/partner' : '/dashboard');
+                const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
                 console.log('Google Auth Target:', target);
                 navigate(target);
             } else {
@@ -55,7 +55,7 @@ const LoginPage = () => {
         if (result.success) {
             const userInfo = JSON.parse(localStorage.getItem('uc_user'));
             toast.success('Welcome back!');
-            const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/partner' : '/dashboard');
+            const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
             navigate(target);
         } else {
             setError(result.message);

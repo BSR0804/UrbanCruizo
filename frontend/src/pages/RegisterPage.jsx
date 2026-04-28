@@ -27,7 +27,7 @@ const RegisterPage = () => {
                 // partners coming from the partner flow don't get sent to
                 // the regular user dashboard by mistake.
                 toast.success('Account created successfully!');
-                const target = redirectPath || (role === 'dealer' ? '/partner' : '/dashboard');
+                const target = redirectPath || (role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
                 console.log('Reg Google Target:', target);
                 navigate(target);
             } else {
@@ -49,7 +49,7 @@ const RegisterPage = () => {
             // Redirect purely based on the intended registration role
             // instead of whatever role might be returned initially.
             toast.success('Account created successfully!');
-            const target = redirectPath || (role === 'dealer' ? '/partner' : '/dashboard');
+            const target = redirectPath || (role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
             console.log('Reg Submit Target:', target);
             navigate(target);
         } else {
