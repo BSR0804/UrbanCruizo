@@ -56,7 +56,7 @@ UrbanCruizo/
 │   ├── models/
 │   │   ├── User.js                     # Customers + dealer user accounts
 │   │   ├── Dealer.js                   # Public dealer listing (separate collection)
-│   │   ├── Vehicle.js                  # Fleet (owner → Dealer._id)
+│   │   ├── Vehicle.js                  # Fleet (owner → Dealer._id) — title, brand, model, year, type, category, transmission, fuelType, seats, capacity, mileage, pricing, images
 │   │   ├── Booking.js                  # Rental bookings
 │   │   ├── TourPackage.js              # Curated tour packages
 │   │   └── CarRequest.js               # Customer vehicle requests
@@ -102,12 +102,19 @@ UrbanCruizo/
 - Accounts created via Google cannot use email/password login (explicit error message)
 - Role-based routing: `admin → /admin`, `dealer → /partner`, `user → /dashboard`
 - Separate localStorage keys prevent customer/partner session conflicts
+- Vehicle update/delete authorization resolves the dealer profile via the logged-in user's email and compares against `Vehicle.owner` (which references `Dealer._id`, not `User._id`)
 
 ### Partner Dashboard
 - Fleet management: add, edit, remove vehicles with full spec forms
+  - Vehicle category dropdown matched to backend enum (hatchback, sedan, suv, luxury, commuter, sports, royal-enfield, standard, premium)
+  - Fuel type dropdown (Petrol / Diesel / CNG / Electric / Hybrid)
+  - Conditional fuel tank capacity field — automatically hidden when fuel type is Electric
+  - Mileage (km/ltr) and seat-count inputs
+  - Existing images render as thumbnails on edit with hover-to-delete; new uploads append to the set
 - Booking requests: approve or deny with one click
 - Earnings overview with commission tracking
 - Live notification bell: shows pending booking count, pulsing indicator
+- Smart location display: card view filters empty values so listings never show stray commas
 
 ### Tour Packages
 - Stored in `TourPackage` collection (replaces legacy `Caravan` model)
