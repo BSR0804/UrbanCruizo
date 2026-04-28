@@ -76,9 +76,6 @@ const Header = () => {
                                     <NavLink to="/dashboard" className={navLinkClass}>
                                         Dashboard
                                     </NavLink>
-                                    <NavLink to="/dealer/dashboard" className={navLinkClass}>
-                                        Dealer Panel
-                                    </NavLink>
                                     {user.role === 'admin' && (
                                         <NavLink to="/admin" className={navLinkClass}>
                                             Admin Panel
