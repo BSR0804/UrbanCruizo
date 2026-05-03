@@ -23,18 +23,21 @@ UrbanCruizo is a full-stack vehicle rental platform connecting premium fleet own
 - **Auth:** JWT (30-day tokens) + Google OAuth 2.0 via access token verification
 - **Passwords:** Bcrypt.js
 - **Payments:** Razorpay (order creation + signature verification)
+- **File handling:** Base64 data-URL ingestion for verification documents (license, Aadhaar, selfie, passport)
 
-### Frontend (Customer Marketplace)
+### Frontend (Customer Marketplace + embedded Dealer Dashboard)
 - **Framework:** React 19 + Vite 7
+- **Routing:** React Router v6 with route-aware authentication context
 - **Styling:** Tailwind CSS v4
 - **Animations:** Framer Motion
 - **Icons:** Lucide React
-- **Auth:** `@react-oauth/google` + custom JWT context
+- **Auth:** `@react-oauth/google` + custom dual-session JWT context
+- **State persistence:** Dual `localStorage` keys (`uc_user` for customers, `uc_partner` for dealers/admins) — both sessions can coexist in the same browser
 
-### Partner Portal
-- Standalone React + Vite app (separate Vercel deployment)
-- Isolated session storage (`uc_partner` key, separate from `uc_user`)
-- Same backend API, dealer-scoped endpoints
+### Partner Portal (legacy standalone app)
+- Standalone React + Vite app retained as `partner/` workspace
+- Marketing pages (Landing, Features, Benefits, Performance), Login, Register, Dashboard
+- The active production deployment serves the dealer dashboard from the main frontend at `caraw-inn.vercel.app/dealer/dashboard`
 
 ---
 
@@ -58,7 +61,7 @@ UrbanCruizo/
 │   │   ├── User.js                     # Customers + dealer user accounts
 │   │   ├── Dealer.js                   # Public dealer listing (separate collection)
 │   │   ├── Vehicle.js                  # Fleet (owner → Dealer._id) — title, brand, model, year, type, category, transmission, fuelType, seats, capacity, mileage, pricing, images
-│   │   ├── Booking.js                  # Rental bookings
+│   │   ├── Booking.js                  # Rental bookings — incl. bookingAge, drivingLicenseNumber, aadhaarNumber, country, isForeigner, licenseImage, licenseBackImage, aadhaarImage, selfieImage, passportImage
 │   │   ├── TourPackage.js              # Curated tour packages
 │   │   ├── Caravan.js                  # Legacy caravan model (retained for backwards compatibility)
 │   │   └── CarRequest.js               # Customer vehicle requests
@@ -74,10 +77,12 @@ UrbanCruizo/
 │   └── server.js
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/                      # Full marketplace page set
-│   │   ├── components/                 # BookingFormModal, PaymentModal, TripPlanner, etc.
-│   │   ├── context/AuthContext.jsx     # uc_user localStorage key
-│   │   ├── utils/api.js                # Axios instance with uc_user token
+│   │   ├── pages/                      # Full marketplace + embedded DealerDashboard
+│   │   ├── components/                 # BookingFormModal (with file→base64 upload), PaymentModal, TripPlanner, document lightbox, etc.
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx         # Dual-session: uc_user (customers) + uc_partner (dealers/admins), route-aware
+│   │   │   └── CityContext.jsx         # Selected city for marketplace filtering
+│   │   ├── utils/api.js                # Axios instance — picks token from uc_partner on /dealer|/partner|/admin routes, uc_user elsewhere
 │   │   ├── data/staticData.js          # Mock fallback data
 │   │   ├── assets/                     # Static SVG/asset imports
 │   │   ├── App.jsx, App.css, index.css # Root component & global styles
@@ -111,15 +116,23 @@ UrbanCruizo/
 2. Completes business profile → `Dealer` document auto-created (upsert)
 3. Dealer card appears live on customer marketplace under their city
 4. Dealer lists vehicles → immediately visible on dealer's fleet page
-5. Customers book → dealer approves/denies from dashboard
+5. Customer submits booking with verification documents → dealer approves/denies from dashboard with full document review
+
+### Customer Flow
+1. User registers or signs in via Google
+2. Browses marketplace by city, vehicle category, or fuel type
+3. Selects vehicle → fills booking form with personal details and uploads verification documents (driving license front + back, Aadhaar or passport, selfie)
+4. Submits booking — pending dealer approval
+5. Tracks bookings (pending / approved / rejected) on `/dashboard`
 
 ### Auth System
-- **Email/password** login with Bcrypt comparison
-- **Google OAuth** via access token (`googleapis.com/oauth2/v3/userinfo`)
-- Accounts created via Google cannot use email/password login (explicit error message)
-- Role-based routing: `admin → /admin`, `dealer → /partner`, `user → /dashboard`
-- Separate localStorage keys prevent customer/partner session conflicts
-- Vehicle update/delete authorization resolves the dealer profile via the logged-in user's email and compares against `Vehicle.owner` (which references `Dealer._id`, not `User._id`)
+- **Dual-session model:** the same browser can hold an authenticated customer session (`uc_user`) and an authenticated dealer session (`uc_partner`) simultaneously without overwrites
+- **Route-aware context:** `useAuth()` returns the customer session on `/`, `/home`, `/dashboard`, `/vehicles/*`, `/caravans/*`; the partner session on `/dealer/*`, `/partner/*`, `/admin/*`
+- **Intent-driven persistence:** the login type chosen on the login page (Customer vs Partner) determines which storage key the session lands in — protects users whose DB role was corrupted by a legacy upgrade bug from being locked out
+- **API token routing:** `axios` interceptor reads the right token (`uc_partner` token on partner routes, `uc_user` token elsewhere) so each session calls the API with its own credentials
+- **Email/password** login with Bcrypt comparison; backend never mutates `user.role` on login (legacy auto-upgrade behavior was removed)
+- **Google OAuth** via access token (`googleapis.com/oauth2/v3/userinfo`); accounts created via Google cannot use email/password login (explicit error message)
+- **Vehicle/Booking ownership:** dealer authorization resolves the `Dealer` profile via the logged-in user's email and compares against `Vehicle.owner` (which references `Dealer._id`, not `User._id`) — applies to vehicle CRUD AND booking review/list endpoints
 
 ### Partner Dashboard
 - Fleet management: add, edit, remove vehicles with full spec forms
@@ -128,10 +141,19 @@ UrbanCruizo/
   - Conditional fuel tank capacity field — automatically hidden when fuel type is Electric
   - Mileage (km/ltr) and seat-count inputs
   - Existing images render as thumbnails on edit with hover-to-delete; new uploads append to the set
-- Booking requests: approve or deny with one click
+- Booking requests: approve, reject, and inspect customer-submitted documents
+  - Verification details panel shows age, driving license number, Aadhaar number, country
+  - Documents panel renders thumbnail buttons for license front, license back, Aadhaar/ID, passport, selfie
+  - Clicking a document opens an in-page lightbox modal (works with base64 data URLs that browsers block in `window.open`)
 - Earnings overview with commission tracking
 - Live notification bell: shows pending booking count, pulsing indicator
 - Smart location display: card view filters empty values so listings never show stray commas
+
+### Booking Verification Documents
+- Customer-side `BookingFormModal` collects driving license (front + back), Aadhaar (Indian) or Passport (foreign), and a selfie
+- Files are converted to base64 data URLs in the browser and sent inline as JSON — survives the JSON request body without needing a separate upload endpoint or storage bucket
+- Backend persists each as a string field on the `Booking` document
+- Dealer dashboard renders documents in a lightbox modal so the dealer can review without opening a new tab
 
 ### Tour Packages
 - Stored in `TourPackage` collection (replaces legacy `Caravan` model)
@@ -181,10 +203,10 @@ All endpoints are prefixed with `/api/v1`.
 ### Bookings
 | Method | Endpoint | Description | Access |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/bookings` | Create booking | User |
-| `GET` | `/bookings` | All bookings on dealer's fleet | Dealer |
+| `POST` | `/bookings` | Create booking (accepts verification fields: `bookingName`, `bookingEmail`, `bookingPhone`, `bookingAddress`, `bookingAge`, `drivingLicenseNumber`, `aadhaarNumber`, `country`, `isForeigner`, plus base64 doc URLs `licenseImage`, `licenseBackImage`, `aadhaarImage`, `selfieImage`, `passportImage`) | User |
+| `GET` | `/bookings` | All bookings on dealer's fleet (dealer-scoped via `Dealer` profile) | Dealer |
 | `GET` | `/bookings/mybookings` | Logged-in user's bookings | User |
-| `PUT` | `/bookings/:id/review` | Approve or deny booking | Dealer |
+| `PUT` | `/bookings/:id/review` | Approve or deny booking (owner-scoped via `Dealer` profile) | Dealer |
 | `PUT` | `/bookings/:id/cancel` | Cancel a booking | User |
 | `PUT` | `/bookings/:id/dates` | Modify booking dates | User |
 
