@@ -23,9 +23,8 @@ const LoginPage = () => {
             console.log("Attempting backend authentication with access token...");
             const result = await googleLogin(tokenResponse.access_token, loginType);
             if (result.success) {
-                const userInfo = JSON.parse(localStorage.getItem('uc_user'));
                 toast.success('Welcome back!');
-                const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+                const target = redirectPath || (result.role === 'admin' ? '/admin' : result.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
                 console.log('Google Auth Target:', target);
                 navigate(target);
             } else {
@@ -53,9 +52,8 @@ const LoginPage = () => {
         // Pass the intended loginType so backend can optionally react to dealer intent
         const result = await login(email, password, loginType);
         if (result.success) {
-            const userInfo = JSON.parse(localStorage.getItem('uc_user'));
             toast.success('Welcome back!');
-            const target = redirectPath || (userInfo?.role === 'admin' ? '/admin' : userInfo?.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
+            const target = redirectPath || (result.role === 'admin' ? '/admin' : result.role === 'dealer' ? '/dealer/dashboard' : '/dashboard');
             navigate(target);
         } else {
             setError(result.message);

@@ -14,13 +14,21 @@ if (import.meta.env.PROD) {
     console.log("🔗 Backend URL:", baseURL);
 }
 
-// Add a request interceptor to include the token in headers
+// Add a request interceptor to include the token in headers.
+// Pick the partner token on dealer/admin routes, customer token elsewhere.
+const isPartnerPath = (pathname) =>
+    pathname.startsWith('/dealer') ||
+    pathname.startsWith('/partner') ||
+    pathname.startsWith('/admin');
+
 api.interceptors.request.use(
     (config) => {
-        const userInfo = localStorage.getItem('uc_user');
+        const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+        const key = isPartnerPath(pathname) ? 'uc_partner' : 'uc_user';
+        const userInfo = localStorage.getItem(key);
         if (userInfo) {
             const { token } = JSON.parse(userInfo);
-            config.headers.Authorization = `Bearer ${token}`;
+            if (token) config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },

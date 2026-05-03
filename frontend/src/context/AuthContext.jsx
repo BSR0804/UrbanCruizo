@@ -1,25 +1,50 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import axios from '../utils/api'; // uses axios instance
+import { useLocation } from 'react-router-dom';
+import axios from '../utils/api';
 
 const AuthContext = createContext();
 
+const PARTNER_KEY = 'uc_partner';
+const USER_KEY = 'uc_user';
+
+// Routes considered partner/dealer space — auth from these routes uses uc_partner storage
+const isPartnerRoute = (pathname) =>
+    pathname.startsWith('/dealer') ||
+    pathname.startsWith('/partner') ||
+    pathname.startsWith('/admin');
+
+const storageKeyForRole = (role) =>
+    role === 'dealer' || role === 'admin' ? PARTNER_KEY : USER_KEY;
+
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const location = useLocation();
+    const [partnerUser, setPartnerUser] = useState(null);
+    const [customerUser, setCustomerUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const uc_user = localStorage.getItem('uc_user');
-        if (uc_user) {
-            setUser(JSON.parse(uc_user));
-        }
+        const partnerRaw = localStorage.getItem(PARTNER_KEY);
+        const customerRaw = localStorage.getItem(USER_KEY);
+        if (partnerRaw) setPartnerUser(JSON.parse(partnerRaw));
+        if (customerRaw) setCustomerUser(JSON.parse(customerRaw));
         setLoading(false);
     }, []);
-    // Optional role allows partner logins to explicitly indicate dealer intent
+
+    // Active user depends on current route — dealer routes use partner session, others use customer
+    const onPartner = isPartnerRoute(location.pathname);
+    const user = onPartner ? partnerUser : customerUser;
+
+    const persist = (data) => {
+        const key = storageKeyForRole(data.role);
+        localStorage.setItem(key, JSON.stringify(data));
+        if (key === PARTNER_KEY) setPartnerUser(data);
+        else setCustomerUser(data);
+    };
+
     const login = async (email, password, role) => {
         try {
             const { data } = await axios.post('auth/login', { email, password, role });
-            setUser(data);
-            localStorage.setItem('uc_user', JSON.stringify(data));
+            persist(data);
             return {
                 success: true,
                 role: data.role,
@@ -41,8 +66,7 @@ export const AuthProvider = ({ children }) => {
                 password,
                 role
             });
-            setUser(data);
-            localStorage.setItem('uc_user', JSON.stringify(data));
+            persist(data);
             return {
                 success: true,
                 role: data.role,
@@ -59,8 +83,7 @@ export const AuthProvider = ({ children }) => {
     const googleLogin = async (token, role) => {
         try {
             const { data } = await axios.post('auth/google', { token, role });
-            setUser(data);
-            localStorage.setItem('uc_user', JSON.stringify(data));
+            persist(data);
             return {
                 success: true,
                 role: data.role,
@@ -76,14 +99,24 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateUser = (updatedData) => {
-        const newUser = { ...user, ...updatedData };
-        setUser(newUser);
-        localStorage.setItem('uc_user', JSON.stringify(newUser));
+        const current = onPartner ? partnerUser : customerUser;
+        if (!current) return;
+        const newUser = { ...current, ...updatedData };
+        const key = storageKeyForRole(newUser.role);
+        localStorage.setItem(key, JSON.stringify(newUser));
+        if (key === PARTNER_KEY) setPartnerUser(newUser);
+        else setCustomerUser(newUser);
     };
 
+    // Only clear the session matching the current route — leaves the other side logged in
     const logout = () => {
-        localStorage.removeItem('uc_user');
-        setUser(null);
+        if (onPartner) {
+            localStorage.removeItem(PARTNER_KEY);
+            setPartnerUser(null);
+        } else {
+            localStorage.removeItem(USER_KEY);
+            setCustomerUser(null);
+        }
         window.location.replace('https://caraw-inn.vercel.app/');
     };
 
