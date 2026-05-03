@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Booking = require('../models/Booking');
 const Vehicle = require('../models/Vehicle');
+const Dealer = require('../models/Dealer');
 const mongoose = require('mongoose');
 
 // @desc    Create new booking (With GST and Deposit Logic)
@@ -115,8 +116,13 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
         throw new Error('Booking not found');
     }
 
-    // Authorization: only dealer of the vehicle or Admin
-    if (req.user.role !== 'admin' && booking.vehicle.owner.toString() !== req.user._id.toString()) {
+    // Authorization: only dealer of the vehicle or Admin (resolve Dealer doc via email)
+    let isOwner = false;
+    if (req.user.role !== 'admin') {
+        const dealerDoc = await Dealer.findOne({ email: req.user.email });
+        isOwner = dealerDoc && booking.vehicle.owner?.toString() === dealerDoc._id.toString();
+    }
+    if (req.user.role !== 'admin' && !isOwner) {
         res.status(401);
         throw new Error('Not authorized to review this booking');
     }
@@ -223,9 +229,11 @@ const getBookings = asyncHandler(async (req, res) => {
     let query = {};
     const now = new Date();
 
-    // If dealer, only show bookings for their vehicles
+    // If dealer, only show bookings for their vehicles (resolve Dealer doc via email)
     if (req.user.role === 'dealer') {
-        const vehicles = await Vehicle.find({ owner: req.user._id });
+        const dealerDoc = await Dealer.findOne({ email: req.user.email });
+        const dealerId = dealerDoc ? dealerDoc._id : req.user._id;
+        const vehicles = await Vehicle.find({ owner: dealerId });
         const vehicleIds = vehicles.map(v => v._id);
         query.vehicle = { $in: vehicleIds };
     }
