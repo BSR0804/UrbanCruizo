@@ -58,6 +58,9 @@ const DealerDashboard = () => {
         }
     }, [user]);
 
+    // Document lightbox state
+    const [lightbox, setLightbox] = useState(null); // { url, label }
+
     // Vehicle Form State
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingVehicle, setEditingVehicle] = useState(null);
@@ -728,19 +731,14 @@ const DealerDashboard = () => {
                                                                                 <p className="text-[10px] uppercase tracking-widest text-textSecondary font-black mb-2">Documents</p>
                                                                                 <div className="flex flex-wrap gap-4">
                                                                                     {docs.map((doc, i) => (
-                                                                                        <a
+                                                                                        <button
                                                                                             key={i}
-                                                                                            href={doc.url}
-                                                                                            target="_blank"
-                                                                                            rel="noopener noreferrer"
+                                                                                            type="button"
+                                                                                            onClick={() => setLightbox({ url: doc.url, label: doc.label })}
                                                                                             className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
-                                                                                            onClick={e => {
-                                                                                                e.preventDefault();
-                                                                                                window.open(doc.url, '_blank', 'noopener,noreferrer');
-                                                                                            }}
                                                                                         >
                                                                                             <Eye className="w-3.5 h-3.5" /> {doc.label}
-                                                                                        </a>
+                                                                                        </button>
                                                                                     ))}
                                                                                 </div>
                                                                             </div>
@@ -1067,6 +1065,32 @@ const DealerDashboard = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Document Lightbox */}
+            {lightbox && (
+                <div
+                    className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-4"
+                    onClick={() => setLightbox(null)}
+                >
+                    <div
+                        className="relative max-w-3xl w-full bg-surface rounded-2xl overflow-hidden shadow-2xl border border-gray-700"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-700">
+                            <span className="text-sm font-bold text-white uppercase tracking-widest">{lightbox.label}</span>
+                            <button
+                                onClick={() => setLightbox(null)}
+                                className="text-textSecondary hover:text-white transition-colors text-xl leading-none"
+                            >×</button>
+                        </div>
+                        <img
+                            src={lightbox.url}
+                            alt={lightbox.label}
+                            className="w-full max-h-[75vh] object-contain bg-black"
+                        />
+                    </div>
+                </div>
+            )}
         </div >
     );
 };
