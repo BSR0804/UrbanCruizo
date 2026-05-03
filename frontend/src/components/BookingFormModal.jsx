@@ -114,7 +114,21 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
 
         setLoading(true);
         try {
-            await onSubmit({ ...formData, isForeigner, files });
+            const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+            const fileUrls = {
+                licenseFront: await fileToDataUrl(files.licenseFront),
+                licenseBack: await fileToDataUrl(files.licenseBack),
+                aadhaarDoc: await fileToDataUrl(files.aadhaarDoc),
+                selfie: await fileToDataUrl(files.selfie),
+                passport: await fileToDataUrl(files.passport),
+            };
+            await onSubmit({ ...formData, isForeigner, files: fileUrls });
             setSuccess(true);
             setTimeout(() => {
                 onClose();

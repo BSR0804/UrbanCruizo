@@ -698,40 +698,56 @@ const DealerDashboard = () => {
                                                                 )}
                                                             </div>
 
-                                                            {/* Documents row — view only, no download */}
-                                                            {(booking.aadhaarImage || booking.licenseImage) && (
-                                                                <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-800/50">
-                                                                    <p className="w-full text-[10px] uppercase tracking-widest text-textSecondary font-black mb-1">Documents</p>
-                                                                    {booking.licenseImage && (
-                                                                        <a
-                                                                            href={booking.licenseImage}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
-                                                                            onClick={e => {
-                                                                                e.preventDefault();
-                                                                                window.open(booking.licenseImage, '_blank', 'noopener,noreferrer');
-                                                                            }}
-                                                                        >
-                                                                            <Eye className="w-3.5 h-3.5" /> Driving License
-                                                                        </a>
-                                                                    )}
-                                                                    {booking.aadhaarImage && (
-                                                                        <a
-                                                                            href={booking.aadhaarImage}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
-                                                                            onClick={e => {
-                                                                                e.preventDefault();
-                                                                                window.open(booking.aadhaarImage, '_blank', 'noopener,noreferrer');
-                                                                            }}
-                                                                        >
-                                                                            <Eye className="w-3.5 h-3.5" /> Aadhaar / ID
-                                                                        </a>
-                                                                    )}
-                                                                </div>
-                                                            )}
+                                                            {/* Verification Details + Documents */}
+                                                            {(() => {
+                                                                const docs = [
+                                                                    { url: booking.licenseImage, label: 'Driving License (Front)' },
+                                                                    { url: booking.licenseBackImage, label: 'Driving License (Back)' },
+                                                                    { url: booking.aadhaarImage, label: 'Aadhaar / ID' },
+                                                                    { url: booking.passportImage, label: 'Passport' },
+                                                                    { url: booking.selfieImage, label: 'Selfie' },
+                                                                ].filter(d => d.url);
+                                                                const extraInfo = [
+                                                                    booking.bookingAge && `Age: ${booking.bookingAge}`,
+                                                                    booking.drivingLicenseNumber && `License #: ${booking.drivingLicenseNumber}`,
+                                                                    booking.aadhaarNumber && `Aadhaar #: ${booking.aadhaarNumber}`,
+                                                                    booking.country && `Country: ${booking.country}`,
+                                                                ].filter(Boolean);
+                                                                if (docs.length === 0 && extraInfo.length === 0) return null;
+                                                                return (
+                                                                    <div className="pt-4 border-t border-gray-800/50 space-y-3">
+                                                                        {extraInfo.length > 0 && (
+                                                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1 text-xs text-textSecondary">
+                                                                                {extraInfo.map((info, i) => (
+                                                                                    <p key={i} className="truncate"><span className="text-primary font-bold">{info.split(':')[0]}:</span> {info.split(':').slice(1).join(':').trim()}</p>
+                                                                                ))}
+                                                                            </div>
+                                                                        )}
+                                                                        {docs.length > 0 && (
+                                                                            <div>
+                                                                                <p className="text-[10px] uppercase tracking-widest text-textSecondary font-black mb-2">Documents</p>
+                                                                                <div className="flex flex-wrap gap-4">
+                                                                                    {docs.map((doc, i) => (
+                                                                                        <a
+                                                                                            key={i}
+                                                                                            href={doc.url}
+                                                                                            target="_blank"
+                                                                                            rel="noopener noreferrer"
+                                                                                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-gray-700 rounded-xl text-xs font-bold text-textSecondary hover:text-primary hover:border-primary/40 transition-all"
+                                                                                            onClick={e => {
+                                                                                                e.preventDefault();
+                                                                                                window.open(doc.url, '_blank', 'noopener,noreferrer');
+                                                                                            }}
+                                                                                        >
+                                                                                            <Eye className="w-3.5 h-3.5" /> {doc.label}
+                                                                                        </a>
+                                                                                    ))}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            })()}
                                                         </div>
                                                     ))}
                                                 </div>

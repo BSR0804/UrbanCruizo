@@ -17,8 +17,16 @@ const createBooking = asyncHandler(async (req, res) => {
         bookingEmail,
         bookingPhone,
         bookingAddress,
+        bookingAge,
+        drivingLicenseNumber,
+        aadhaarNumber,
+        country,
+        isForeigner,
         aadhaarImage,
-        licenseImage
+        licenseImage,
+        licenseBackImage,
+        selfieImage,
+        passportImage,
     } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
@@ -79,8 +87,16 @@ const createBooking = asyncHandler(async (req, res) => {
         bookingEmail,
         bookingPhone,
         bookingAddress,
+        bookingAge,
+        drivingLicenseNumber,
+        aadhaarNumber,
+        country,
+        isForeigner,
         aadhaarImage,
         licenseImage,
+        licenseBackImage,
+        selfieImage,
+        passportImage,
         status: 'pending_approval',
         paymentStatus: 'pending'
     });

@@ -136,12 +136,25 @@ const VehicleDetailsPage = () => {
 
     const submitApplication = async (formData) => {
         try {
+            const { fullName, email, phone, age, drivingLicenseNumber, aadhaarNumber, country, isForeigner, files = {} } = formData;
             await axios.post('bookings', {
                 vehicleId: id,
                 startDate: `${startDate}T${startTime}`,
                 endDate: `${endDate}T${endTime}`,
                 rentalType,
-                ...formData
+                bookingName: fullName,
+                bookingEmail: email,
+                bookingPhone: phone,
+                bookingAge: age,
+                drivingLicenseNumber,
+                aadhaarNumber,
+                country,
+                isForeigner,
+                licenseImage: files.licenseFront,
+                licenseBackImage: files.licenseBack,
+                aadhaarImage: files.aadhaarDoc,
+                selfieImage: files.selfie,
+                passportImage: files.passport,
             });
             toast.success('Application Submitted! Dealer will review your request.', { duration: 5000 });
             navigate('/dashboard');

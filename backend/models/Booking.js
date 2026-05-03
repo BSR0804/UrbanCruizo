@@ -17,8 +17,16 @@ const bookingSchema = mongoose.Schema({
     bookingEmail: { type: String },
     bookingPhone: { type: String },
     bookingAddress: { type: String },
-    aadhaarImage: { type: String }, // URL to stored image
-    licenseImage: { type: String }, // URL to stored image
+    bookingAge: { type: String },
+    drivingLicenseNumber: { type: String },
+    aadhaarNumber: { type: String },
+    country: { type: String },
+    isForeigner: { type: Boolean, default: false },
+    aadhaarImage: { type: String }, // URL/data-URL to stored image
+    licenseImage: { type: String }, // license front
+    licenseBackImage: { type: String }, // license back
+    selfieImage: { type: String },
+    passportImage: { type: String },
 
     status: {
         type: String,
