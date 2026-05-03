@@ -31,23 +31,32 @@ export const AuthProvider = ({ children }) => {
         : (customerUser || null);
 
     const persist = (data, intendedRole) => {
-        // intendedRole = what the user was trying to log in as (dealer/user)
-        // Store under partner key if they intended dealer OR their DB role is dealer/admin
-        const isDealer = intendedRole === 'dealer' || data.role === 'dealer' || data.role === 'admin';
-        if (isDealer) {
-            localStorage.setItem(PARTNER_KEY, JSON.stringify(data));
-            setPartnerUser(data);
+        // The intended login type wins. If the user clicked "Customer Login" (intendedRole==='user'),
+        // their session goes under uc_user — regardless of what role the DB record has.
+        // This protects users whose DB role was corrupted by the old upgrade bug.
+        let goPartner;
+        if (intendedRole === 'user') goPartner = false;
+        else if (intendedRole === 'dealer' || intendedRole === 'admin') goPartner = true;
+        else goPartner = data.role === 'dealer' || data.role === 'admin';
+
+        // Surface the intended role to the rest of the app so redirect logic works
+        const sessionData = { ...data, role: intendedRole === 'user' ? 'user' : (intendedRole === 'dealer' ? 'dealer' : data.role) };
+
+        if (goPartner) {
+            localStorage.setItem(PARTNER_KEY, JSON.stringify(sessionData));
+            setPartnerUser(sessionData);
         } else {
-            localStorage.setItem(USER_KEY, JSON.stringify(data));
-            setCustomerUser(data);
+            localStorage.setItem(USER_KEY, JSON.stringify(sessionData));
+            setCustomerUser(sessionData);
         }
+        return sessionData;
     };
 
     const login = async (email, password, role) => {
         try {
             const { data } = await axios.post('auth/login', { email, password });
-            persist(data, role);
-            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
+            const session = persist(data, role);
+            return { success: true, role: session.role, isProfileComplete: session.isProfileComplete };
         } catch (error) {
             return { success: false, message: error.response?.data?.message || 'Login failed' };
         }
@@ -56,8 +65,8 @@ export const AuthProvider = ({ children }) => {
     const register = async (name, email, password, role = 'user') => {
         try {
             const { data } = await axios.post('auth/register', { name, email, password, role });
-            persist(data, role);
-            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
+            const session = persist(data, role);
+            return { success: true, role: session.role, isProfileComplete: session.isProfileComplete };
         } catch (error) {
             return { success: false, message: error.response?.data?.message || 'Registration failed' };
         }
@@ -66,8 +75,8 @@ export const AuthProvider = ({ children }) => {
     const googleLogin = async (token, role) => {
         try {
             const { data } = await axios.post('auth/google', { token, role });
-            persist(data, role);
-            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
+            const session = persist(data, role);
+            return { success: true, role: session.role, isProfileComplete: session.isProfileComplete };
         } catch (error) {
             return {
                 success: false,
