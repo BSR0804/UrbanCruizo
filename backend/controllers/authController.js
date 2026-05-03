@@ -28,17 +28,7 @@ const authUser = async (req, res) => {
         }
 
         if (user && (await user.matchPassword(password))) {
-            console.log('password matched');
-            // If logging in through partner portal and user is currently 'user', upgrade to requested role
-            console.log('Checking upgrade: role ===', role, ', user.role ===', user.role);
-            if (role === 'dealer' && user.role === 'user') {
-                user.role = role;
-                user.isProfileComplete = false;
-                await user.save();
-                console.log(`>>> ROLE UPGRADED TO ${role.toUpperCase()}:`, user.email);
-            }
-
-            console.log('Sending response with role:', user.role);
+            console.log('password matched, role in DB:', user.role);
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -127,16 +117,7 @@ const googleAuth = async (req, res) => {
         let user = await User.findOne({ email });
 
         if (user) {
-            console.log('Existing user found:', user.email);
-            // If the user is logging in through the partner portal
-            // and their current role is 'user', upgrade them to the requested role
-            if (role === 'dealer' && user.role === 'user') {
-                user.role = role;
-                user.isProfileComplete = false;
-                await user.save();
-                console.log(`User role upgraded to ${role}:`, user.email);
-            }
-
+            console.log('Existing user found:', user.email, 'role:', user.role);
             return res.json({
                 _id: user._id,
                 name: user.name,
