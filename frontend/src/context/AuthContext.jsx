@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from '../utils/api';
 
@@ -7,88 +7,67 @@ const AuthContext = createContext();
 const PARTNER_KEY = 'uc_partner';
 const USER_KEY = 'uc_user';
 
-// Routes considered partner/dealer space — auth from these routes uses uc_partner storage
 const isPartnerRoute = (pathname) =>
     pathname.startsWith('/dealer') ||
     pathname.startsWith('/partner') ||
     pathname.startsWith('/admin');
 
-const storageKeyForRole = (role) =>
-    role === 'dealer' || role === 'admin' ? PARTNER_KEY : USER_KEY;
-
 export const AuthProvider = ({ children }) => {
     const location = useLocation();
-    const [partnerUser, setPartnerUser] = useState(null);
-    const [customerUser, setCustomerUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [partnerUser, setPartnerUser] = useState(() => {
+        try { const r = localStorage.getItem(PARTNER_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
+    });
+    const [customerUser, setCustomerUser] = useState(() => {
+        try { const r = localStorage.getItem(USER_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
+    });
+    const [loading] = useState(false);
 
-    useEffect(() => {
-        const partnerRaw = localStorage.getItem(PARTNER_KEY);
-        const customerRaw = localStorage.getItem(USER_KEY);
-        if (partnerRaw) setPartnerUser(JSON.parse(partnerRaw));
-        if (customerRaw) setCustomerUser(JSON.parse(customerRaw));
-        setLoading(false);
-    }, []);
-
-    // Active user depends on current route — dealer routes use partner session, others use customer
     const onPartner = isPartnerRoute(location.pathname);
-    const user = onPartner ? partnerUser : customerUser;
 
-    const persist = (data) => {
-        const key = storageKeyForRole(data.role);
-        localStorage.setItem(key, JSON.stringify(data));
-        if (key === PARTNER_KEY) setPartnerUser(data);
-        else setCustomerUser(data);
+    // On partner routes show partner session, on customer routes show customer session.
+    // Fall back to whichever session exists if the preferred one is missing.
+    const user = onPartner
+        ? (partnerUser || customerUser)
+        : (customerUser || null);
+
+    const persist = (data, intendedRole) => {
+        // intendedRole = what the user was trying to log in as (dealer/user)
+        // Store under partner key if they intended dealer OR their DB role is dealer/admin
+        const isDealer = intendedRole === 'dealer' || data.role === 'dealer' || data.role === 'admin';
+        if (isDealer) {
+            localStorage.setItem(PARTNER_KEY, JSON.stringify(data));
+            setPartnerUser(data);
+        } else {
+            localStorage.setItem(USER_KEY, JSON.stringify(data));
+            setCustomerUser(data);
+        }
     };
 
     const login = async (email, password, role) => {
         try {
-            const { data } = await axios.post('auth/login', { email, password, role });
-            persist(data);
-            return {
-                success: true,
-                role: data.role,
-                isProfileComplete: data.isProfileComplete,
-            };
+            const { data } = await axios.post('auth/login', { email, password });
+            persist(data, role);
+            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
         } catch (error) {
-            return {
-                success: false,
-                message: error.response?.data?.message || 'Login failed',
-            };
+            return { success: false, message: error.response?.data?.message || 'Login failed' };
         }
     };
 
     const register = async (name, email, password, role = 'user') => {
         try {
-            const { data } = await axios.post('auth/register', {
-                name,
-                email,
-                password,
-                role
-            });
-            persist(data);
-            return {
-                success: true,
-                role: data.role,
-                isProfileComplete: data.isProfileComplete,
-            };
+            const { data } = await axios.post('auth/register', { name, email, password, role });
+            persist(data, role);
+            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
         } catch (error) {
-            return {
-                success: false,
-                message: error.response?.data?.message || 'Registration failed',
-            };
+            return { success: false, message: error.response?.data?.message || 'Registration failed' };
         }
     };
 
     const googleLogin = async (token, role) => {
         try {
             const { data } = await axios.post('auth/google', { token, role });
-            persist(data);
-            return {
-                success: true,
-                role: data.role,
-                isProfileComplete: data.isProfileComplete,
-            };
+            persist(data, role);
+            return { success: true, role: data.role, isProfileComplete: data.isProfileComplete };
         } catch (error) {
             return {
                 success: false,
@@ -99,16 +78,17 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateUser = (updatedData) => {
-        const current = onPartner ? partnerUser : customerUser;
-        if (!current) return;
-        const newUser = { ...current, ...updatedData };
-        const key = storageKeyForRole(newUser.role);
-        localStorage.setItem(key, JSON.stringify(newUser));
-        if (key === PARTNER_KEY) setPartnerUser(newUser);
-        else setCustomerUser(newUser);
+        if (onPartner && partnerUser) {
+            const updated = { ...partnerUser, ...updatedData };
+            localStorage.setItem(PARTNER_KEY, JSON.stringify(updated));
+            setPartnerUser(updated);
+        } else if (customerUser) {
+            const updated = { ...customerUser, ...updatedData };
+            localStorage.setItem(USER_KEY, JSON.stringify(updated));
+            setCustomerUser(updated);
+        }
     };
 
-    // Only clear the session matching the current route — leaves the other side logged in
     const logout = () => {
         if (onPartner) {
             localStorage.removeItem(PARTNER_KEY);
