@@ -135,7 +135,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                 setSuccess(false);
             }, 2500);
         } catch (error) {
-            toast.error('Failed to process booking');
+            const msg = error?.response?.data?.message || error?.message || 'Failed to process booking';
+            toast.error(msg);
         } finally {
             setLoading(false);
         }

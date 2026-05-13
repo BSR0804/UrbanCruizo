@@ -176,7 +176,7 @@ const VehicleDetailsPage = () => {
                 toast.success('Demo: Application logged locally');
                 navigate('/dashboard');
             } else {
-                toast.error(error.response?.data?.message || 'Failed to submit booking application.');
+                throw error; // let BookingFormModal's catch handler show the real error
             }
         }
     };
