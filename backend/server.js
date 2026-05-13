@@ -22,8 +22,9 @@ app.use(cors({
     credentials: true    // Allow cookies / auth headers
 }));
 
-// Body parser
-app.use(express.json());
+// Body parser — limit increased to handle base64-encoded verification documents
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // ================= ROUTES (V1) =================
 app.use("/api/v1/auth", require("./routes/authRoutes"));

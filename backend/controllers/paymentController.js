@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 // Initialize Razorpay placeholder - keys are picked up from env inside methods
 
