@@ -25,10 +25,13 @@ api.interceptors.request.use(
     (config) => {
         const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
         const key = isPartnerPath(pathname) ? 'uc_partner' : 'uc_user';
-        const userInfo = localStorage.getItem(key);
+        // Prefer this tab's sessionStorage; fall back to cross-tab localStorage.
+        const userInfo = sessionStorage.getItem(key) || localStorage.getItem(key);
         if (userInfo) {
-            const { token } = JSON.parse(userInfo);
-            if (token) config.headers.Authorization = `Bearer ${token}`;
+            try {
+                const { token } = JSON.parse(userInfo);
+                if (token) config.headers.Authorization = `Bearer ${token}`;
+            } catch { /* ignore malformed JSON */ }
         }
         return config;
     },

@@ -14,12 +14,23 @@ const isPartnerRoute = (pathname) =>
 
 export const AuthProvider = ({ children }) => {
     const location = useLocation();
-    const [partnerUser, setPartnerUser] = useState(() => {
-        try { const r = localStorage.getItem(PARTNER_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
-    });
-    const [customerUser, setCustomerUser] = useState(() => {
-        try { const r = localStorage.getItem(USER_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
-    });
+    // Per-tab session: prefer sessionStorage (tab-scoped) and fall back to localStorage (cross-tab resume).
+    // This means logging out in one tab does NOT log out other tabs.
+    const readSession = (key) => {
+        try {
+            const s = sessionStorage.getItem(key);
+            if (s) return JSON.parse(s);
+            const l = localStorage.getItem(key);
+            if (l) {
+                sessionStorage.setItem(key, l); // hydrate this tab from the cross-tab fallback
+                return JSON.parse(l);
+            }
+        } catch { /* ignore */ }
+        return null;
+    };
+
+    const [partnerUser, setPartnerUser] = useState(() => readSession(PARTNER_KEY));
+    const [customerUser, setCustomerUser] = useState(() => readSession(USER_KEY));
     const [loading] = useState(false);
 
     const onPartner = isPartnerRoute(location.pathname);
@@ -42,13 +53,12 @@ export const AuthProvider = ({ children }) => {
         // Surface the intended role to the rest of the app so redirect logic works
         const sessionData = { ...data, role: intendedRole === 'user' ? 'user' : (intendedRole === 'dealer' ? 'dealer' : data.role) };
 
-        if (goPartner) {
-            localStorage.setItem(PARTNER_KEY, JSON.stringify(sessionData));
-            setPartnerUser(sessionData);
-        } else {
-            localStorage.setItem(USER_KEY, JSON.stringify(sessionData));
-            setCustomerUser(sessionData);
-        }
+        const key = goPartner ? PARTNER_KEY : USER_KEY;
+        const serialized = JSON.stringify(sessionData);
+        sessionStorage.setItem(key, serialized);
+        localStorage.setItem(key, serialized);
+        if (goPartner) setPartnerUser(sessionData);
+        else setCustomerUser(sessionData);
         return sessionData;
     };
 
@@ -87,25 +97,26 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateUser = (updatedData) => {
-        if (onPartner && partnerUser) {
-            const updated = { ...partnerUser, ...updatedData };
-            localStorage.setItem(PARTNER_KEY, JSON.stringify(updated));
-            setPartnerUser(updated);
-        } else if (customerUser) {
-            const updated = { ...customerUser, ...updatedData };
-            localStorage.setItem(USER_KEY, JSON.stringify(updated));
-            setCustomerUser(updated);
-        }
+        const key = (onPartner && partnerUser) ? PARTNER_KEY : USER_KEY;
+        const current = (onPartner && partnerUser) ? partnerUser : customerUser;
+        if (!current) return;
+        const updated = { ...current, ...updatedData };
+        const serialized = JSON.stringify(updated);
+        sessionStorage.setItem(key, serialized);
+        localStorage.setItem(key, serialized);
+        if (key === PARTNER_KEY) setPartnerUser(updated);
+        else setCustomerUser(updated);
     };
 
     const logout = () => {
-        if (onPartner) {
-            localStorage.removeItem(PARTNER_KEY);
-            setPartnerUser(null);
-        } else {
-            localStorage.removeItem(USER_KEY);
-            setCustomerUser(null);
-        }
+        // Only clear THIS tab's session; other tabs keep their own sessionStorage copy.
+        // We also clear the localStorage fallback so brand-new tabs opened after this
+        // logout don't auto-resume the session.
+        const key = onPartner ? PARTNER_KEY : USER_KEY;
+        sessionStorage.removeItem(key);
+        localStorage.removeItem(key);
+        if (onPartner) setPartnerUser(null);
+        else setCustomerUser(null);
         window.location.replace('https://caraw-inn.vercel.app/');
     };
 
