@@ -61,8 +61,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
 
     const [files, setFiles] = useState({
         licenseFront: null,
-        licenseBack: null,
         aadhaarDoc: null,
+        aadhaarBack: null,
         selfie: null,
         passport: null,
     });
@@ -83,8 +83,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
         e.preventDefault();
 
         // Driving License always required
-        if (!files.licenseFront || !files.licenseBack) {
-            toast.error('Please upload both sides of your Driving License');
+        if (!files.licenseFront) {
+            toast.error('Please upload your Driving License');
             return;
         }
 
@@ -96,8 +96,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
 
         if (!isForeigner) {
             // Indian national
-            if (!files.aadhaarDoc) {
-                toast.error('Please upload your Aadhaar document');
+            if (!files.aadhaarDoc || !files.aadhaarBack) {
+                toast.error('Please upload both sides of your Aadhaar card');
                 return;
             }
         } else {
@@ -123,8 +123,8 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
             });
             const fileUrls = {
                 licenseFront: await fileToDataUrl(files.licenseFront),
-                licenseBack: await fileToDataUrl(files.licenseBack),
                 aadhaarDoc: await fileToDataUrl(files.aadhaarDoc),
+                aadhaarBack: await fileToDataUrl(files.aadhaarBack),
                 selfie: await fileToDataUrl(files.selfie),
                 passport: await fileToDataUrl(files.passport),
             };
@@ -248,7 +248,7 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                     onClick={() => {
                                         setIsForeigner(prev => !prev);
                                         setFormData(prev => ({ ...prev, aadhaarNumber: '', country: '' }));
-                                        setFiles(prev => ({ ...prev, aadhaarDoc: null, selfie: null }));
+                                        setFiles(prev => ({ ...prev, aadhaarDoc: null, aadhaarBack: null, selfie: null }));
                                     }}
                                     className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all ${isForeigner ? 'border-primary/50 bg-primary/5' : 'border-gray-800 bg-background hover:border-gray-700'}`}
                                 >
@@ -277,22 +277,13 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <FileUploadField
-                                        label="Upload License (Front)"
-                                        hint="Click to upload front side"
-                                        accept="image/*,application/pdf"
-                                        value={files.licenseFront}
-                                        onChange={handleFile('licenseFront')}
-                                    />
-                                    <FileUploadField
-                                        label="Upload License (Back)"
-                                        hint="Click to upload back side"
-                                        accept="image/*,application/pdf"
-                                        value={files.licenseBack}
-                                        onChange={handleFile('licenseBack')}
-                                    />
-                                </div>
+                                <FileUploadField
+                                    label="Upload License"
+                                    hint="Click to upload your Driving License"
+                                    accept="image/*,application/pdf"
+                                    value={files.licenseFront}
+                                    onChange={handleFile('licenseFront')}
+                                />
 
                                 {/* ── Indian National fields ── */}
                                 {!isForeigner && (
@@ -318,13 +309,22 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                             </div>
                                         </div>
 
-                                        <FileUploadField
-                                            label="Upload Aadhaar"
-                                            hint="Click to upload Aadhaar card (front)"
-                                            accept="image/*,application/pdf"
-                                            value={files.aadhaarDoc}
-                                            onChange={handleFile('aadhaarDoc')}
-                                        />
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <FileUploadField
+                                                label="Upload Aadhaar (Front)"
+                                                hint="Click to upload front side"
+                                                accept="image/*,application/pdf"
+                                                value={files.aadhaarDoc}
+                                                onChange={handleFile('aadhaarDoc')}
+                                            />
+                                            <FileUploadField
+                                                label="Upload Aadhaar (Back)"
+                                                hint="Click to upload back side"
+                                                accept="image/*,application/pdf"
+                                                value={files.aadhaarBack}
+                                                onChange={handleFile('aadhaarBack')}
+                                            />
+                                        </div>
 
                                         {/* Passport optional for Indians */}
                                         <FileUploadField

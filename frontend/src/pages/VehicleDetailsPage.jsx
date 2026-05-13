@@ -151,8 +151,8 @@ const VehicleDetailsPage = () => {
                 country,
                 isForeigner,
                 licenseImage: files.licenseFront,
-                licenseBackImage: files.licenseBack,
                 aadhaarImage: files.aadhaarDoc,
+                aadhaarBackImage: files.aadhaarBack,
                 selfieImage: files.selfie,
                 passportImage: files.passport,
             });

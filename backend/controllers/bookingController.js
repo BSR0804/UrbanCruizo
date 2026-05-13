@@ -25,7 +25,7 @@ const createBooking = asyncHandler(async (req, res) => {
         isForeigner,
         aadhaarImage,
         licenseImage,
-        licenseBackImage,
+        aadhaarBackImage,
         selfieImage,
         passportImage,
     } = req.body;
@@ -95,7 +95,7 @@ const createBooking = asyncHandler(async (req, res) => {
         isForeigner,
         aadhaarImage,
         licenseImage,
-        licenseBackImage,
+        aadhaarBackImage,
         selfieImage,
         passportImage,
         status: 'pending_approval',

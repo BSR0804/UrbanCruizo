@@ -704,9 +704,9 @@ const DealerDashboard = () => {
                                                             {/* Verification Details + Documents */}
                                                             {(() => {
                                                                 const docs = [
-                                                                    { url: booking.licenseImage, label: 'Driving License (Front)' },
-                                                                    { url: booking.licenseBackImage, label: 'Driving License (Back)' },
-                                                                    { url: booking.aadhaarImage, label: 'Aadhaar / ID' },
+                                                                    { url: booking.licenseImage, label: 'Driving License' },
+                                                                    { url: booking.aadhaarImage, label: 'Aadhaar (Front)' },
+                                                                    { url: booking.aadhaarBackImage, label: 'Aadhaar (Back)' },
                                                                     { url: booking.passportImage, label: 'Passport' },
                                                                     { url: booking.selfieImage, label: 'Selfie' },
                                                                 ].filter(d => d.url);

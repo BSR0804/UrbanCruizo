@@ -23,8 +23,8 @@ const bookingSchema = mongoose.Schema({
     country: { type: String },
     isForeigner: { type: Boolean, default: false },
     aadhaarImage: { type: String }, // URL/data-URL to stored image
-    licenseImage: { type: String }, // license front
-    licenseBackImage: { type: String }, // license back
+    licenseImage: { type: String }, // license (front only)
+    aadhaarBackImage: { type: String }, // aadhaar back
     selfieImage: { type: String },
     passportImage: { type: String },
 
