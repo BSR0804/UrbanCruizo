@@ -38,8 +38,12 @@ const SkeletonRow = () => (
 );
 
 const DashboardPage = () => {
-    // Initialize from local cache for instant load
+    // Initialize instantly from cache — show stale data while fresh fetch runs in background
     const [bookings, setBookings] = useState(() => {
+        try {
+            const cached = sessionStorage.getItem('uc_bookings_cache');
+            if (cached) return JSON.parse(cached);
+        } catch { /* ignore */ }
         const local = JSON.parse(localStorage.getItem('mock_bookings') || '[]');
         return local.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
     });
@@ -84,6 +88,7 @@ const DashboardPage = () => {
             }, []);
 
             setBookings(unique);
+            try { sessionStorage.setItem('uc_bookings_cache', JSON.stringify(unique)); } catch { /* ignore */ }
             setLoading(false);
         } catch (error) {
             console.error(error);
