@@ -602,7 +602,7 @@ const VehicleDetailsPage = () => {
                                     scrolling="no"
                                     marginHeight="0"
                                     marginWidth="0"
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(vehicle.location || 'Karol Bagh, Delhi')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent([vehicle.location, vehicle.city].filter(Boolean).join(', ') || 'India')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                                     className="w-full h-full"
                                     style={{ filter: 'grayscale(1) contrast(1.2) invert(0.9) hue-rotate(180deg) brightness(0.8)' }}
                                 ></iframe>
@@ -610,12 +610,17 @@ const VehicleDetailsPage = () => {
                             <div className="mt-6 space-y-3">
                                 <div className="flex items-start gap-3 text-textSecondary text-sm">
                                     <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                                    <span className="leading-relaxed">{vehicle.location || 'Karol Bagh, Delhi'}</span>
+                                    <span className="leading-relaxed">{[vehicle.location, vehicle.city].filter(Boolean).join(', ') || 'Location not specified'}</span>
                                 </div>
-                                <button className="w-full mt-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors">
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([vehicle.location, vehicle.city].filter(Boolean).join(', ') || 'India')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full mt-2 flex items-center justify-center gap-2 py-3 rounded-xl border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors"
+                                >
                                     <Navigation className="w-3 h-3" />
                                     Get Directions on Google Maps
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div >
