@@ -177,9 +177,9 @@ const BookingFormModal = ({ isOpen, onClose, onSubmit, packageName, price }) => 
                                 <CheckCircle2 className="w-10 h-10" />
                             </div>
                             <div>
-                                <h3 className="text-2xl font-bold text-white mb-2">Details Confirmed!</h3>
+                                <h3 className="text-2xl font-bold text-white mb-2">Application Submitted!</h3>
                                 <p className="text-textSecondary max-w-sm mx-auto">
-                                    Proceeding to secure payment for your luxury experience.
+                                    Your request is pending dealer approval. You'll be notified once confirmed.
                                 </p>
                             </div>
                         </div>
