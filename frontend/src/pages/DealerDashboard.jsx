@@ -776,8 +776,8 @@ const DealerDashboard = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-gray-800/50">
-                                                    {bookings.filter(b => b.status === 'approved' || b.status === 'confirmed').length > 0 ? (
-                                                        bookings.filter(b => b.status === 'approved' || b.status === 'confirmed').slice(0, 10).map(b => (
+                                                    {bookings.filter(b => b.paymentStatus === 'paid' || b.status === 'confirmed' || b.status === 'completed').length > 0 ? (
+                                                        bookings.filter(b => b.paymentStatus === 'paid' || b.status === 'confirmed' || b.status === 'completed').slice(0, 10).map(b => (
                                                             <tr key={b._id} className="hover:bg-primary/5 transition-colors group">
                                                                 <td className="px-8 py-6 text-xs font-mono text-gray-500">#{b._id.slice(-6).toUpperCase()}</td>
                                                                 <td className="px-8 py-6 text-sm text-white font-medium">{new Date(b.createdAt).toLocaleDateString()}</td>
