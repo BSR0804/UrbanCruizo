@@ -581,19 +581,6 @@ const DealerDashboard = () => {
                                                                 <Edit className="w-4 h-4" />
                                                             </button>
                                                             <button
-                                                                onClick={async () => {
-                                                                    try {
-                                                                        await axios.put(`vehicles/${vehicle._id}`, { availability: !vehicle.availability });
-                                                                        toast.success(`Status updated to ${!vehicle.availability ? 'Available' : 'Booked'}`);
-                                                                        fetchData();
-                                                                    } catch (e) { toast.error('Failed to update status'); }
-                                                                }}
-                                                                className={`p-2 rounded-lg transition-colors ${vehicle.availability ? 'text-green-500 hover:bg-green-500/10' : 'text-orange-500 hover:bg-orange-500/10'}`}
-                                                                title={vehicle.availability ? 'Mark as Booked' : 'Mark as Available'}
-                                                            >
-                                                                <Eye className="w-4 h-4" />
-                                                            </button>
-                                                            <button
                                                                 onClick={() => handleDeleteVehicle(vehicle._id)}
                                                                 className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                                                                 title="Delete Listing"
@@ -1021,10 +1008,6 @@ const DealerDashboard = () => {
                                 <div className="col-span-2 md:col-span-1 space-y-2">
                                     <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Listing City</label>
                                     <input type="text" required className="input-field" placeholder="Ex: Hyderabad" value={vehicleFormData.city} onChange={(e) => setVehicleFormData({ ...vehicleFormData, city: e.target.value })} />
-                                </div>
-                                <div className="col-span-2 md:col-span-1 space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-textSecondary font-bold">Station/Area</label>
-                                    <input type="text" required className="input-field" placeholder="Ex: Jubilee Hills" value={vehicleFormData.location} onChange={(e) => setVehicleFormData({ ...vehicleFormData, location: e.target.value })} />
                                 </div>
 
 

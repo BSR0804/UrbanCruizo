@@ -107,13 +107,20 @@ const DealerVehiclesPage = () => {
                                 <img
                                     src={vehicle.images?.[0] || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop'}
                                     alt={vehicle.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                                    className={`w-full h-full object-cover group-hover:scale-110 transition duration-700 ${!vehicle.availability ? 'grayscale opacity-60' : ''}`}
                                 />
                                 <div className="absolute top-4 left-4">
                                     <span className="bg-black/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10">
                                         {vehicle.category}
                                     </span>
                                 </div>
+                                {!vehicle.availability && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="bg-red-600/90 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest">
+                                            Currently Unavailable
+                                        </span>
+                                    </div>
+                                )}
                                 <div className="absolute bottom-4 right-4">
                                     <div className="bg-primary px-4 py-2 rounded-xl text-background font-bold shadow-xl">
                                         ₹{vehicle.pricePerDay?.toLocaleString('en-IN')}<span className="text-xs opacity-70"> /day</span>
@@ -124,12 +131,18 @@ const DealerVehiclesPage = () => {
                             <div className="p-6">
                                 <h3 className="text-xl font-bold text-white mb-6">{vehicle.title}</h3>
 
-                                <Link
-                                    to={`/vehicles/${vehicle._id}`}
-                                    className="w-full btn-outline py-3 text-center block"
-                                >
-                                    View Details
-                                </Link>
+                                {vehicle.availability ? (
+                                    <Link
+                                        to={`/vehicles/${vehicle._id}`}
+                                        className="w-full btn-outline py-3 text-center block"
+                                    >
+                                        View Details
+                                    </Link>
+                                ) : (
+                                    <div className="w-full py-3 text-center rounded-xl border border-red-500/30 text-red-400 text-sm font-bold bg-red-500/5">
+                                        Booked / Maintenance
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     ))}

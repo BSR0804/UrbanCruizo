@@ -560,20 +560,26 @@ const VehicleDetailsPage = () => {
                                 <p className="text-xs text-center text-red-400">Please select valid dates.</p>
                             ) : null}
 
-                            <button
-                                type="submit"
-                                disabled={bookingLoading}
-                                className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-3 disabled:opacity-50 group"
-                            >
-                                {bookingLoading ? (
-                                    <Clock className="w-5 h-5 animate-spin" />
-                                ) : (
-                                    <>
-                                        Reserve Now
-                                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </>
-                                )}
-                            </button>
+                            {vehicle?.availability === false ? (
+                                <div className="w-full py-4 text-center rounded-2xl border border-red-500/30 text-red-400 font-bold bg-red-500/5">
+                                    Currently Unavailable — Booked or Under Maintenance
+                                </div>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    disabled={bookingLoading}
+                                    className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-3 disabled:opacity-50 group"
+                                >
+                                    {bookingLoading ? (
+                                        <Clock className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <>
+                                            Reserve Now
+                                            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        </>
+                                    )}
+                                </button>
+                            )}
                             {!user && <p className="text-xs text-center text-red-500 font-bold">Login required to book.</p>}
                         </form>
 
